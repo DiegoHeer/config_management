@@ -1,0 +1,8 @@
+- name: Play for configuring home server
+  hosts: all
+  become: true
+
+  roles:
+    - role: system
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker

@@ -1,0 +1,15 @@
+server:
+  hosts:
+    home_server:
+      ansible_host: 192.168.1.229
+      ansible_user: diego
+      ansible_connection: ssh
+      ansible_ssh_private_key_file: /home/diego/.ssh/key
+
+    # TODO: test tailscale installation
+    tailscale:
+      ansible_host: <host ip address>
+      api_key: "{{ lookup('ansible.builtin.pipe', './scripts/get-tailscale-api-token') }}"
+      tailnet: <tailnet name>
+
+# TODO: add laptop host here too

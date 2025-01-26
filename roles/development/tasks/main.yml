@@ -1,0 +1,4 @@
+- name: General tasks for development environment setup
+  ansible.builtin.include_tasks: "{{ item }}"
+  loop:
+    - packages.yml

@@ -1,0 +1,23 @@
+[project]
+name = "config-management"
+version = "0.1.0"
+description = "This repo contains ansible playbooks to automatically configure personal servers, laptops, and desktops."
+authors = [
+    { name = "Diego Heer", email = "diegojonathanheer@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ansible (>=11.1.0,<12.0.0)"
+
+]
+
+[tool.poetry.group.dev.dependencies]
+ansible-lint = "^25.1.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false

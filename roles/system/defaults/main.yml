@@ -1,0 +1,16 @@
+system_username: diego
+
+system_password: changeme
+
+system_shell: /bin/bash
+
+system_packages:
+  - net-tools
+  - speedtest-cli
+  - software-properties-common
+  - glances
+  - tmux
+  - zip
+  - unzip
+  - curl
+  - flatpak

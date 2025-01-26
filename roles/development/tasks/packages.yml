@@ -1,0 +1,9 @@
+- name: Install VS Code
+  community.general.snap:
+    name: code
+    state: present
+
+- name: Install Terraform
+  community.general.homebrew:
+    name: terraform
+    state: present

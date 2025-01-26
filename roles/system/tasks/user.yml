@@ -1,0 +1,29 @@
+- name: Ensure all necessary groups are created
+  ansible.builtin.group:
+    name: "{{ item }}"
+  loop:
+    - docker
+    - "{{ username }}"
+
+
+- name: Ensure the non-root user is created
+  ansible.builtin.user:
+    name: "{{ username }}"
+    password: "{{ password | password_hash('sha512') }}"
+    groups:
+      - sudo
+      - docker
+      - users
+    append: true
+    shell: "{{ shell }}"
+    update_password: on_create
+
+- name: Suppress login message (hushlogin)
+  ansible.builtin.file:
+    path: "/home/{{ ansible }}/.hushlogin"
+    mode: "0644"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    modification_time: preserve
+    access_time: preserve
+    state: touch

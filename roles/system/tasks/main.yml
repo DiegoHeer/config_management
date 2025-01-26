@@ -1,0 +1,5 @@
+- name: System tasks
+  ansible.builtin.include_tasks: "{{ item }}"
+  loop:
+    - packages.yml
+    - user.yml

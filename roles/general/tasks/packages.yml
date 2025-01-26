@@ -1,0 +1,29 @@
+- name: Install flatpak packages
+  community.general.flatpak:
+    name:
+      - com.nextcloud.desktopclient.nextcloud
+      - com.github.johnfactotum.Foliate
+    state: present
+
+- name: Install snap packages
+  community.general.snap:
+    name:
+      - bing-wall
+      - bitwarden
+      - code
+      - gtk-common-themes
+      - obsidian
+      - onlyoffice-desktopeditors
+      - spotify
+      - vlc
+      - whatsapp-linux-app
+      - vivaldi
+    state: present
+
+- name: Install brew packages
+  community.general.homebrew:
+    name:
+      - oh-my-posh
+      - xz
+    state:
+      - present
