@@ -1,7 +1,7 @@
 # Configuration tests
 
 The configuration management created can be tested on EC2 instances.
-To provision the resources required for testing, please run (in this folder):
+To provision the resources required for testing, please run (in terraform folder):
 
 ```bash
     terraform apply
