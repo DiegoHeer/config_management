@@ -14,13 +14,13 @@ This repo contains ansible playbooks to automatically configure personal servers
 2. Also, an SSH key is required on the host machine. If not yet available, create it with the command below. If prompted for passphrases, skip them since they are not required.
 
 ```bash
-    ssh-keygen -t ed25519 -f ~/.ssh/key -C <email address>
+    ssh-keygen -t ed25519 -C <email address>
 ```
 
 3. Add the public ssh key to all the hosts you want to manage (repeat this command for every host):
 
 ```ssh
-    ssh-copy-id -i ~/.ssh/key <host user>@<host ip address>
+    ssh-copy-id -i ~/.ssh/id_ed25519 <host user>@<host ip address>
 ```
 
 4. Next, create a `hosts.yml` file by copying the `hosts.yml.template`. Fill in the blanks as required (each host per line):

@@ -17,20 +17,11 @@ resource "aws_security_group" "ssh_access" {
   }
 }
 
-resource "tls_private_key" "rsa-key" {
-  algorithm = "RSA"
-}
-
 resource "aws_key_pair" "ssh-key" {
   key_name   = var.ssh_key_pair_name
-  public_key = tls_private_key.rsa-key.public_key_openssh
+  public_key = file("${var.ssh_key_path}.pub")
 
   lifecycle {
     ignore_changes = [key_name]
   }
-}
-
-resource "local_file" "ssh-key" {
-  content  = tls_private_key.rsa-key.private_key_pem
-  filename = var.ssh_file_name
 }

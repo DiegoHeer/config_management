@@ -1,11 +1,11 @@
 variable "ssh_key_pair_name" {
   description = "ssh key pair name"
-  default     = "ssh-key"
+  default     = "id_ed25519"
   type        = string
 }
 
-variable "ssh_file_name" {
-  description = "Name of the ssh key pair file"
-  default     = "./keys/ssh-key.pem"
+variable "ssh_key_path" {
+  description = "ssh key file path"
+  default     = "~/.ssh/id_ed25519"
   type        = string
 }

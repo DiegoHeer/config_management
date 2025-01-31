@@ -10,8 +10,8 @@ To provision the resources required for testing, please run (in terraform folder
 Ssh into the machine to check if everything is according to expectations:
 
 ```bash
-    IP_ADDRESS="$(terraform output -raw test_machine_ip_address)"
-    ssh -i ./keys/ssh-key.pem ubuntu@$IP_ADDRESS
+    SSH_COMMAND="$(terraform output -raw ssh_command)"
+    eval $SSH_COMMAND
 ```
 
 When done with testing, destroy the resources to avoid additional AWS costs:

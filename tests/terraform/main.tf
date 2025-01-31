@@ -43,10 +43,6 @@ resource "aws_instance" "test_machine" {
 
   key_name = aws_key_pair.ssh-key.key_name
 
-  provisioner "local-exec" {
-    command = "chmod 600 ${local_file.ssh-key.filename}"
-  }
-
   tags = {
     Name = local.server_name
     App  = local.application
