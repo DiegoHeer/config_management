@@ -7,4 +7,5 @@
     shell: /bin/bash
 
   roles:
+    - role: system
     - role: development
