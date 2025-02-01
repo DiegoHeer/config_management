@@ -11,4 +11,6 @@ inventory.yml
 
 # Ansible packages
 haxorof.docker_ce
-bartdorlandt.poetry
+andrewrothstein.terraform
+andrewrothstein.hashi
+andrewrothstein.unarchivedeps

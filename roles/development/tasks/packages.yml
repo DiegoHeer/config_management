@@ -1,9 +1,9 @@
 - name: Install VS Code
   community.general.snap:
     name: code
+    classic: true
     state: present
 
 - name: Install Terraform
-  community.general.homebrew:
-    name: terraform
-    state: present
+  ansible.builtin.include_role:
+    name: andrewrothstein.terraform

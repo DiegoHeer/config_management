@@ -1,4 +1,4 @@
 roles:
-  - name: bartdorlandt.poetry
   - name: haxorof.docker_ce
+  - name: andrewrothstein.terraform
   # - name: freeformz.ansible
