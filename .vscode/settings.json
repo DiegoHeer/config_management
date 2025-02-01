@@ -11,5 +11,6 @@
     "files.associations": {
       "*.yml": "ansible",
     },
-    "ansible.python.interpreterPath": "${workspaceFolder}/.venv/bin/python"
+    "ansible.python.interpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "ansible.validation.lint.enabled": false
 }

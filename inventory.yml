@@ -1,5 +1,8 @@
 home_lab:
   hosts:
+    localhost:
+      ansible_host: localhost
+
     home_server:
       ansible_host: 192.168.1.229
       ansible_user: diego

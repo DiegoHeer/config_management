@@ -1,0 +1,12 @@
+- name: Play for configuring home server using ansible-pull
+  hosts: localhost
+  connection: local
+  become: true
+
+  vars:
+    username: diego
+    shell: /bin/bash
+
+  roles:
+    - role: system
+    - role: development
