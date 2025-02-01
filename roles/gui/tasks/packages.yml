@@ -1,9 +1,22 @@
+- name: Install GNOME software plugin for flatpak
+  ansible.builtin.package:
+    name: gnome-software-plugin-flatpak
+    state: present
+
+- name: Add the flathub flatpak repository remote to the user installation
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: system
+
 - name: Install flatpak packages
   community.general.flatpak:
-    name:
+    name: 
       - com.nextcloud.desktopclient.nextcloud
       - com.github.johnfactotum.Foliate
     state: present
+    method: system
 
 - name: Install snap packages
   community.general.snap:
@@ -20,10 +33,3 @@
       - vivaldi
     state: present
 
-- name: Install brew packages
-  community.general.homebrew:
-    name:
-      - oh-my-posh
-      - xz
-    state:
-      - present
