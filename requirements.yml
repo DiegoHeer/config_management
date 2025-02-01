@@ -1,4 +1,5 @@
 roles:
   - name: haxorof.docker_ce
   - name: andrewrothstein.terraform
+  - name: geerlingguy.pip
   # - name: freeformz.ansible
