@@ -1,6 +1,10 @@
 - name: Play for configuring home server
-  hosts: all
+  hosts: home_server
   become: true
+  gather_facts: false
 
   roles:
     - role: system
+    - role: development
+    # TODO: add services role
+    # TODO: add projects role
