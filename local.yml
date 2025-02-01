@@ -1,16 +1,22 @@
+---
 - name: Play for configuring home server using ansible-pull
   hosts: localhost
   connection: local
   become: true
 
   vars:
-    username: diego
-    shell: /bin/bash
+    username: "diego"
+    shell: "/bin/bash"
 
   pre_tasks:
     - name: Install Ansible Galaxy packages
-      ansible.builtin.command: ansible-galaxy install -r requirements.yml
+      ansible.builtin.command:
+        cmd: ansible-galaxy install -r requirements.yml
+      register: ansible_galaxy_installation_output
+      changed_when: ansible_galaxy_installation_output.rc != 0
 
   roles:
     - role: system
     - role: development
+    - role: projects
+    - role: services

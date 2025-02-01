@@ -1,3 +1,4 @@
+---
 - name: System tasks
   ansible.builtin.include_tasks: "{{ task }}"
   loop:

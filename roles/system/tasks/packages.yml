@@ -1,3 +1,4 @@
+---
 - name: Update packages
   ansible.builtin.apt:
     update_cache: true
@@ -14,8 +15,14 @@
   register: oh_my_posh_check
 
 - name: Install oh-my-posh
-  ansible.builtin.shell: curl -s https://ohmyposh.dev/install.sh | bash -s -- -d /bin
-  args:
-    executable: "{{ shell }}"
+  ansible.builtin.get_url:
+    url: https://ohmyposh.dev/install.sh
+    dest: /tmp/install-oh-my-posh.sh
+    mode: "0755"
   when: not oh_my_posh_check.stat.exists
 
+- name: Execute oh-my-posh installer
+  ansible.builtin.command: bash /tmp/install-oh-my-posh.sh
+  become: false
+  become_user: "{{ username }}"
+  changed_when: not oh_my_posh_check.stat.exists

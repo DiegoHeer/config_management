@@ -1,3 +1,4 @@
+---
 - name: Suppress login message (hushlogin)
   ansible.builtin.file:
     path: "/home/{{ username }}/.hushlogin"
@@ -15,5 +16,5 @@
     create: true
     owner: "{{ username }}"
     group: "{{ username }}"
-    mode: '0644'
+    mode: "0644"
   notify: Apply updated PATH

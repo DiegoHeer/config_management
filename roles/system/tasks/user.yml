@@ -1,3 +1,4 @@
+---
 - name: Ensure all necessary groups are created
   ansible.builtin.group:
     name: "{{ item }}"
@@ -18,9 +19,9 @@
     update_password: on_create
 
 - name: Copy SSH public key for new user
-  ansible.builtin.authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ username }}"
     state: present
-    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}"
-  ignore_errors: true
+    key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_ed25519.pub') }}"
+    manage_dir: true
   when: inventory_hostname != "localhost"

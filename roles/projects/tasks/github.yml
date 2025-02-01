@@ -1,3 +1,4 @@
+---
 - name: Authorize target SSH public key with GitHub
   community.general.github_deploy_key:
     name: ansible_key
@@ -5,21 +6,20 @@
     force: true
     read_only: false
     state: present
-    owner: "{{ github_owner }}"
+    owner: "{{ projects_github_owner }}"
     repo: "{{ repo }}"
     token: "{{ github_access_token }}"
-  loop: "{{ github_repos }}"
+  loop: "{{ projects_github_repos }}"
   loop_control:
     loop_var: repo
 
 - name: Clone Github repos
   become_user: "{{ username }}"
   ansible.builtin.git:
-    repo: "git@github.com:{{ github_owner }}/{{ repo }}.git"
+    repo: "git@github.com:{{ projects_github_owner }}/{{ repo }}.git"
     clone: true
     accept_newhostkey: true
     dest: "/home/{{ username }}/projects/{{ repo }}"
-  loop: "{{ github_repos }}"
+  loop: "{{ projects_github_repos }}"
   loop_control:
     loop_var: repo
-    

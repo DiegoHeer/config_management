@@ -1,3 +1,4 @@
+---
 - name: General tasks for setting up git and checking out repositories
   ansible.builtin.include_tasks: "{{ task }}"
   loop:
@@ -6,4 +7,3 @@
     - github.yml
   loop_control:
     loop_var: task
-    

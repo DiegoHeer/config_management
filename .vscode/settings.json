@@ -12,5 +12,8 @@
       "*.yml": "ansible",
     },
     "ansible.python.interpreterPath": "${workspaceFolder}/.venv/bin/python",
-    "ansible.validation.lint.enabled": false
+    "ansible.ansible.path": "./.venv/bin/ansible",
+    "ansible.ansible.useFullyQualifiedCollectionNames": true,
+    "ansible.validation.lint.path": "./.venv/bin/ansible-lint",
+    "ansible.validation.lint.enabled": true,
 }

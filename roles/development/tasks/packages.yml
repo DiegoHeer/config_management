@@ -1,3 +1,4 @@
+---
 - name: Install VS Code
   community.general.snap:
     name: code
@@ -19,14 +20,16 @@
     creates: /bin/poetry
     executable: "{{ shell }}"
   when: not poetry_check.stat.exists
-  
+
 - name: Check Poetry virtualenvs.in-project config
   ansible.builtin.command: poetry config virtualenvs.in-project
+  become: false
   become_user: "{{ username }}"
   changed_when: false
   register: poetry_in_project
 
 - name: Configure Poetry virtualenvs.in-project
   ansible.builtin.command: poetry config virtualenvs.in-project true
+  become: false
   become_user: "{{ username }}"
-  when: poetry_in_project.stdout != "true"
+  changed_when: poetry_in_project.stdout != "true"

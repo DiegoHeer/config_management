@@ -1,22 +1,31 @@
+---
 - name: Check if git is installed
-  ansible.builtin.command: git --version
+  ansible.builtin.stat:
+    path: /usr/bin/git
   register: git_check
-  ignore_errors: true
 
 - name: Install git
   ansible.builtin.package:
     name: git
     state: present
-    update_cache: yes
-  when: git_check.rc != 0
+    update_cache: true
+  when: not git_check.stat.exists
 
 - name: Configure git user name
-  ansible.builtin.command: git config --global user.name "{{ git_username }}"
+  become: true
   become_user: "{{ username }}"
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "{{ projects_git_username }}"
 
 - name: Configure git email
-  ansible.builtin.command: git config --global user.email "{{ git_email }}"
+  become: true
   become_user: "{{ username }}"
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "{{ projects_git_email }}"
 
 - name: Ensure .ssh directory has correct permissions
   ansible.builtin.file:
@@ -27,7 +36,7 @@
     mode: "0700"
 
 - name: Generate target SSH key for accessing Gitlab and Github
-  ansible.builtin.openssh_keypair:
+  community.crypto.openssh_keypair:
     path: "/home/{{ username }}/.ssh/id_rsa"
     type: rsa
     size: 4096

@@ -1,3 +1,4 @@
+---
 - name: Install pip packages for Gitlab
   ansible.builtin.include_role:
     name: geerlingguy.pip
@@ -15,7 +16,7 @@
     state: present
     can_push: true
     key: "{{ ssh_key.public_key }}"
-  loop: "{{ gitlab_repos }}"
+  loop: "{{ projects_gitlab_repos }}"
   loop_control:
     loop_var: repo
 
@@ -26,6 +27,6 @@
     clone: true
     accept_newhostkey: true
     dest: "/home/{{ username }}/projects/{{ repo }}"
-  loop: "{{ gitlab_repos }}"
+  loop: "{{ projects_gitlab_repos }}"
   loop_control:
     loop_var: repo
