@@ -53,7 +53,7 @@ To edit the `secret.yml` file, use the following command:
 Run ansible playbooks with the command below:
 
 ```bash
-    poetry run ansible-playbook run.yml --ask-vault-pass
+    poetry run ansible-playbook playbooks/<playbook file> --ask-vault-pass
 ```
 The first prompted passphrase refers to accessing the `secret.yml` file with ansible vault.
 
@@ -62,7 +62,7 @@ Optionally, to reduce the amount of password entries required, the following can
 2. Run the ansible playbook with the following command:
 
 ```bash
-    poetry run ansible=playbook run.yml --vault-password-file vault_key
+    poetry run ansible=playbook <playbook file> --vault-password-file vault_key
 ```
 
 ### Optional Usage

@@ -1,0 +1,13 @@
+- name: Play for configuring home server
+  hosts: laptop
+  become: true
+
+  vars:
+    username: diego
+    shell: /bin/bash
+
+  roles:
+    - role: system
+    - role: development
+    - role: projects
+    - role: gui
