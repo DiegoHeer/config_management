@@ -5,5 +5,5 @@ output "test_machine_ip_address" {
 
 output "ssh_command" {
   description = "SSH command to access the newly created EC2 instance"
-  value       = "ssh -i ${var.ssh_key_path} ubuntu@${aws_instance.test_machine.public_ip}"
+  value       = "ssh -i ${var.ssh_key_path} ${var.username}@${aws_instance.test_machine.public_ip}"
 }

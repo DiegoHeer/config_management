@@ -43,6 +43,10 @@ resource "aws_instance" "test_machine" {
 
   key_name = aws_key_pair.ssh-key.key_name
 
+  root_block_device {
+    volume_size = 12
+  }
+
   tags = {
     Name = local.server_name
     App  = local.application

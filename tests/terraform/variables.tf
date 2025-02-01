@@ -9,3 +9,15 @@ variable "ssh_key_path" {
   default     = "~/.ssh/id_ed25519"
   type        = string
 }
+
+variable "control_username" {
+  description = "user name of current control node"
+  default     = "diego"
+  type        = string
+}
+
+variable "username" {
+  description = "user name of new host node (server)"
+  default     = "diego"
+  type        = string
+}
