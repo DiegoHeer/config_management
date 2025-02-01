@@ -53,32 +53,26 @@ To edit the `secret.yml` file, use the following command:
 Run ansible playbooks with the command below:
 
 ```bash
-    poetry run ansible-playbook run.yml -K --ask-vault-pass
+    poetry run ansible-playbook run.yml --ask-vault-pass
 ```
-The first prompted passphrase refers to sudo permissions for the host, and the second one for accessing the `secret.yml` file with ansible vault:
+The first prompted passphrase refers to accessing the `secret.yml` file with ansible vault.
 
-
-### Optional
-
-Playbooks can also be run locally (e.g. on the server) using the `ansible-pull` command, together with the github repository:
-
-First create a `vault_key` file. Enter there the password required for accessing the ansible vault secrets:
+Optionally, to reduce the amount of password entries required, the following can be done:
+1. Create a `vault_key` file in the root directory and place there your vault password
+2. Run the ansible playbook with the following command:
 
 ```bash
-    nano vault_key
+    poetry run ansible=playbook run.yml --vault-password-file vault_key
 ```
 
-Update apt and install ansible:
+### Optional Usage
+
+Playbooks can also be run locally (e.g. on the server) using the `ansible-pull` command, together with the github repository:
 
 ```bash
     sudo apt update
     sudo apt install ansible -y
-```
-
-Afterwards, run the following command:
-
-```bash
-    ansible-pull --vault-password-file=./vault_key -U https://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@github.com/DiegoHeer/config_management.git
+    ansible-pull --vault-password-file= vault_key -U https://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@github.com/DiegoHeer/config_management.git
 ```
 If the token key is not valid anymore, generate a new one and place it in the https github url.
 
