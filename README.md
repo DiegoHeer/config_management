@@ -62,8 +62,24 @@ The first prompted passphrase refers to sudo permissions for the host, and the s
 
 Playbooks can also be run locally (e.g. on the server) using the `ansible-pull` command, together with the github repository:
 
+First create a `vault_key` file. Enter there the password required for accessing the ansible vault secrets:
+
 ```bash
-    sudo apt install ansible
-    ansible-pull -U https://github.com/DiegoHeer/config_management.git
+    nano vault_key
 ```
+
+Update apt and install ansible:
+
+```bash
+    sudo apt update
+    sudo apt install ansible -y
+```
+
+Afterwards, run the following command:
+
+```bash
+    ansible-pull --vault-password-file=./vault_key -U https://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@github.com/DiegoHeer/config_management.git
+```
+If the token key is not valid anymore, generate a new one and place it in the https github url.
+
 For more info on this method, check this [video](https://www.youtube.com/watch?v=sn1HQq_GFNE&t=1715s).
