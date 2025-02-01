@@ -10,5 +10,5 @@
   roles:
     - role: system
     - role: development
+    - role: projects
     # TODO: add services role
-    # TODO: add projects role
