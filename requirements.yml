@@ -1,5 +1,4 @@
 roles:
-  - name: geerlingguy.docker
-  - name: geerlingguy.pip
   - name: bartdorlandt.poetry
-  - name: freeformz.ansible
+  - name: haxorof.docker_ce
+  # - name: freeformz.ansible

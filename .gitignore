@@ -6,3 +6,9 @@ secrets.yml
 .terraform/
 terraform.tfstate
 terraform.tfstate.backup
+
+inventory.yml
+
+# Ansible packages
+haxorof.docker_ce
+bartdorlandt.poetry
