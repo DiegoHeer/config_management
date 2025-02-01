@@ -23,16 +23,12 @@ This repo contains ansible playbooks to automatically configure personal servers
     ssh-copy-id -i ~/.ssh/id_ed25519 <host user>@<host ip address>
 ```
 
-4. Next, create a `hosts.yml` file by copying the `hosts.yml.template`. Fill in the blanks as required (each host per line):
+4. Next, edit the `inventory.yml` file. Add here additional hosts if required.
+
+5. Test if there is connection with the defined hosts. In case there is no connection, either there is no connection to the hosts, ssh keys and/or inventory file are configured incorrectly. Check official [Ansible documentation](https://docs.ansible.com/ansible/latest/getting_started/index.html) for further instructions. 
 
 ```ssh
-    cp ./inventory/hosts.yml.template ./inventory/hosts.yml
-```
-
-5. Test if there is connection with the defined hosts. In case there is no connection, either there is no connection to the hosts, ssh keys and/or hosts file are configured incorrectly. Check official [Ansible documentation](https://docs.ansible.com/ansible/latest/getting_started/index.html) for further instructions. 
-
-```ssh
-    poetry run ansible <host group (check hosts file)> -m ping
+    poetry run ansible <host group (check inventory file)> -m ping
 ```
 6. **Done!**
 

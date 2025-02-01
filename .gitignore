@@ -1,13 +1,10 @@
-hosts.yml
-secrets.yml
-
 .venv/
 
 .terraform/
 terraform.tfstate
 terraform.tfstate.backup
 
-inventory.yml
+tests/inventory.yml
 
 # Ansible packages
 haxorof.docker_ce
