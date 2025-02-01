@@ -1,4 +1,6 @@
 - name: General tasks for GUI usage
-  ansible.builtin.include_tasks: "{{ item }}"
+  ansible.builtin.include_tasks: "{{ task }}"
   loop:
     - packages.yml
+  loop_control:
+    loop_var: task
