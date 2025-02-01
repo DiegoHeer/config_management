@@ -1,0 +1,6 @@
+- name: Test GUI role
+  hosts: test
+  become: true
+
+  roles:
+    - role: gui

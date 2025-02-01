@@ -1,0 +1,6 @@
+- name: Test System role
+  hosts: test
+  become: true
+
+  roles:
+    - role: system

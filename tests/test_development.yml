@@ -1,0 +1,6 @@
+- name: Test Development role
+  hosts: test
+  become: true
+
+  roles:
+    - role: development
