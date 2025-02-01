@@ -2,5 +2,9 @@
   hosts: test
   become: true
 
+  vars:
+    username: diego
+    shell: /bin/bash
+
   roles:
     - role: development

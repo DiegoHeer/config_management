@@ -1,4 +1,4 @@
 - name: Apply updated PATH
   ansible.builtin.shell: "source ~/.bashrc"
   args:
-    executable: "{{ system_shell }}"
+    executable: "{{ shell }}"

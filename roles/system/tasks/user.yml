@@ -3,22 +3,22 @@
     name: "{{ item }}"
   loop:
     - docker
-    - "{{ system_username }}"
+    - "{{ username }}"
 
 - name: Ensure the non-root user is created
   ansible.builtin.user:
-    name: "{{ system_username }}"
+    name: "{{ username }}"
     password: "{{ system_password | password_hash('sha512') }}"
     groups:
       - sudo
       - docker
       - users
     append: true
-    shell: "{{ system_shell }}"
+    shell: "{{ shell }}"
     update_password: on_create
 
 - name: Copy SSH public key for new user
   ansible.builtin.authorized_key:
-    user: "{{ system_username }}"
+    user: "{{ username }}"
     state: present
     key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}"

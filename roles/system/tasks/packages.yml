@@ -16,7 +16,7 @@
 - name: Install oh-my-posh
   ansible.builtin.shell: curl -s https://ohmyposh.dev/install.sh | bash -s -- -d /bin
   args:
-    executable: "{{ system_shell }}"
+    executable: "{{ shell }}"
   when: not oh_my_posh_check.stat.exists
 
 - name: Install Docker

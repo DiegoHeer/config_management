@@ -3,6 +3,10 @@
   become: true
   gather_facts: false
 
+  vars:
+    username: diego
+    shell: /bin/bash
+
   roles:
     - role: system
     - role: development
