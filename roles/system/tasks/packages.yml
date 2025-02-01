@@ -7,3 +7,21 @@
   ansible.builtin.package:
     name: "{{ system_packages }}"
     state: present
+
+- name: Check if oh-my-posh is installed
+  ansible.builtin.stat:
+    path: /bin/oh-my-posh
+  register: oh_my_posh_check
+
+- name: Install oh-my-posh
+  ansible.builtin.shell: curl -s https://ohmyposh.dev/install.sh | bash -s -- -d /bin
+  args:
+    executable: "{{ system_shell }}"
+  when: not oh_my_posh_check.stat.exists
+
+- name: Install Docker
+  ansible.builtin.include_role:
+    name: haxorof.docker_ce
+  vars:
+    docker_sdk: true
+    docker_compose: true

@@ -1,0 +1,19 @@
+- name: Suppress login message (hushlogin)
+  ansible.builtin.file:
+    path: "/home/{{ system_username }}/.hushlogin"
+    mode: "0644"
+    owner: "{{ system_username }}"
+    group: "{{ system_username }}"
+    modification_time: preserve
+    access_time: preserve
+    state: touch
+
+- name: Ensure PATH includes $HOME/.local/bin
+  ansible.builtin.lineinfile:
+    path: ~/.bashrc
+    line: 'export PATH="$HOME/.local/bin:$PATH"'
+    create: true
+    owner: "{{ system_username }}"
+    group: "{{ system_username }}"
+    mode: '0644'
+  notify: Apply updated PATH
