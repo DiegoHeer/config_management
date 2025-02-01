@@ -19,9 +19,3 @@
     executable: "{{ shell }}"
   when: not oh_my_posh_check.stat.exists
 
-- name: Install Docker
-  ansible.builtin.include_role:
-    name: haxorof.docker_ce
-  vars:
-    docker_sdk: true
-    docker_compose: true

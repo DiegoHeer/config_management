@@ -1,0 +1,6 @@
+- name: Install Docker
+  ansible.builtin.include_role:
+    name: haxorof.docker_ce
+  vars:
+    docker_sdk: true
+    docker_compose: true
