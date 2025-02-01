@@ -7,3 +7,26 @@
 - name: Install Terraform
   ansible.builtin.include_role:
     name: andrewrothstein.terraform
+
+- name: Check if Poetry is installed
+  ansible.builtin.stat:
+    path: /bin/poetry
+  register: poetry_check
+
+- name: Install Poetry
+  ansible.builtin.shell: set -o pipefail && curl -sSL https://install.python-poetry.org | POETRY_HOME=/ python3 -
+  args:
+    creates: /bin/poetry
+    executable: "{{ shell }}"
+  when: not poetry_check.stat.exists
+  
+- name: Check Poetry virtualenvs.in-project config
+  ansible.builtin.command: poetry config virtualenvs.in-project
+  become_user: "{{ username }}"
+  changed_when: false
+  register: poetry_in_project
+
+- name: Configure Poetry virtualenvs.in-project
+  ansible.builtin.command: poetry config virtualenvs.in-project true
+  become_user: "{{ username }}"
+  when: poetry_in_project.stdout != "true"
