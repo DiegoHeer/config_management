@@ -1,0 +1,7 @@
+---
+skip_list:
+ - risky-file-permissions
+ - role-name
+ - name[missing]
+ - key-order[task]
+ - name[template]
