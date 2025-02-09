@@ -14,15 +14,14 @@
     path: /bin/oh-my-posh
   register: oh_my_posh_check
 
-- name: Install oh-my-posh
+- name: Get oh-my-posh installer
   ansible.builtin.get_url:
     url: https://ohmyposh.dev/install.sh
     dest: /tmp/install-oh-my-posh.sh
     mode: "0755"
   when: not oh_my_posh_check.stat.exists
 
-- name: Execute oh-my-posh installer
-  ansible.builtin.command: bash /tmp/install-oh-my-posh.sh
-  become: false
-  become_user: "{{ username }}"
+- name: Install oh-my-posh
+  ansible.builtin.command: /tmp/install-oh-my-posh.sh -d /bin
   changed_when: not oh_my_posh_check.stat.exists
+  when: not oh_my_posh_check.stat.exists
