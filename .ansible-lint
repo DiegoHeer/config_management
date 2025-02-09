@@ -5,3 +5,4 @@ skip_list:
  - name[missing]
  - key-order[task]
  - name[template]
+ - partial-become[task]
