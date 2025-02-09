@@ -5,6 +5,7 @@
     - user.yml
     - settings.yml
     - packages.yml
+    - tmux.yml
     - oh_my_posh.yml
   loop_control:
     loop_var: task

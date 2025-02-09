@@ -2,4 +2,5 @@ roles:
   - name: haxorof.docker_ce
   - name: andrewrothstein.terraform
   - name: geerlingguy.pip
+  - name: nephelaiio.tmux
   # - name: freeformz.ansible
