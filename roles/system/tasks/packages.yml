@@ -25,3 +25,27 @@
   ansible.builtin.command: /tmp/install-oh-my-posh.sh -d /bin
   changed_when: not oh_my_posh_check.stat.exists
   when: not oh_my_posh_check.stat.exists
+
+- name: Ensure themes folder exist
+  ansible.builtin.file:
+    path: /home/{{ username }}/.themes
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0755"
+
+- name: Copy oh-my-posh theme
+  ansible.builtin.copy:
+    src: poshthemes/dynatron.omp.json
+    dest: /home/{{ username }}/.themes/dynatron.omp.json
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: u=rw,g=rw
+  when: not oh_my_posh_check.stat.exists
+
+- name: Auto initialize oh-my-posh theme
+  ansible.builtin.lineinfile:
+    path: /home/{{ username }}/.bashrc
+    line: eval "$(oh-my-posh init bash --config /home/{{ username }}/.themes/dynatron.omp.json)"
+  when: not oh_my_posh_check.stat.exists
+  notify: Apply updated PATH
