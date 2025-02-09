@@ -1,6 +1,13 @@
-- name: Install GNOME software plugin for flatpak
+- name: Add the Solaar Unifying (Logitech) apt repository
+  ansible.builtin.apt_repository:
+    repo: ppa:solaar-unifying/stable
+    state: present
+
+- name: Install GUI apt packages
   ansible.builtin.package:
-    name: gnome-software-plugin-flatpak
+    name:
+      - gnome-software-plugin-flatpak
+      - solaar
     state: present
 
 - name: Add the flathub flatpak repository remote to the user installation
@@ -12,7 +19,7 @@
 
 - name: Install flatpak packages
   community.general.flatpak:
-    name: 
+    name:
       - com.nextcloud.desktopclient.nextcloud
       - com.github.johnfactotum.Foliate
     state: present
@@ -33,3 +40,19 @@
       - vivaldi
     state: present
 
+- name: Check if Surfshark is installed
+  ansible.builtin.stat:
+    path: /bin/surfshark
+  register: surfshark_check
+
+- name: Get Surfshark installer
+  ansible.builtin.get_url:
+    url: https://downloads.surfshark.com/linux/debian-install.sh
+    dest: /tmp/surfshark-install.sh
+    mode: "0755"
+  when: not surfshark_check.stat.exists
+
+- name: Install Surfshark
+  ansible.builtin.command: /tmp/surfshark-install.sh
+  changed_when: not surfshark_check.stat.exists
+  when: not surfshark_check.stat.exists
