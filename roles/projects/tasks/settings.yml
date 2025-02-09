@@ -27,6 +27,30 @@
     scope: global
     value: "{{ projects_git_email }}"
 
+- name: Configure git default branch name
+  become: true
+  become_user: "{{ username }}"
+  community.general.git_config:
+    name: init.defaultBranch
+    scope: global
+    value: main
+
+- name: Configure git auto setup remote
+  become: true
+  become_user: "{{ username }}"
+  community.general.git_config:
+    name: push.autoSetupRemote
+    scope: global
+    value: true
+
+- name: Configure git default editor
+  become: true
+  become_user: "{{ username }}"
+  community.general.git_config:
+    name: core.editor
+    scope: global
+    value: nano
+
 - name: Ensure .ssh directory has correct permissions
   ansible.builtin.file:
     path: "/home/{{ username }}/.ssh"
