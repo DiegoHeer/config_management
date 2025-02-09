@@ -1,4 +1,11 @@
 ---
+- name: Install development apt packages
+  ansible.builtin.package:
+    name:
+      - nodejs
+      - npm
+    state: present
+
 - name: Install VS Code
   community.general.snap:
     name: code
@@ -8,6 +15,23 @@
 - name: Install Terraform
   ansible.builtin.include_role:
     name: andrewrothstein.terraform
+
+- name: Check if Terraform autocompletion is enabled
+  ansible.builtin.lineinfile:
+    path: /home/{{ username }}/.bashrc
+    regexp: "terraform"
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: terraform_autocomplete
+
+- name: Enable Terraform autocompletion
+  ansible.builtin.command: terraform -install-autocomplete
+  when: not terraform_autocomplete.found
+  changed_when: not terraform_autocomplete.found
+  become: true
+  become_user: "{{ username }}"
+  notify: Apply updated PATH
 
 - name: Check if Poetry is installed
   ansible.builtin.stat:
@@ -33,3 +57,9 @@
   become: false
   become_user: "{{ username }}"
   changed_when: poetry_in_project.stdout != "true"
+
+- name: Install AWS CLI
+  community.general.snap:
+    name: aws-cli
+    classic: true
+    state: present
