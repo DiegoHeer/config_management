@@ -2,7 +2,8 @@
 - name: Home Server docker services setup
   ansible.builtin.include_tasks: "{{ task }}"
   loop:
-    - packages.yml
     - checks.yml
+    - packages.yml
+    - compose.yml
   loop_control:
     loop_var: task

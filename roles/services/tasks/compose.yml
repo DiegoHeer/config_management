@@ -1,0 +1,9 @@
+---
+- name: Pull docker compose images
+  community.docker.docker_compose_v2_pull:
+    project_src: "{{ services_docker_src }}"
+
+- name: Start docker compose services
+  community.docker.docker_compose_v2:
+    project_src: "{{ services_docker_src }}"
+    state: present
