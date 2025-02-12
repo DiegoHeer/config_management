@@ -1,3 +1,4 @@
+---
 - name: Test Projects role
   hosts: test
   become: true

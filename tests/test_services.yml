@@ -1,3 +1,4 @@
+---
 - name: Test Services role
   hosts: test
   become: true
@@ -8,4 +9,5 @@
 
   roles:
     - role: system
+    - role: restore
     - role: services
