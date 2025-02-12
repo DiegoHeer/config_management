@@ -6,6 +6,11 @@ include:
   - cloud_management.yml
   # - remote_access.yml
 
+networks:
+  default:
+    name: home_server_network
+    driver: bridge
+
 services:
   # Reference: https://www.youtube.com/watch?v=qlcVx-k-02E
   nginx-proxy-manager:
