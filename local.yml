@@ -6,7 +6,6 @@
 
   vars:
     username: "diego"
-    shell: "/bin/bash"
 
   pre_tasks:
     - name: Install Ansible Galaxy packages

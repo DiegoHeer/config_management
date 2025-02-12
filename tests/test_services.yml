@@ -5,7 +5,6 @@
 
   vars:
     username: diego
-    shell: /bin/bash
 
   roles:
     - role: system

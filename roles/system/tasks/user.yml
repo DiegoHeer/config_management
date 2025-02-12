@@ -15,7 +15,7 @@
       - docker
       - users
     append: true
-    shell: "{{ shell }}"
+    shell: /bin/bash
     update_password: on_create
 
 - name: Copy SSH public key for new user

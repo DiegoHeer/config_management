@@ -2,7 +2,7 @@
 - name: Apply updated PATH
   ansible.builtin.shell:
     cmd: "source ~/.bashrc"
-    executable: "{{ shell }}"
+    executable: /bin/bash
   become: true
   become_user: "{{ username }}"
   changed_when: false

@@ -42,7 +42,7 @@
   ansible.builtin.shell: set -o pipefail && curl -sSL https://install.python-poetry.org | POETRY_HOME=/ python3 -
   args:
     creates: /bin/poetry
-    executable: "{{ shell }}"
+    executable: /bin/bash
   when: not poetry_check.stat.exists
 
 - name: Check Poetry virtualenvs.in-project config

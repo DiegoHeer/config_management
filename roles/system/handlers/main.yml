@@ -2,5 +2,5 @@
 - name: Apply updated PATH
   ansible.builtin.shell:
     cmd: "source ~/.bashrc"
-    executable: "{{ shell }}"
+    executable: /bin/bash
   changed_when: false
