@@ -1,0 +1,60 @@
+include:
+  - media.yml
+  - monitoring.yml
+  - photos.yml
+  - databases.yml
+  - cloud_management.yml
+  # - remote_access.yml
+
+services:
+  # Reference: https://www.youtube.com/watch?v=qlcVx-k-02E
+  nginx-proxy-manager:
+    image: "jc21/nginx-proxy-manager:2.12.3"
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 81:81
+      - 443:443
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /home/diego/services_data/nginx-proxy-manager/data:/data
+      - /home/diego/services_data/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - /home/diego/services_data/nginx-proxy-manager/logrotate.custom:/etc/logrotate.d/nginx-proxy-manager
+
+  homarr:
+    container_name: homarr
+    restart: unless-stopped
+    image: ghcr.io/homarr-labs/homarr:v1.5.0
+    ports:
+      - 7575:7575
+    volumes:
+      - /home/diego/services_data/homarr/appdata:/appdata
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - SECRET_ENCRYPTION_KEY=ff0ba58c92e92d17d00df517aafa3cff9362a170b1076820528ddbd347a91fce
+
+
+  filebrowser:
+    container_name: filebrowser
+    image: filebrowser/filebrowser:v2.32.0
+    restart: unless-stopped
+    ports:
+      - 8005:80/tcp
+    volumes:
+      - /media/hd1:/srv
+      - /home/diego:/srv/home
+      - /home/diego/services_data/filebrowser/filebrowser.db:/database.db
+      - /home/diego/services_data/filebrowser/.filebrowser.json:/.filebrowser.json
+    environment:
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      - PUID=1000
+      - PGID=1000
+    entrypoint:
+      - /filebrowser
+    network_mode: bridge
+    logging:
+      driver: json-file
+      options: {}

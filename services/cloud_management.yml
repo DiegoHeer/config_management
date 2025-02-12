@@ -1,0 +1,36 @@
+services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=dbpassword
+      - MYSQL_HOST=nextcloud_mariadb
+    volumes:
+      - /home/diego/services_data/nextcloud/config:/config
+      - /home/diego/services_data/nextcloud/themes:/themes
+      - /media/hd1/nextcloud:/data
+    ports:
+      - 8443:443
+    depends_on:
+      - nextcloud_mariadb
+
+  nextcloud_mariadb:
+    image: mariadb
+    container_name: nextcloud_mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - nextcloud-db:/var/lib/mysql
+    environment:
+      - TZ=Europe/Amsterdam
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_PASSWORD=dbpassword
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+volumes:
+  nextcloud-db:
