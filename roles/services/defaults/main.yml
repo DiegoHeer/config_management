@@ -1,0 +1,3 @@
+---
+services_docker_src: /home/{{ username }}/projects/config_management/services
+services_data_src: /home/{{ username }}/services_data

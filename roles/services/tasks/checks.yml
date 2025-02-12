@@ -1,0 +1,20 @@
+---
+- name: Check if services folder config_management project is present
+  ansible.builtin.stat:
+    path: "{{ services_docker_src }}"
+  register: services_docker_folder_check
+
+- name: Fail if the services folder is not present
+  ansible.builtin.fail:
+    msg: No services folder is present. Did you run the ansible `projects` role?
+  when: not services_docker_folder_check.stat.exists
+
+- name: Check if services_data folder is present
+  ansible.builtin.stat:
+    path: "{{ services_data_src }}"
+  register: services_data_folder_check
+
+- name: Fail if the services data folder is not present
+  ansible.builtin.fail:
+    msg: No services data folder found. Did you run the ansible `restore` role?
+  when: not services_data_folder_check.exists
