@@ -2,6 +2,10 @@
 
 This repo contains ansible playbooks to automatically configure personal servers, laptops, and desktops.
 
+## Requirements
+
+- Ubuntu 24.04 (other ubuntu versions where not tested)
+
 ## Getting Started
 
 1. Install packages with poetry (>2.0.0). Afterwards, install ansible galaxy roles:
