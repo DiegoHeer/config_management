@@ -4,7 +4,7 @@ The configuration management created can be tested on EC2 instances.
 To provision the resources required for testing, please run (in terraform folder):
 
 ```bash
-    terraform apply
+    terraform apply -auto-approve
 ```
 
 To test a specific playbook, run the following command (note that a new inventory.yml is created, and that there already should be an `vault_key` file in the root directory with the vault password):
@@ -23,5 +23,5 @@ Ssh into the machine to check if everything is according to expectations:
 When done with testing, destroy the resources to avoid additional AWS costs:
 
 ```bash
-    terraform destroy
+    terraform destroy -auto-approve
 ```
