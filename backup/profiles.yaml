@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=https://creativeprojects.github.io/resticprofile/jsonschema/config.json
+
+version: "1"
+
+## Base Configurations
+global:
+  initialize: true
+  min-memory: 200
+  log: /home/diego/.logs/resticprofile.log
+
+groups:
+  auto-backup:
+    - s_tier
+    - a_tier
+    - services
+  manual-backup:
+    - b_tier
+    - c_tier
+
+## Configuration profiles
+default:
+  password-file: /home/diego/.config/resticprofile/restic_password.txt
+
+  check-before: true
+  exclude-caches: true
+  one-file-system: false
+  no-error-on-warning: true
+  verbose: true
+
+  retention:
+    before-backup: false
+    after-backup: true
+    tag: true
+
+    keep-daily: 1
+    keep-weekly: 2
+    keep-monthly: 1
+
+s_tier:
+  inherit: default
+  repository: "s3:s3.eu-central-003.backblazeb2.com/diegoheer-restic-backups/s_tier"
+
+  backup:
+    source: 
+      - /media/hd1/nextcloud/diego/files/Documents
+      - /media/hd1/nextcloud/diego/files/Notes
+      - /media/hd1/nextcloud/diego/files/Projects
+      - /media/hd1/nextcloud/diego/files/Work
+    tag:
+      - s_tier
+    schedule: 02:00
+    schedule-permission: system
+
+services:
+  inherit: default
+  repository: "s3:s3.eu-central-003.backblazeb2.com/diegoheer-restic-backups/services"
+
+  backup:
+    source:
+      - /home/diego/services_data
+    tag:
+      - services
+    schedule: 03:00
+    schedule-permission: system
+
+a_tier:
+  inherit: default
+  repository: "local:/media/hd1/backups/a_tier"
+  
+  backup:
+    source:
+      - /media/hd1/nextcloud
+      - /media/hd1/photo_library
+      - /media/hd1/backups/db_dumps
+      - /home/diego/study
+      - /home/diego/.bashrc
+    tag:
+      - a_tier
+    schedule: Tue,Thu,Sat 04:00
+    schedule-permission: system
+
+b_tier:
+  inherit: default
+  repository: "local:/mnt/hdd/backups/b_tier"
+
+  backup:
+    source:
+      - /media/hd1/nextcloud
+      - /media/hd1/photo_library
+    tag:
+      - b_tier
+
+c_tier:
+  inherit: b_tier
+  repository: "sftp:laptop:Backups/restic/c_tier"
+
+  backup:
+    tag:
+      - c_tier
