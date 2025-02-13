@@ -3,4 +3,5 @@ roles:
   - name: andrewrothstein.terraform
   - name: geerlingguy.pip
   - name: nephelaiio.tmux
+  - name: andrewrothstein.restic
   # - name: freeformz.ansible
