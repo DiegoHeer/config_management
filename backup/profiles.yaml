@@ -21,6 +21,10 @@ groups:
 default:
   password-file: /home/diego/.config/resticprofile/restic_password.txt
 
+  env:
+    AWS_SECRET_ACCESS_KEY: "{{ .Env.AWS_SECRET_ACCESS_KEY }}"
+    AWS_ACCESS_KEY_ID: "{{ .Env.AWS_ACCESS_KEY_ID }}"
+
   check-before: true
   exclude-caches: true
   one-file-system: false
