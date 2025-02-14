@@ -1,4 +1,8 @@
 ---
+- name: Run System role
+  ansible.builtin.include_role:
+    name: system
+
 - name: General tasks for setting up git and checking out repositories
   ansible.builtin.include_tasks: "{{ task }}"
   loop:

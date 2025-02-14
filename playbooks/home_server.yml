@@ -7,7 +7,4 @@
     username: diego
 
   roles:
-    - role: system
-    - role: development
-    - role: projects
     - role: services

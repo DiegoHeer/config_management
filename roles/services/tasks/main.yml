@@ -1,4 +1,16 @@
 ---
+- name: Run System role
+  ansible.builtin.include_role:
+    name: system
+
+- name: Run Projects role
+  ansible.builtin.include_role:
+    name: projects
+
+- name: Run Restore role
+  ansible.builtin.include_role:
+    name: restore
+
 - name: Home Server docker services setup
   ansible.builtin.include_tasks: "{{ task }}"
   loop:

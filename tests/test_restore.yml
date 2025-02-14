@@ -7,6 +7,4 @@
     username: diego
 
   roles:
-    - role: system
-    - role: projects
     - role: restore
