@@ -17,4 +17,4 @@
 - name: Fail if the services data folder is not present
   ansible.builtin.fail:
     msg: No services data folder found. Did you run the ansible `restore` role?
-  when: not services_data_folder_check.exists
+  when: not services_data_folder_check.stat.exists
