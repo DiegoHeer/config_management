@@ -1,0 +1,12 @@
+---
+- name: Test Restore role
+  hosts: test
+  become: true
+
+  vars:
+    username: diego
+
+  roles:
+    - role: system
+    - role: projects
+    - role: restore

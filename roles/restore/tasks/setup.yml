@@ -1,0 +1,59 @@
+---
+- name: Check if the Restic Profile config file is present
+  ansible.builtin.stat:
+    path: "{{ restore_resticprofile_config_path }}"
+  register: resticprofile_config_check
+
+- name: Fail if the Restic Profile config file is not present
+  ansible.builtin.fail:
+    msg: No resticprofile config file (profiles.yaml) found. Did you run the ansible `projects` role?
+  when: not resticprofile_config_check.stat.exists
+
+- name: Install Restic
+  ansible.builtin.include_role:
+    name: andrewrothstein.restic
+
+- name: Check if Restic Profile is installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/resticprofile
+  register: restic_profile_check
+
+- name: Get Restic Profile installer
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/creativeprojects/resticprofile/master/install.sh
+    dest: /tmp/install-restic-profile.sh
+    mode: "0755"
+  when: not restic_profile_check.stat.exists
+
+- name: Install Restic Profile
+  ansible.builtin.command: /tmp/install-restic-profile.sh -b /usr/local/bin
+  changed_when: not restic_profile_check.stat.exists
+  when: not restic_profile_check.stat.exists
+
+- name: Ensure Restic Profile config folder exists
+  ansible.builtin.file:
+    path: /home/{{ username }}/.config/resticprofile
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0755"
+  when: not restic_profile_check.stat.exists
+
+- name: Create a symlink to the Restic Profile config file
+  ansible.builtin.file:
+    src: "{{ restore_resticprofile_config_path }}"
+    dest: /home/{{ username }}/.config/resticprofile/profiles.yaml
+    state: link
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: u=rw,g=rw
+  when: not restic_profile_check.stat.exists
+
+- name: Create Restic Profile password file
+  ansible.builtin.copy:
+    content: "{{ restore_restic_password }}"
+    dest: /home/{{ username }}/.config/resticprofile/restic_password.txt
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: u=rw,g=rw
+  when: not restic_profile_check.stat.exists

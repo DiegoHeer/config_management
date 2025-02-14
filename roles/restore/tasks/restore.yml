@@ -1,0 +1,15 @@
+---
+- name: Check if services data folder exists
+  ansible.builtin.stat:
+    path: "{{ restore_services_data_path }}"
+  register: services_data_folder_check
+
+- name: Restore services data using Restic Profile
+  ansible.builtin.command: resticprofile -c {{ restore_resticprofile_config_path }} -n services restore latest --target /
+  become: true
+  become_user: "{{ username }}"
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ restore_aws_access_key_id }}"
+    AWS_SECRET_ACCESS_KEY: "{{ restore_aws_secret_access_key }}"
+  changed_when: not services_data_folder_check.stat.exists
+  when: not services_data_folder_check.stat.exists

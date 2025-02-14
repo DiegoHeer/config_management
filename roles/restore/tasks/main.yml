@@ -1,0 +1,8 @@
+---
+- name: Backup restore of relevant data
+  ansible.builtin.include_tasks: "{{ task }}"
+  loop:
+    - setup.yml
+    - restore.yml
+  loop_control:
+    loop_var: task
