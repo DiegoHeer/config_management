@@ -8,14 +8,3 @@ terraform.tfstate.backup
 
 tests/inventory.yml
 .vault_key
-
-# Ansible packages
-haxorof.docker_ce
-andrewrothstein.terraform
-andrewrothstein.hashi
-andrewrothstein.unarchivedeps
-geerlingguy.pip
-nephelaiio.git
-nephelaiio.tmux
-nephelaiio.xclip
-andrewrothstein.restic
