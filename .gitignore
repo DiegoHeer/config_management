@@ -7,7 +7,7 @@ terraform.tfstate.backup
 .terraform.tfstate.lock.info
 
 tests/inventory.yml
-vault_key
+.vault_key
 
 # Ansible packages
 haxorof.docker_ce

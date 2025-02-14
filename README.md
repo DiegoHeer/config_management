@@ -62,21 +62,22 @@ Run ansible playbooks with the command below:
 The first prompted passphrase refers to accessing the `secret.yml` file with ansible vault.
 
 Optionally, to reduce the amount of password entries required, the following can be done:
-1. Create a `vault_key` file in the root directory and place there your vault password
-2. Run the ansible playbook with the following command:
+1. Create a `.vault_key` file in the root directory and place there your vault password
+2. Run the ansible playbook with the command below. The location of the vault key file is already defined in the `ansible.cfg` file.
 
 ```bash
-    poetry run ansible=playbook <playbook file> --vault-password-file vault_key
+    poetry run ansible=playbook <playbook file>
 ```
 
 ### Optional Usage
 
 Playbooks can also be run locally (e.g. on the server) using the `ansible-pull` command, together with the github repository:
 
+<!-- TODO: remove token from ansible pull command -->
 ```bash
     sudo apt update
     sudo apt install ansible -y
-    ansible-pull --vault-password-file= vault_key -U https://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@github.com/DiegoHeer/config_management.git
+    ansible-pull -U https://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@github.com/DiegoHeer/config_management.git
 ```
 If the token key is not valid anymore, generate a new one and place it in the https github url.
 
