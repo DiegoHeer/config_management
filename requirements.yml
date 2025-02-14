@@ -4,4 +4,3 @@ roles:
   - name: geerlingguy.pip
   - name: nephelaiio.tmux
   - name: andrewrothstein.restic
-  # - name: freeformz.ansible
