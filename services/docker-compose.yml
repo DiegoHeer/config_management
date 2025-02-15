@@ -49,7 +49,7 @@ services:
   homarr:
     container_name: homarr
     restart: unless-stopped
-    image: ghcr.io/homarr-labs/homarr:v1.5.0
+    image: ghcr.io/homarr-labs/homarr:v1.6.0
     ports:
       - 7575:7575
     volumes:
