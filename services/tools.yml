@@ -1,0 +1,6 @@
+services:
+  stirling-pdf:
+    container_name: stirling-pdf
+    image: stirlingtools/stirling-pdf:0.41.0
+    ports:
+      - 8080:8080
