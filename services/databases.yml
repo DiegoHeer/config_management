@@ -1,34 +1,34 @@
 services:
-  tailscale-authkey:
-    image: tailscale/tailscale:v1.76.6
-    container_name: tailscale-authkey
-    # restart: unless-stopped
-    hostname: database
-    environment:
-      # Valid until 2025-02-19
-      - TS_AUTHKEY=tskey-auth-ksVbcxLmGQ11CNTRL-BMzfEHUxPkfiUKMnDRcAkfn9FFdYY9hJ
-      - TS_ACCEPT_DNS=true
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_USERSPACE=false
-    volumes:
-      - /home/diego/services_data/tailscale/state:/var/lib/tailscale
-      - /dev/net/tun:/dev/net/tun
-      - /lib/modules:/lib/modules
-    cap_add:
-      - net_admin
-      - sys_module
-
   mongodb:
     image: mongodb/mongodb-community-server:7.0.15-ubuntu2204
     container_name: mongodb
-    network_mode: service:tailscale-authkey
+    network_mode: service:mongo-tailscale
     environment:
       - MONGODB_INITDB_ROOT_USERNAME=admin
       - MONGODB_INITDB_ROOT_PASSWORD=admin
     volumes:
       - /media/hd1/databases/mongodb/data:/data/db
     depends_on:
-      - tailscale-authkey
+      - mongo-tailscale
+
+  mongo-tailscale:
+    image: tailscale/tailscale:v1.76.6
+    container_name: mongo-tailscale
+    restart: unless-stopped
+    hostname: database
+    environment:
+      # Valid until 2025-02-28
+      - TS_AUTHKEY=tskey-auth-ksVbcxLmGQ11CNTRL-BMzfEHUxPkfiUKMnDRcAkfn9FFdYY9hJ
+      - TS_ACCEPT_DNS=true
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+    volumes:
+      - /home/diego/services_data/mongo-tailscale/state:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+      - /lib/modules:/lib/modules
+    cap_add:
+      - net_admin
+      - sys_module
 
   mongo-express:
     image: mongo-express:latest
