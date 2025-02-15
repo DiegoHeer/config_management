@@ -33,8 +33,6 @@ services:
   mongo-express:
     image: mongo-express:latest
     container_name: mongo-express
-    ports:
-      - 8081:8081
     environment:
       - ME_CONFIG_MONGODB_URL=mongodb://admin:admin@database.amarok-eagle.ts.net:27017/
       - ME_CONFIG_BASICAUTH_USERNAME=admin
@@ -58,6 +56,4 @@ services:
     volumes:
       - /home/diego/services_data/obsidian-livesync/data:/opt/couchdb/data
       - /home/diego/services_data/obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
-    ports:
-      - 5984:5984
     restart: unless-stopped

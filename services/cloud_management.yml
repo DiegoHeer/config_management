@@ -14,8 +14,6 @@ services:
       - /home/diego/services_data/nextcloud/config:/config
       - /home/diego/services_data/nextcloud/themes:/themes
       - /media/hd1/nextcloud:/data
-    ports:
-      - 8443:443
     depends_on:
       - nextcloud_mariadb
 

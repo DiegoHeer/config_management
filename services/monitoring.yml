@@ -4,8 +4,6 @@ services:
     image: henrygd/beszel:0.9.1
     extra_hosts:
       - host.docker.internal:host-gateway
-    ports:
-      - 8090:8090
     volumes:
       - /home/diego/services_data/beszel:/beszel_data
 

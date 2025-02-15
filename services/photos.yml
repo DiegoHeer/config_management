@@ -8,8 +8,6 @@ services:
     volumes:
       - /media/hd1/photo_library:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
-    ports:
-      - 2283:2283
     depends_on:
       - redis
       - database

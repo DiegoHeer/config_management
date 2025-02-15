@@ -50,8 +50,6 @@ services:
     container_name: homarr
     restart: unless-stopped
     image: ghcr.io/homarr-labs/homarr:v1.6.0
-    ports:
-      - 7575:7575
     volumes:
       - /home/diego/services_data/homarr/appdata:/appdata
       - /var/run/docker.sock:/var/run/docker.sock
@@ -62,8 +60,6 @@ services:
     container_name: filebrowser
     image: filebrowser/filebrowser:v2.32.0
     restart: unless-stopped
-    ports:
-      - 8005:80/tcp
     volumes:
       - /media/hd1:/srv
       - /home/diego:/srv/home
