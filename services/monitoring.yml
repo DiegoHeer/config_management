@@ -1,64 +1,21 @@
 services:
-  node-exporter:
-    container_name: node-exporter
-    image: prom/node-exporter:v1.8.2
+  beszel:
+    container_name: beszel
+    image: henrygd/beszel:0.9.1
+    extra_hosts:
+      - host.docker.internal:host-gateway
     ports:
-      - 9100:9100
+      - 8090:8090
     volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - "--path.procfs=/host/proc"
-      - "--path.rootfs=/rootfs"
-      - "--path.sysfs=/host/sys"
-      - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc) ($$|/)"
+      - /home/diego/services_data/beszel:/beszel_data
 
-  cadvisor:
-    container_name: cadvisor
-    image: gcr.io/cadvisor/cadvisor:v0.49.2
-    ports:
-      - 8080:8080
+  beszel-agent:
+    container_name: beszel-agent
+    image: henrygd/beszel-agent
+    network_mode: host
     volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    depends_on:
-      - cadvisor-redis
-
-  cadvisor-redis:
-    container_name: cadvisor-redis
-    image: redis:7.4.2
-    ports:
-      - 6379:6379
-
-  prometheus:
-    container_name: prometheus
-    image: prom/prometheus:v3.1.0
-    ports:
-      - 9090:9090
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /media/hd1/.beszel:/extra-filesystems/sdb1:ro
     environment:
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - /home/diego/services_data/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-
-  grafana:
-    container_name: grafana
-    image: grafana/grafana:11.5.1
-    user: "1000"
-    ports:
-      - 3000:3000
-    environment:
-      - GF_HTTP_SETTINGS_ALLOW_USER_AGENT_HEADER=true
-      - GF_LOG_LEVEL=debug
-    volumes:
-      - /home/diego/services_data/grafana/grafana.ini:/etc/grafana/grafana.ini
-      - grafana-data:/var/lib/grafana
-    depends_on:
-      - prometheus
-    
-volumes:
-  grafana-data:
-    driver: local
+      PORT: 45876
+      KEY: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZ70crWOkNO8ZFv9Ow2Daz4eaGU4bEYGsVXowTbHs1A"
