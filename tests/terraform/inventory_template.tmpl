@@ -1,7 +1,7 @@
 test:
   hosts:
-    ec2_server:
-      ansible_host: ${ip_address}
-      ansible_user: ubuntu
-      ansible_connection: ssh
-      ansible_ssh_private_key_file: /home/${control_user}/.ssh/id_ed25519
+    test_server:
+      ansible_host: ${ansible_host}
+      ansible_port: ${ansible_port}
+      ansible_user: ${ansible_username}
+      ansible_password: ${ansible_password}

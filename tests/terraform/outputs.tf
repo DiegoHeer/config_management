@@ -1,9 +1,4 @@
-output "test_machine_ip_address" {
-  description = "Public IP address of the test machine EC2 instance"
-  value       = aws_instance.test_machine.public_ip
-}
-
-output "ssh_command" {
-  description = "SSH command to access the newly created EC2 instance"
-  value       = "ssh -i ${var.ssh_key_path} ${var.username}@${aws_instance.test_machine.public_ip}"
+output "ssh_access" {
+  description = "Command to SSH to the test server"
+  value       = "sshpass -p ${var.ansible_password} ssh ${var.ansible_username}@${var.ansible_host} -p ${var.ansible_port}"
 }

@@ -1,8 +1,10 @@
 locals {
   yaml_file = templatefile("${path.module}/inventory_template.tmpl",
     {
-      ip_address   = "${aws_instance.test_machine.public_ip}"
-      control_user = "${var.control_username}"
+      ansible_host     = "${var.ansible_host}"
+      ansible_port     = "${var.ansible_port}"
+      ansible_username = "${var.ansible_username}"
+      ansible_password = "${var.ansible_password}"
     }
   )
 }

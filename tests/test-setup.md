@@ -1,6 +1,6 @@
 # Configuration tests
 
-The configuration management created can be tested on EC2 instances.
+The configuration management created can be tested on local docker container instances.
 To provision the resources required for testing, please run (in terraform folder):
 
 ```bash
@@ -20,8 +20,14 @@ Ssh into the machine to check if everything is according to expectations:
     eval $SSH_COMMAND
 ```
 
-When done with testing, destroy the resources to avoid additional AWS costs:
+When done with testing, you can destroy the resources with the following command:
 
 ```bash
     terraform destroy -auto-approve
+```
+
+For quick test cycles, use this command:
+
+```bash
+    terraform destroy -auto-approve && terraform apply -auto-approve
 ```

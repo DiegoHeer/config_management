@@ -1,23 +1,22 @@
-variable "ssh_key_pair_name" {
-  description = "ssh key pair name"
-  default     = "id_ed25519"
+variable "ansible_host" {
+  description = "IP host that Ansible can use to SSH to the test server"
+  default     = "localhost"
+  type        = string
+}
+variable "ansible_port" {
+  description = "IP port that Ansible can use to SSH to the test server"
+  default     = 2222
+  type        = number
+}
+
+variable "ansible_username" {
+  description = "User name that Ansible can use to SSH to the test server"
+  default     = "root"
   type        = string
 }
 
-variable "ssh_key_path" {
-  description = "ssh key file path"
-  default     = "~/.ssh/id_ed25519"
-  type        = string
-}
-
-variable "control_username" {
-  description = "user name of current control node"
-  default     = "diego"
-  type        = string
-}
-
-variable "username" {
-  description = "user name of new host node (server)"
-  default     = "diego"
+variable "ansible_password" {
+  description = "User password that Ansible can use to SSH to the test server"
+  default     = "ubuntu"
   type        = string
 }
