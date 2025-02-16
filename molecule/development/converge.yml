@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  become: true  # TODO: remove this later from all the tests
+  tasks:
+    - name: Test development role
+      ansible.builtin.include_role:
+        name: development
+  vars:
+    username: diego
