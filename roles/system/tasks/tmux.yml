@@ -1,3 +1,4 @@
+---
 - name: Check if tmux is available in system
   ansible.builtin.stat:
     path: /usr/bin/tmux
@@ -18,7 +19,7 @@
       run '/home/{{ username }}/.tmux/plugins/tpm/tpm'
   when: not tmux_check.stat.exists
 
-- name: Change ownership of tmux config folder # Required for manual installation of plugins
+- name: Change ownership of tmux config folder  # Required for manual installation of plugins
   ansible.builtin.file:
     path: "/home/{{ username }}/.tmux"
     state: directory

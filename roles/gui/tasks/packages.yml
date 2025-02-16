@@ -1,3 +1,4 @@
+---
 - name: Add the Solaar Unifying (Logitech) apt repository
   ansible.builtin.apt_repository:
     repo: ppa:solaar-unifying/stable

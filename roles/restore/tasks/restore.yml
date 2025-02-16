@@ -5,7 +5,8 @@
   register: services_data_folder_check
 
 - name: Restore services data using Restic Profile
-  ansible.builtin.command: resticprofile -c {{ restore_resticprofile_config_path }} -n services restore latest --target /
+  ansible.builtin.command:
+    cmd: resticprofile -c {{ restore_resticprofile_config_path }} -n services restore latest --target /
   become: false
   become_user: "{{ username }}"
   environment:

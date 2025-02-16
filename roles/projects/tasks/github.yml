@@ -17,10 +17,11 @@
   become_user: "{{ username }}"
   ansible.builtin.git:
     repo: "git@github.com:{{ projects_github_owner }}/{{ repo }}.git"
-    clone: true
-    accept_newhostkey: true
     dest: "/home/{{ username }}/projects/{{ repo }}"
     key_file: "{{ ssh_key.filename }}"
+    accept_newhostkey: true
+    clone: true
+    version: main
   loop: "{{ projects_github_repos }}"
   loop_control:
     loop_var: repo

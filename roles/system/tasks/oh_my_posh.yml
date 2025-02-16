@@ -1,3 +1,4 @@
+---
 - name: Check if oh-my-posh is installed
   ansible.builtin.stat:
     path: /bin/oh-my-posh
