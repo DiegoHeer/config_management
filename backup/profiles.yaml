@@ -42,7 +42,7 @@ default:
 
 s_tier:
   inherit: default
-  repository: "s3:s3.eu-central-003.backblazeb2.com/diegoheer-restic-backups/s_tier"
+  repository: "s3:https://5dd1633c6d8d4d835885b724ca1df9ae.r2.cloudflarestorage.com/diegoheer-restic-backups/s_tier"
 
   backup:
     source: 
@@ -57,7 +57,7 @@ s_tier:
 
 services:
   inherit: default
-  repository: "s3:s3.eu-central-003.backblazeb2.com/diegoheer-restic-backups/services"
+  repository: "s3:https://5dd1633c6d8d4d835885b724ca1df9ae.r2.cloudflarestorage.com/diegoheer-restic-backups/services"
 
   backup:
     source:
