@@ -73,14 +73,11 @@ Optionally, to reduce the amount of password entries required, the following can
 
 Playbooks can also be run locally (e.g. on the server) using the `ansible-pull` command, together with the github repository:
 
-<!-- TODO: remove token from ansible pull command -->
 ```bash
     sudo apt update
     sudo apt install ansible -y
-    ansible-pull -U https://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@github.com/DiegoHeer/config_management.git
+    ansible-pull -U git@github.com:DiegoHeer/config_management.git --vault-password-file .vault_key --ask-become-pass
 ```
-If the token key is not valid anymore, generate a new one and place it in the https github url.
-
 For more info on this method, check this [video](https://www.youtube.com/watch?v=sn1HQq_GFNE&t=1715s).
 
 ## Testing
