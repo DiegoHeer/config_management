@@ -18,7 +18,7 @@ services:
     hostname: database
     environment:
       # Valid until 2025-02-28
-      - TS_AUTHKEY=tskey-auth-ksVbcxLmGQ11CNTRL-BMzfEHUxPkfiUKMnDRcAkfn9FFdYY9hJ
+      - TS_AUTHKEY=${MONGODB_TAILSCALE_AUTHKEY}
       - TS_ACCEPT_DNS=true
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false

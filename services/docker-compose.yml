@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
     hostname: home_server
     environment:
-      - TS_AUTHKEY=tskey-auth-kLYiuNzVZw11CNTRL-mCMiusCkHBFSxeNbYdbXBFsWi49LtPG6
+      - TS_AUTHKEY=${NGINX_TAILSCALE_AUTHKEY}
       - TS_ACCEPT_DNS=true
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
@@ -54,7 +54,7 @@ services:
       - /home/diego/services_data/homarr/appdata:/appdata
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - SECRET_ENCRYPTION_KEY=ff0ba58c92e92d17d00df517aafa3cff9362a170b1076820528ddbd347a91fce
+      - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}
 
   filebrowser:
     container_name: filebrowser

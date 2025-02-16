@@ -28,9 +28,9 @@ services:
     environment:
         - OPENVPN_PROVIDER=SURFSHARK
         - OPENVPN_CONFIG=nl-ams.prod.surfshark.com_tcp,be-bru.prod.surfshark.com_tcp.ovpn
-        - OPENVPN_USERNAME=cH8ycB8WvYXEr26dpbtDZkS9
-        - OPENVPN_PASSWORD=4mFFP2xBwrUrR8R2Xx2dGD8j
-        - LOCAL_NETWORK=192.168.1.0/24
+        - OPENVPN_USERNAME=${TRANSMISSION_OPENVPN_USERNAME}
+        - OPENVPN_PASSWORD=${TRANSMISSION_OPENVPN_PASSWORD}
+        - LOCAL_NETWORK=${TRANSMISSION_LOCAL_NETWORK}
         - TRANSMISSION_WEB_UI=transmission-web-control
         - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
     volumes:
