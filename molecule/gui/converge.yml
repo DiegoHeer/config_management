@@ -7,5 +7,3 @@
     - name: Test gui role
       ansible.builtin.include_role:
         name: gui
-  vars:
-    username: diego

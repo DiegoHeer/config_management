@@ -3,8 +3,5 @@
   hosts: laptop
   become: true
 
-  vars:
-    username: diego
-
   roles:
     - role: gui

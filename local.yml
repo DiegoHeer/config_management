@@ -4,9 +4,6 @@
   connection: local
   become: true
 
-  vars:
-    username: "diego"
-
   pre_tasks:
     - name: Install Ansible Galaxy packages
       ansible.builtin.command:
@@ -15,7 +12,4 @@
       changed_when: ansible_galaxy_installation_output.rc != 0
 
   roles:
-    - role: system
-    - role: development
-    - role: projects
     - role: services

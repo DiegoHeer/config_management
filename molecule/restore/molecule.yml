@@ -17,6 +17,10 @@ platforms:
 
 provisioner:
   name: ansible
+  inventory:
+    group_vars:
+      all:
+        username: test_user
   env:
     ANSIBLE_CONFIG: ../../ansible.cfg
 

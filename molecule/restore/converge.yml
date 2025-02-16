@@ -7,5 +7,3 @@
     - name: Test restore role
       ansible.builtin.include_role:
         name: restore
-  vars:
-    username: diego

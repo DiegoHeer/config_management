@@ -7,5 +7,3 @@
     - name: Test system role
       ansible.builtin.include_role:
         name: system
-  vars:
-    username: diego

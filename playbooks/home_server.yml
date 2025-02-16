@@ -3,8 +3,5 @@
   hosts: home_server
   become: true
 
-  vars:
-    username: diego
-
   roles:
     - role: services
