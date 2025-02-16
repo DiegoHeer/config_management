@@ -16,6 +16,8 @@ dependencies = [
 [tool.poetry.group.dev.dependencies]
 ansible-lint = "^25.1.1"
 yamllint = "^1.35.1"
+molecule = "^25.2.0"
+molecule-plugins = {extras = ["docker"], version = "^23.7.0"}
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
