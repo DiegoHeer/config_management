@@ -1,7 +1,7 @@
 ---
 - name: Check if the Restic Profile config file is present
   ansible.builtin.stat:
-    path: "{{ restore_resticprofile_config_path }}"
+    path: "{{ restore_resticprofile_config_dir }}/profiles.yaml"
   register: resticprofile_config_check
 
 - name: Fail if the Restic Profile config file is not present
@@ -39,9 +39,18 @@
     mode: "0755"
   when: not restic_profile_check.stat.exists
 
+- name: Create Restic Profile password file
+  ansible.builtin.copy:
+    content: "{{ restore_restic_password }}"
+    dest: "{{ restore_resticprofile_config_dir }}/.resticprofile_key"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: u=rw,g=rw
+  when: not restic_profile_check.stat.exists
+
 - name: Create a symlink to the Restic Profile config file
   ansible.builtin.file:
-    src: "{{ restore_resticprofile_config_path }}"
+    src: "{{ restore_resticprofile_config_dir }}/profiles.yaml"
     dest: /home/{{ username }}/.config/resticprofile/profiles.yaml
     state: link
     owner: "{{ username }}"
@@ -49,10 +58,11 @@
     mode: u=rw,g=rw
   when: not restic_profile_check.stat.exists
 
-- name: Create Restic Profile password file
-  ansible.builtin.copy:
-    content: "{{ restore_restic_password }}"
-    dest: /home/{{ username }}/.config/resticprofile/restic_password.txt
+- name: Create a symlink to the Restic Profile password file
+  ansible.builtin.file:
+    src: "{{ restore_resticprofile_config_dir }}/.resticprofile_key"
+    dest: /home/{{ username }}/.config/resticprofile/.resticprofile_key
+    state: link
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: u=rw,g=rw

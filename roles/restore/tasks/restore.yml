@@ -1,12 +1,12 @@
 ---
 - name: Check if services data folder exists
   ansible.builtin.stat:
-    path: "{{ restore_services_data_path }}"
+    path: "{{ restore_services_data_dir }}"
   register: services_data_folder_check
 
 - name: Restore services data using Restic Profile
   ansible.builtin.command:
-    cmd: resticprofile -c {{ restore_resticprofile_config_path }} -n services restore latest --target /
+    cmd: resticprofile -c {{ restore_resticprofile_config_dir }}/profiles.yaml -n services restore latest --target /
   become: false
   become_user: "{{ username }}"
   environment:

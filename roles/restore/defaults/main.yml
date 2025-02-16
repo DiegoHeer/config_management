@@ -1,3 +1,3 @@
 ---
-restore_resticprofile_config_path: /home/{{ username }}/projects/config_management/backup/profiles.yaml
-restore_services_data_path: /home/{{ username }}/services_data
+restore_resticprofile_config_dir: /home/{{ username }}/projects/config_management/backup
+restore_services_data_dir: /home/{{ username }}/services_data

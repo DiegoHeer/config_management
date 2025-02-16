@@ -19,7 +19,7 @@ groups:
 
 ## Configuration profiles
 default:
-  password-file: /home/diego/.config/resticprofile/restic_password.txt
+  password-file: "{{ .ConfigDir }}/.resticprofile_key"
 
   env:
     AWS_SECRET_ACCESS_KEY: "{{ .Env.AWS_SECRET_ACCESS_KEY }}"

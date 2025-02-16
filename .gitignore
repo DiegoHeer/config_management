@@ -8,3 +8,4 @@ terraform.tfstate.backup
 
 tests/inventory.yml
 .vault_key
+.resticprofile_key
