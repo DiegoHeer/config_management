@@ -82,3 +82,35 @@ Playbooks can also be run locally (e.g. on the server) using the `ansible-pull` 
 If the token key is not valid anymore, generate a new one and place it in the https github url.
 
 For more info on this method, check this [video](https://www.youtube.com/watch?v=sn1HQq_GFNE&t=1715s).
+
+## Testing
+
+Testing of Ansible roles & playbooks is done with [Molecule](https://ansible.readthedocs.io/projects/molecule/).
+To test a role run the following command:
+
+```bash
+    molecule converge -s <role name>
+```
+The available role names are: `system`, `projects`, `development`, `gui`, `restore`, `services`
+
+To check internally if everything setup correctly in the Molecule test container, use this command: 
+
+```bash
+    molecule login -s <role name>
+```
+
+For destroy Molecule test containers, use this command:
+
+```bash
+    molecule destroy -s <role name>
+```
+
+To create a new test scenario (e.g. for a new role or playbook):
+
+```bash
+    molecule init scenario <role/playbook name>
+```
+
+After the creation of the new scenario, delete the `creation.yml` and `destroy.yml`, 
+and edit the `molecule.yml` file to have the same setup as the other scenarios. 
+Also update the `converge.yml` file to use the new role/playbook.
