@@ -24,7 +24,7 @@ services:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
     volumes:
-      - /home/diego/services_data/tailscale/state:/var/lib/tailscale
+      - /home/${USERNAME}/services_data/tailscale/state:/var/lib/tailscale
     devices:
       - /dev/net/tun:/dev/net/tun
     cap_add:
@@ -40,9 +40,9 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - /home/diego/services_data/nginx-proxy-manager/data:/data
-      - /home/diego/services_data/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
-      - /home/diego/services_data/nginx-proxy-manager/logrotate.custom:/etc/logrotate.d/nginx-proxy-manager
+      - /home/${USERNAME}/services_data/nginx-proxy-manager/data:/data
+      - /home/${USERNAME}/services_data/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - /home/${USERNAME}/services_data/nginx-proxy-manager/logrotate.custom:/etc/logrotate.d/nginx-proxy-manager
     depends_on:
       - tailscale
 
@@ -51,7 +51,7 @@ services:
     restart: unless-stopped
     image: ghcr.io/homarr-labs/homarr:v1.6.0
     volumes:
-      - /home/diego/services_data/homarr/appdata:/appdata
+      - /home/${USERNAME}/services_data/homarr/appdata:/appdata
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}
@@ -62,9 +62,9 @@ services:
     restart: unless-stopped
     volumes:
       - /media/hd1:/srv
-      - /home/diego:/srv/home
-      - /home/diego/services_data/filebrowser/filebrowser.db:/database.db
-      - /home/diego/services_data/filebrowser/.filebrowser.json:/.filebrowser.json
+      - /home/${USERNAME}:/srv/home
+      - /home/${USERNAME}/services_data/filebrowser/filebrowser.db:/database.db
+      - /home/${USERNAME}/services_data/filebrowser/.filebrowser.json:/.filebrowser.json
     environment:
       - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       - PUID=1000

@@ -23,7 +23,7 @@ services:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
     volumes:
-      - /home/diego/services_data/mongo-tailscale/state:/var/lib/tailscale
+      - /home/${USERNAME}/services_data/mongo-tailscale/state:/var/lib/tailscale
       - /dev/net/tun:/dev/net/tun
       - /lib/modules:/lib/modules
     cap_add:
@@ -54,6 +54,6 @@ services:
       - COUCHDB_USER=obsidian
       - COUCHDB_PASSWORD=obsidian
     volumes:
-      - /home/diego/services_data/obsidian-livesync/data:/opt/couchdb/data
-      - /home/diego/services_data/obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
+      - /home/${USERNAME}/services_data/obsidian-livesync/data:/opt/couchdb/data
+      - /home/${USERNAME}/services_data/obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
     restart: unless-stopped

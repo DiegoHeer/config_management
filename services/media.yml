@@ -10,7 +10,7 @@ services:
       - /media/hd1/media/tvshows:/data/tvshows
       - /media/hd1/media/movies:/data/movies
       - /media/hd1/media/animes:/data/animes
-      - /home/diego/services_data/jellyfin/config:/config
+      - /home/${USERNAME}/services_data/jellyfin/config:/config
 
   jellyseerr:
     image: fallenbagel/jellyseerr:2.3.0
@@ -19,7 +19,7 @@ services:
       - LOG_LEVEL=debug
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/diego/services_data/jellyseerr/config:/app/config
+      - /home/${USERNAME}/services_data/jellyseerr/config:/app/config
 
   transmission-openvpn:
     container_name: transmission-openvpn
@@ -35,9 +35,9 @@ services:
       - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
     volumes:
       - /media/hd1/downloads/data:/data
-      - /home/diego/services_data/transmission-openvpn/config/transmission-home:/config/transmission-home
-      - /home/diego/services_data/transmission-openvpn/config/openvpn-credentials.txt:/config/openvpn-credentials.txt
-      - /home/diego/services_data/transmission-openvpn/config/transmission-credentials.txt:/config/transmission-credentials.txt
+      - /home/${USERNAME}/services_data/transmission-openvpn/config/transmission-home:/config/transmission-home
+      - /home/${USERNAME}/services_data/transmission-openvpn/config/openvpn-credentials.txt:/config/openvpn-credentials.txt
+      - /home/${USERNAME}/services_data/transmission-openvpn/config/transmission-credentials.txt:/config/transmission-credentials.txt
     cap_add:
       - NET_ADMIN
     devices:
@@ -55,7 +55,7 @@ services:
       - PGID=1000
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/diego/services_data/prowlarr/config:/config
+      - /home/${USERNAME}/services_data/prowlarr/config:/config
 
   sonarr:
     container_name: sonarr
@@ -65,7 +65,7 @@ services:
       - PGID=0
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/diego/services_data/sonarr/config:/config
+      - /home/${USERNAME}/services_data/sonarr/config:/config
       - /media/hd1/media/tvshows:/data/tvshows
       - /media/hd1/media/animes:/data/animes
       - /media/hd1/downloads/data/completed:/data/completed
@@ -78,6 +78,6 @@ services:
       - PGID=0
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/diego/services_data/radarr/config:/config
+      - /home/${USERNAME}/services_data/radarr/config:/config
       - /media/hd1/media/movies:/data/movies
       - /media/hd1/downloads/data/completed:/data/completed

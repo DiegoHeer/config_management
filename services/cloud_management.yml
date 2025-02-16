@@ -11,8 +11,8 @@ services:
       - MYSQL_PASSWORD=dbpassword
       - MYSQL_HOST=nextcloud_mariadb
     volumes:
-      - /home/diego/services_data/nextcloud/config:/config
-      - /home/diego/services_data/nextcloud/themes:/themes
+      - /home/${USERNAME}/services_data/nextcloud/config:/config
+      - /home/${USERNAME}/services_data/nextcloud/themes:/themes
       - /media/hd1/nextcloud:/data
     depends_on:
       - nextcloud_mariadb

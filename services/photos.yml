@@ -3,7 +3,7 @@ services:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:v1.126.1
     extends:
-      file: /home/diego/services_data/immich/hwaccel.transcoding.yml
+      file: /home/${USERNAME}/services_data/immich/hwaccel.transcoding.yml
       service: quicksync
     volumes:
       - /media/hd1/photo_library:/usr/src/app/upload

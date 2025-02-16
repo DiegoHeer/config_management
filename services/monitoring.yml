@@ -5,7 +5,7 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
-      - /home/diego/services_data/beszel:/beszel_data
+      - /home/${USERNAME}/services_data/beszel:/beszel_data
 
   beszel-agent:
     container_name: beszel-agent
