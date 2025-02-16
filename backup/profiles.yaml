@@ -45,7 +45,7 @@ s_tier:
   repository: "s3:https://5dd1633c6d8d4d835885b724ca1df9ae.r2.cloudflarestorage.com/diegoheer-restic-backups/s_tier"
 
   backup:
-    source: 
+    source:
       - /media/hd1/nextcloud/diego/files/Documents
       - /media/hd1/nextcloud/diego/files/Notes
       - /media/hd1/nextcloud/diego/files/Projects
@@ -70,7 +70,7 @@ services:
 a_tier:
   inherit: default
   repository: "local:/media/hd1/backups/a_tier"
-  
+
   backup:
     source:
       - /media/hd1/nextcloud

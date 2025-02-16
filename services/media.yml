@@ -26,26 +26,26 @@ services:
     image: haugene/transmission-openvpn:5.3.1
     restart: unless-stopped
     environment:
-        - OPENVPN_PROVIDER=SURFSHARK
-        - OPENVPN_CONFIG=nl-ams.prod.surfshark.com_tcp,be-bru.prod.surfshark.com_tcp.ovpn
-        - OPENVPN_USERNAME=${TRANSMISSION_OPENVPN_USERNAME}
-        - OPENVPN_PASSWORD=${TRANSMISSION_OPENVPN_PASSWORD}
-        - LOCAL_NETWORK=${TRANSMISSION_LOCAL_NETWORK}
-        - TRANSMISSION_WEB_UI=transmission-web-control
-        - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
+      - OPENVPN_PROVIDER=SURFSHARK
+      - OPENVPN_CONFIG=nl-ams.prod.surfshark.com_tcp,be-bru.prod.surfshark.com_tcp.ovpn
+      - OPENVPN_USERNAME=${TRANSMISSION_OPENVPN_USERNAME}
+      - OPENVPN_PASSWORD=${TRANSMISSION_OPENVPN_PASSWORD}
+      - LOCAL_NETWORK=${TRANSMISSION_LOCAL_NETWORK}
+      - TRANSMISSION_WEB_UI=transmission-web-control
+      - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
     volumes:
-        - /media/hd1/downloads/data:/data
-        - /home/diego/services_data/transmission-openvpn/config/transmission-home:/config/transmission-home
-        - /home/diego/services_data/transmission-openvpn/config/openvpn-credentials.txt:/config/openvpn-credentials.txt
-        - /home/diego/services_data/transmission-openvpn/config/transmission-credentials.txt:/config/transmission-credentials.txt
+      - /media/hd1/downloads/data:/data
+      - /home/diego/services_data/transmission-openvpn/config/transmission-home:/config/transmission-home
+      - /home/diego/services_data/transmission-openvpn/config/openvpn-credentials.txt:/config/openvpn-credentials.txt
+      - /home/diego/services_data/transmission-openvpn/config/transmission-credentials.txt:/config/transmission-credentials.txt
     cap_add:
-        - NET_ADMIN
+      - NET_ADMIN
     devices:
       - /dev/net/tun
     logging:
-        driver: json-file
-        options:
-            max-size: 10m
+      driver: json-file
+      options:
+        max-size: 10m
 
   prowlarr:
     container_name: prowlarr
@@ -81,4 +81,3 @@ services:
       - /home/diego/services_data/radarr/config:/config
       - /media/hd1/media/movies:/data/movies
       - /media/hd1/downloads/data/completed:/data/completed
-
