@@ -6,7 +6,6 @@ version: "1"
 global:
   initialize: true
   min-memory: 200
-  log: /home/diego/.logs/resticprofile.log
 
 groups:
   auto-backup:
@@ -42,14 +41,14 @@ default:
 
 s_tier:
   inherit: default
-  repository: "s3:https://5dd1633c6d8d4d835885b724ca1df9ae.r2.cloudflarestorage.com/diegoheer-restic-backups/s_tier"
+  repository: "s3:{{ .Env.AWS_BUCKET_URL }}/s_tier"
 
   backup:
     source:
-      - /media/hd1/nextcloud/diego/files/Documents
-      - /media/hd1/nextcloud/diego/files/Notes
-      - /media/hd1/nextcloud/diego/files/Projects
-      - /media/hd1/nextcloud/diego/files/Work
+      - /media/hd1/nextcloud/{{ .Env.USERNAME }}/files/Documents
+      - /media/hd1/nextcloud/{{ .Env.USERNAME }}/files/Notes
+      - /media/hd1/nextcloud/{{ .Env.USERNAME }}/files/Projects
+      - /media/hd1/nextcloud/{{ .Env.USERNAME }}/files/Work
     tag:
       - s_tier
     schedule: 02:00
@@ -57,11 +56,11 @@ s_tier:
 
 services:
   inherit: default
-  repository: "s3:https://5dd1633c6d8d4d835885b724ca1df9ae.r2.cloudflarestorage.com/diegoheer-restic-backups/services"
+  repository: "s3:{{ .Env.AWS_BUCKET_URL }}/services"
 
   backup:
     source:
-      - /home/diego/services_data
+      - /home/{{ .Env.USERNAME }}/services_data
     tag:
       - services
     schedule: 03:00
@@ -76,8 +75,8 @@ a_tier:
       - /media/hd1/nextcloud
       - /media/hd1/photo_library
       - /media/hd1/backups/db_dumps
-      - /home/diego/study
-      - /home/diego/.bashrc
+      - /home/{{ .Env.USERNAME }}/study
+      - /home/{{ .Env.USERNAME }}/.bashrc
     tag:
       - a_tier
     schedule: Tue,Thu,Sat 04:00

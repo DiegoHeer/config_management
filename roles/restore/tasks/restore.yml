@@ -10,6 +10,8 @@
   become: false
   become_user: "{{ username }}"
   environment:
+    USERNAME: "{{ username }}"
+    AWS_BUCKET_URL: "{{ restore_aws_bucket_url }}"
     AWS_ACCESS_KEY_ID: "{{ restore_aws_access_key_id }}"
     AWS_SECRET_ACCESS_KEY: "{{ restore_aws_secret_access_key }}"
   changed_when: not services_data_folder_check.stat.exists
