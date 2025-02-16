@@ -1,12 +1,5 @@
 ---
-- name: Pull docker compose images
-  community.docker.docker_compose_v2_pull:
-    project_src: "{{ services_docker_src }}"
-
-- name: Start docker compose services
-  community.docker.docker_compose_v2:
-    project_src: "{{ services_docker_src }}"
-    state: present
+- name: Pull and start docker compose services
   environment:
     NGINX_TAILSCALE_AUTHKEY: "{{ services_nginx_tailscale_authkey }}"
     HOMARR_SECRET_ENCRYPTION_KEY: "{{ services_homarr_secret_encryption_key }}"
@@ -14,3 +7,12 @@
     TRANSMISSION_OPENVPN_USERNAME: "{{ services_transmission_openvpn_username }}"
     TRANSMISSION_OPENVPN_PASSWORD: "{{ services_transmission_openvpn_password }}"
     TRANSMISSION_LOCAL_NETWORK: "{{ services_transmission_local_network }}"
+  block:
+    - name: Pull docker compose images
+      community.docker.docker_compose_v2_pull:
+        project_src: "{{ services_docker_src }}"
+
+    - name: Start docker compose services
+      community.docker.docker_compose_v2:
+        project_src: "{{ services_docker_src }}"
+        state: present
