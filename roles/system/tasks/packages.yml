@@ -15,4 +15,5 @@
       - unzip
       - curl
       - flatpak
+      - snapd
     state: present

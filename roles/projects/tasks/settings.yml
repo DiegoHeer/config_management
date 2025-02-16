@@ -12,7 +12,7 @@
   when: not git_check.stat.exists
 
 - name: Configure git user name
-  become: true
+  become: false
   become_user: "{{ username }}"
   community.general.git_config:
     name: user.name
@@ -20,7 +20,7 @@
     value: "{{ projects_git_username }}"
 
 - name: Configure git email
-  become: true
+  become: false
   become_user: "{{ username }}"
   community.general.git_config:
     name: user.email
@@ -28,7 +28,7 @@
     value: "{{ projects_git_email }}"
 
 - name: Configure git default branch name
-  become: true
+  become: false
   become_user: "{{ username }}"
   community.general.git_config:
     name: init.defaultBranch
@@ -36,7 +36,7 @@
     value: main
 
 - name: Configure git auto setup remote
-  become: true
+  become: false
   become_user: "{{ username }}"
   community.general.git_config:
     name: push.autoSetupRemote
@@ -44,7 +44,7 @@
     value: true
 
 - name: Configure git default editor
-  become: true
+  become: false
   become_user: "{{ username }}"
   community.general.git_config:
     name: core.editor

@@ -3,7 +3,6 @@
   community.general.github_deploy_key:
     name: ansible_key
     key: "{{ ssh_key.public_key }}"
-    force: true
     read_only: false
     state: present
     owner: "{{ projects_github_owner }}"
@@ -14,12 +13,14 @@
     loop_var: repo
 
 - name: Clone Github repos
+  become: false
   become_user: "{{ username }}"
   ansible.builtin.git:
     repo: "git@github.com:{{ projects_github_owner }}/{{ repo }}.git"
     clone: true
     accept_newhostkey: true
     dest: "/home/{{ username }}/projects/{{ repo }}"
+    key_file: "{{ ssh_key.filename }}"
   loop: "{{ projects_github_repos }}"
   loop_control:
     loop_var: repo

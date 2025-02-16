@@ -21,12 +21,14 @@
     loop_var: repo
 
 - name: Clone Gitlab repos
+  become: false
   become_user: "{{ username }}"
   ansible.builtin.git:
     repo: git@gitlab.com:Dynatron/{{ repo }}.git
     clone: true
     accept_newhostkey: true
     dest: "/home/{{ username }}/projects/{{ repo }}"
+    key_file: "{{ ssh_key.filename }}"
   loop: "{{ projects_gitlab_repos }}"
   loop_control:
     loop_var: repo
