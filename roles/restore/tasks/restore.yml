@@ -6,7 +6,7 @@
 
 - name: Restore services data using Restic Profile
   ansible.builtin.command: resticprofile -c {{ restore_resticprofile_config_path }} -n services restore latest --target /
-  become: true
+  become: false
   become_user: "{{ username }}"
   environment:
     AWS_ACCESS_KEY_ID: "{{ restore_aws_access_key_id }}"
