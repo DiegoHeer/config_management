@@ -20,3 +20,8 @@ variable "ansible_password" {
   default     = "ubuntu"
   type        = string
 }
+
+variable "username" {
+  description = "user name of new host node (server)"
+  default     = "diego"
+}
