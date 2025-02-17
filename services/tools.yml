@@ -2,3 +2,30 @@ services:
   stirling-pdf:
     container_name: stirling-pdf
     image: stirlingtools/stirling-pdf:0.41.0
+
+  linkwarden:
+    container_name: linkwarden
+    image: ghcr.io/linkwarden/linkwarden:v2.9.3
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - NEXTAUTH_URL=http://linkwarden:3000/api/v1/auth
+      - NEXTAUTH_SECRET=linkwarden_secret_password
+      - DATABASE_URL=postgresql://postgres:postgres@linkwarden-db:5432/postgres
+    volumes:
+      - /home/${USERNAME}/services_data/linkwarden/data:/data/data
+    depends_on:
+      - linkwarden-db
+
+  linkwarden-db:
+    container_name: linkwarden_db
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - /home/${USERNAME}/services_data/linkwarden/pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mydatabase"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
