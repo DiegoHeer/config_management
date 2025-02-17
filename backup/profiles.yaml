@@ -30,6 +30,13 @@ default:
   no-error-on-warning: true
   verbose: true
 
+  backup:
+    exclude-caches: true
+    exclude:
+      - /**/cache
+      - /**/.venv
+      - /**/logs
+
   retention:
     before-backup: false
     after-backup: true
