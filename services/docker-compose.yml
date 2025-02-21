@@ -13,32 +13,19 @@ networks:
     driver: bridge
 
 services:
-  tailscale:
-    image: tailscale/tailscale:v1.80.0
-    container_name: tailscale
-    restart: unless-stopped
-    hostname: home_server
-    environment:
-      - TS_AUTHKEY=${NGINX_TAILSCALE_AUTHKEY}
-      - TS_ACCEPT_DNS=true
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_USERSPACE=false
-    volumes:
-      - /home/${USERNAME}/services_data/tailscale/state:/var/lib/tailscale
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    cap_add:
-      - net_admin
-
   # Reference: https://www.youtube.com/watch?v=qlcVx-k-02E
   nginx-proxy-manager:
     image: "jc21/nginx-proxy-manager:2.12.3"
     container_name: nginx-proxy-manager
     restart: unless-stopped
-    network_mode: service:tailscale
+    # network_mode: service:tailscale
     environment:
       - PUID=1000
       - PGID=1000
+    ports:
+      - 443:443
+      - 80:80
+      - 81:81
     volumes:
       - /home/${USERNAME}/services_data/nginx-proxy-manager/data:/data
       - /home/${USERNAME}/services_data/nginx-proxy-manager/letsencrypt:/etc/letsencrypt

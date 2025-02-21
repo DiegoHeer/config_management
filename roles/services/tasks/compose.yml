@@ -2,7 +2,6 @@
 - name: Pull and start docker compose services
   environment:
     USERNAME: "{{ username }}"
-    NGINX_TAILSCALE_AUTHKEY: "{{ services_nginx_tailscale_authkey }}"
     HOMARR_SECRET_ENCRYPTION_KEY: "{{ services_homarr_secret_encryption_key }}"
     MONGODB_TAILSCALE_AUTHKEY: "{{ services_mongodb_tailscale_authkey }}"
     TRANSMISSION_OPENVPN_USERNAME: "{{ services_transmission_openvpn_username }}"
