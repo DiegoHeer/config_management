@@ -2,6 +2,13 @@ services:
   stirling-pdf:
     container_name: stirling-pdf
     image: stirlingtools/stirling-pdf:0.41.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/info/status"]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
 
   linkwarden:
     container_name: linkwarden
@@ -15,7 +22,8 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/linkwarden/data:/data/data
     depends_on:
-      - linkwarden-db
+      linkwarden-db:
+        condition: service_healthy
 
   linkwarden-db:
     container_name: linkwarden_db

@@ -11,6 +11,12 @@ services:
       - /media/hd1/media/movies:/data/movies
       - /media/hd1/media/animes:/data/animes
       - /home/${USERNAME}/services_data/jellyfin/config:/config
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8096"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   jellyseerr:
     image: fallenbagel/jellyseerr:2.3.0
@@ -20,6 +26,12 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - /home/${USERNAME}/services_data/jellyseerr/config:/app/config
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5055/api/v1/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   transmission-openvpn:
     container_name: transmission-openvpn
@@ -46,6 +58,12 @@ services:
       driver: json-file
       options:
         max-size: 10m
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/transmission/web/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   prowlarr:
     container_name: prowlarr
@@ -56,6 +74,12 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - /home/${USERNAME}/services_data/prowlarr/config:/config
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9696/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   sonarr:
     container_name: sonarr
@@ -69,6 +93,12 @@ services:
       - /media/hd1/media/tvshows:/data/tvshows
       - /media/hd1/media/animes:/data/animes
       - /media/hd1/downloads/data/completed:/data/completed
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8989/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   radarr:
     container_name: radarr
@@ -81,6 +111,12 @@ services:
       - /home/${USERNAME}/services_data/radarr/config:/config
       - /media/hd1/media/movies:/data/movies
       - /media/hd1/downloads/data/completed:/data/completed
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7878/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   bazarr:
     container_name: bazarr
@@ -93,3 +129,9 @@ services:
       - /home/${USERNAME}/services_data/bazarr/config:/config
       - /media/hd1/media/movies:/movies
       - /media/hd1/media/tvshows:/tv
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6767"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s

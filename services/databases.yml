@@ -10,6 +10,12 @@ services:
       - /media/hd1/databases/mongodb/data:/data/db
     depends_on:
       - mongo-tailscale
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
 
   mongo-tailscale:
     image: tailscale/tailscale:v1.76.6
@@ -29,6 +35,11 @@ services:
     cap_add:
       - net_admin
       - sys_module
+    healthcheck:
+      test: ["CMD", "tailscale", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   mongo-express:
     image: mongo-express:latest
@@ -40,7 +51,14 @@ services:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "ping", "-c", "3", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
 
   # https://www.reddit.com/r/selfhosted/comments/1eo7knj/guide_obsidian_with_free_selfhosted_instant_sync/
   obsidian-livesync:
@@ -57,3 +75,9 @@ services:
       - /home/${USERNAME}/services_data/obsidian-livesync/data:/opt/couchdb/data
       - /home/${USERNAME}/services_data/obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://obsidian:obsidian@localhost:5984/_up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

@@ -43,8 +43,11 @@ services:
       - /home/${USERNAME}/services_data/nginx-proxy-manager/data:/data
       - /home/${USERNAME}/services_data/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
       - /home/${USERNAME}/services_data/nginx-proxy-manager/logrotate.custom:/etc/logrotate.d/nginx-proxy-manager
-    depends_on:
-      - tailscale
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:81"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   homarr:
     container_name: homarr
@@ -55,6 +58,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}
+    healthcheck:
+      test: ["CMD-SHELL", "homarr --version || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   filebrowser:
     container_name: filebrowser
@@ -74,3 +82,9 @@ services:
     logging:
       driver: json-file
       options: {}
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
