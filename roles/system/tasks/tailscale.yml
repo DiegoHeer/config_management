@@ -1,0 +1,34 @@
+---
+- name: Download Tailscale install script
+  ansible.builtin.get_url:
+    url: https://tailscale.com/install.sh
+    dest: /tmp/tailscale_install.sh
+    mode: "0755"
+
+- name: Install Tailscale install script
+  ansible.builtin.command: /tmp/tailscale_install.sh
+  args:
+    creates: /usr/bin/tailscale
+
+- name: Start and enable Tailscale service
+  ansible.builtin.service:
+    name: tailscaled
+    state: started
+    enabled: true
+
+- name: Authenticate Tailscale (using auth key)
+  ansible.builtin.command:
+    cmd: tailscale up --auth-key "{{ system_tailscale_auth_key }}"
+    creates: /var/lib/tailscale/tailscaled.state
+  when: system_tailscale_auth_key is defined
+
+- name: Authenticate Tailscale (interactive)
+  ansible.builtin.command: tailscale up
+  when: system_tailscale_auth_key is not defined
+  register: tailscale_up
+  changed_when: false
+
+- name: Display Tailscale login URL (if interactive)
+  ansible.builtin.debug:
+    msg: "Please visit the following URL to authenticate Tailscale: {{ tailscale_up.stdout }}"
+  when: system_tailscale_auth_key is not defined and tailscale_up.stdout is defined

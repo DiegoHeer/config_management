@@ -7,5 +7,6 @@
     - packages.yml
     - tmux.yml
     - oh_my_posh.yml
+    - tailscale.yml
   loop_control:
     loop_var: task
