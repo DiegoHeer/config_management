@@ -9,9 +9,8 @@
 
     // Ansible
     "files.associations": {
-      "*.yml": "ansible",
-      "**/molecule/**/*.yml": "ansible",
-      "**/services/*.yml": "yaml",
+      "**/config_management/**/*.yml": "ansible",
+      "**/config_management/services/*.yml": "yaml",
     },
     "ansible.python.interpreterPath": "${workspaceFolder}/.venv/bin/python",
     "ansible.ansible.path": "./.venv/bin/ansible",
