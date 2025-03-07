@@ -128,6 +128,7 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/bazarr/config:/config
       - /media/hd1/media/movies:/movies
+      - /media/hd1/media/animes:/animes
       - /media/hd1/media/tvshows:/tv
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:6767"]
