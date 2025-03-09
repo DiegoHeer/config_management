@@ -1,4 +1,11 @@
 services:
+  olivetin:
+    container_name: olivetin
+    restart: unless-stopped
+    image: jamesread/olivetin:2025.2.21
+    volumes:
+      - /home/${USERNAME}/services_data/olivetin/config:/config
+
   stirling-pdf:
     container_name: stirling-pdf
     image: stirlingtools/stirling-pdf:0.41.0
@@ -8,7 +15,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 15s
-
 
   linkwarden:
     container_name: linkwarden
