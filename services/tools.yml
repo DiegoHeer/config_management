@@ -5,6 +5,11 @@ services:
     image: jamesread/olivetin:2025.2.21
     volumes:
       - /home/${USERNAME}/services_data/olivetin/config:/config
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1337/api/readyz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   stirling-pdf:
     container_name: stirling-pdf
