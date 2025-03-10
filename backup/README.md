@@ -5,7 +5,7 @@
 [Required] Load environment variables
 
 ```bash
-	load_env
+	set -a ; source .env ; set +a
 ```
 
 Backup docker services data

@@ -53,7 +53,7 @@ For the usage of ansible playbooks, see the [Ansible](#ansible) section. For man
 2. Run the ansible playbook with the command below. The location of the vault key file is already defined in the `ansible.cfg` file:
 
 ```bash
-    poetry run ansible=playbook <playbook file>
+    poetry run ansible-playbook <playbook file>
 ```
 
 Optionally, it is possible to run Ansible playbooks with the command below:

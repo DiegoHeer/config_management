@@ -7,7 +7,7 @@
   ansible.builtin.include_role:
     name: projects
 
-- name: Backup restore of relevant data
+- name: Restore relevant data
   ansible.builtin.include_tasks: "{{ task }}"
   loop:
     - setup.yml
