@@ -11,6 +11,15 @@ services:
       timeout: 5s
       retries: 5
 
+  it-tools:
+    container_name: it-tools
+    image: corentinth/it-tools:latest
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   stirling-pdf:
     container_name: stirling-pdf
     image: stirlingtools/stirling-pdf:0.44.0
