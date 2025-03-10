@@ -1,7 +1,7 @@
 services:
   jellyfin:
     container_name: jellyfin
-    image: lscr.io/linuxserver/jellyfin:10.10.5
+    image: linuxserver/jellyfin:10.10.6
     environment:
       - PUID=1000
       - PGID=1000
@@ -67,7 +67,7 @@ services:
 
   prowlarr:
     container_name: prowlarr
-    image: lscr.io/linuxserver/prowlarr:latest
+    image: linuxserver/prowlarr:1.31.2
     environment:
       - PUID=1000
       - PGID=1000
@@ -83,7 +83,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: lscr.io/linuxserver/sonarr:4.0.13
+    image: linuxserver/sonarr:4.0.13
     environment:
       - PUID=0
       - PGID=0
@@ -102,7 +102,7 @@ services:
 
   radarr:
     container_name: radarr
-    image: lscr.io/linuxserver/radarr:5.18.4
+    image: linuxserver/radarr:5.19.3
     environment:
       - PUID=0
       - PGID=0
@@ -120,7 +120,7 @@ services:
 
   bazarr:
     container_name: bazarr
-    image: lscr.io/linuxserver/bazarr:1.5.1
+    image: linuxserver/bazarr:1.5.1
     environment:
       - PUID=1000
       - PGID=1000

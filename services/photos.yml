@@ -1,7 +1,7 @@
 services:
-  immich-server:
+  immich_server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:v1.126.1
+    image: ghcr.io/immich-app/immich-server:v1.129.0
     extends:
       file: /home/${USERNAME}/services_data/immich/hwaccel.transcoding.yml
       service: quicksync
@@ -14,9 +14,9 @@ services:
     healthcheck:
       disable: false
 
-  immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.126.1
+  immich_machine_learning:
     container_name: immich_machine_learning
+    image: ghcr.io/immich-app/immich-machine-learning:v1.129.0
     restart: unless-stopped
     volumes:
       - model-cache:/cache
@@ -25,14 +25,14 @@ services:
 
   redis:
     container_name: immich_redis
-    image: docker.io/redis:6.2-alpine3.21
+    image: redis:6.2-alpine3.21
     restart: unless-stopped
     healthcheck:
       test: redis-cli ping || exit 1
 
   database:
     container_name: immich_postgres
-    image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0
+    image: tensorchord/pgvecto-rs:pg14-v0.3.0
     restart: unless-stopped
     environment:
       POSTGRES_DB: immich

@@ -1,7 +1,7 @@
 services:
   beszel:
     container_name: beszel
-    image: henrygd/beszel:0.9.1
+    image: henrygd/beszel:0.10.1
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
@@ -9,7 +9,7 @@ services:
 
   beszel-agent:
     container_name: beszel-agent
-    image: henrygd/beszel-agent
+    image: henrygd/beszel-agent:0.10.1
     network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro

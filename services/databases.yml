@@ -18,7 +18,7 @@ services:
       start_period: 15s
 
   mongo-tailscale:
-    image: tailscale/tailscale:v1.76.6
+    image: tailscale/tailscale:v1.80.3
     container_name: mongo-tailscale
     restart: unless-stopped
     hostname: database
@@ -63,7 +63,7 @@ services:
   # https://www.reddit.com/r/selfhosted/comments/1eo7knj/guide_obsidian_with_free_selfhosted_instant_sync/
   obsidian-livesync:
     container_name: obsidian-livesync
-    image: couchdb:3.3.3
+    image: couchdb:3.4.2
     environment:
       - PUID=1000
       - PGID=1000

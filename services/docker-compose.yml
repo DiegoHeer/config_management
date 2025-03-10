@@ -15,7 +15,7 @@ networks:
 services:
   # Reference: https://www.youtube.com/watch?v=qlcVx-k-02E
   nginx-proxy-manager:
-    image: "jc21/nginx-proxy-manager:2.12.3"
+    image: jc21/nginx-proxy-manager:2.12.3
     container_name: nginx-proxy-manager
     restart: unless-stopped
     # network_mode: service:tailscale
@@ -39,7 +39,7 @@ services:
   homarr:
     container_name: homarr
     restart: unless-stopped
-    image: ghcr.io/homarr-labs/homarr:v1.6.0
+    image: ghcr.io/homarr-labs/homarr:v1.10.0
     volumes:
       - /home/${USERNAME}/services_data/homarr/appdata:/appdata
       - /var/run/docker.sock:/var/run/docker.sock
