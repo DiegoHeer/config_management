@@ -1,5 +1,5 @@
 services:
-  immich_server:
+  immich-server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:v1.129.0
     extends:
@@ -14,7 +14,7 @@ services:
     healthcheck:
       disable: false
 
-  immich_machine_learning:
+  immich-machine-learning:
     container_name: immich_machine_learning
     image: ghcr.io/immich-app/immich-machine-learning:v1.129.0
     restart: unless-stopped
