@@ -32,7 +32,7 @@ services:
 
   database:
     container_name: immich_postgres
-    image: tensorchord/pgvecto-rs:pg14-v0.3.0
+    image: tensorchord/pgvecto-rs:pg14-v0.4.0
     restart: unless-stopped
     environment:
       POSTGRES_DB: immich
