@@ -64,3 +64,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  grist:
+    container_name: grist
+    image: gristlabs/grist:1.4.2
+    environment:
+        - PORT=9999
+    volumes:
+        - /home/${USERNAME}/services_data/glance/persist:/persist
