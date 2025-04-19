@@ -7,7 +7,6 @@
   ansible.builtin.include_tasks: "{{ task }}"
   loop:
     - settings.yml
-    - gitlab.yml
     - github.yml
   loop_control:
     loop_var: task

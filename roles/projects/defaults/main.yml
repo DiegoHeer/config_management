@@ -2,10 +2,8 @@
 projects_git_username: Diego Heer
 projects_git_email: diegojonathanheer@gmail.com
 
-projects_gitlab_repos:
-  - financial-organizer
-
 projects_github_owner: DiegoHeer
 projects_github_repos:
   - config_management
   - money-metrics
+  - financial-organizer

@@ -59,7 +59,7 @@
     group: "{{ username }}"
     mode: "0700"
 
-- name: Generate target SSH key for accessing Gitlab and Github
+- name: Generate target SSH key for accessing Github
   community.crypto.openssh_keypair:
     path: "/home/{{ username }}/.ssh/id_rsa"
     type: rsa
