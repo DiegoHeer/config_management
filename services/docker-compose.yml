@@ -5,6 +5,7 @@ include:
   - databases.yml
   - cloud_management.yml
   - tools.yml
+  - personal.yml
 
 networks:
   default:
