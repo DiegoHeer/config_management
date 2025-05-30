@@ -2,7 +2,7 @@ services:
   olivetin:
     container_name: olivetin
     restart: unless-stopped
-    image: jamesread/olivetin:2025.2.21
+    image: jamesread/olivetin:2025.4.22
     volumes:
       - /home/${USERNAME}/services_data/olivetin/config:/config
     healthcheck:
@@ -29,7 +29,7 @@ services:
 
   stirling-pdf:
     container_name: stirling-pdf
-    image: stirlingtools/stirling-pdf:0.44.0
+    image: stirlingtools/stirling-pdf:0.45.6
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/info/status"]
       interval: 20s
@@ -39,7 +39,7 @@ services:
 
   linkwarden:
     container_name: linkwarden
-    image: ghcr.io/linkwarden/linkwarden:v2.9.3
+    image: ghcr.io/linkwarden/linkwarden:v2.10.0
     environment:
       - PUID=1000
       - PGID=1000
@@ -67,7 +67,7 @@ services:
 
   grist:
     container_name: grist
-    image: gristlabs/grist:1.4.2
+    image: gristlabs/grist:1.5.1
     environment:
         - PORT=9999
     volumes:

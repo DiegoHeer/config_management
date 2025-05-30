@@ -63,7 +63,7 @@ services:
   # https://www.reddit.com/r/selfhosted/comments/1eo7knj/guide_obsidian_with_free_selfhosted_instant_sync/
   obsidian-livesync:
     container_name: obsidian-livesync
-    image: couchdb:3.4.2
+    image: couchdb:3.4.3
     environment:
       - PUID=1000
       - PGID=1000
