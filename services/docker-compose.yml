@@ -6,6 +6,7 @@ include:
   - cloud_management.yml
   - tools.yml
   - personal.yml
+  - ai.yml
 
 networks:
   default:
