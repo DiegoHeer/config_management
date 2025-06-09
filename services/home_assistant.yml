@@ -1,0 +1,74 @@
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    volumes:
+      - /home/${USERNAME}/services_data/homeassistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    privileged: true
+    network_mode: host
+
+  # TODO: this is required for connecting onju voice option
+  # https://github.com/justLV/onju-voice
+  # https://www.youtube.com/watch?v=xQqhqGd14YY
+  # https://www.youtube.com/watch?v=RArpkdDEDmY
+  esphome:
+    container_name: esphome
+    image: ghcr.io/esphome/esphome:2025.5.1
+    volumes:
+      - /home/${USERNAME}/services_data/esphome/config:/config
+      - /etc/localtime:/etc/localtime:ro
+    privileged: true
+    ports:
+      - 6052:6052
+      - 6053:6053
+
+  faster-whisper:
+    container_name: faster-whisper
+    image: lscr.io/linuxserver/faster-whisper:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - WHISPER_MODEL=base.en
+      - WHISPER_BEAM=1
+      - WHISPER_LANG=en
+    volumes:
+      - /home/${USERNAME}/services_data/faster-whisper/data:/config
+    ports:
+      - 10300:10300
+
+  piper:
+    container_name: piper
+    image: lscr.io/linuxserver/piper:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - PIPER_VOICE=en_US-lessac-medium
+      - PIPER_LENGTH=1.0 #optional
+      - PIPER_NOISE=0.667 #optional
+      - PIPER_NOISEW=0.333 #optional
+      - PIPER_SPEAKER=0 #optional
+      - PIPER_PROCS=1 #optional
+    volumes:
+      - /home/${USERNAME}/services_data/piper/data:/config
+    ports:
+      - 10200:10200
+
+  openwakeword:
+    container_name: openwakeword
+    image: rhasspy/wyoming-openwakeword
+    user: 1001:1001
+    volumes:
+      - /home/${USERNAME}/services_data/wakeword/data:/data
+      - /home/${USERNAME}/services_data/wakeword/custom:/custom
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Europe/Amsterdam
+    command: --preload-model 'ok_nabu' --custom-model-dir /custom
+    ports:
+      - 10400:10400
+      - 10400:10400/udp

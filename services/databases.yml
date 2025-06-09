@@ -1,7 +1,8 @@
 services:
   mongodb:
-    image: mongodb/mongodb-community-server:7.0.15-ubuntu2204
     container_name: mongodb
+    image: mongodb/mongodb-community-server:7.0.15-ubuntu2204
+    restart: unless-stopped
     network_mode: service:mongo-tailscale
     environment:
       - MONGODB_INITDB_ROOT_USERNAME=admin
@@ -18,8 +19,8 @@ services:
       start_period: 15s
 
   mongo-tailscale:
-    image: tailscale/tailscale:v1.80.3
     container_name: mongo-tailscale
+    image: tailscale/tailscale:v1.80.3
     restart: unless-stopped
     hostname: database
     environment:
@@ -42,8 +43,9 @@ services:
       retries: 3
 
   mongo-express:
-    image: mongo-express:latest
     container_name: mongo-express
+    image: mongo-express:latest
+    restart: unless-stopped
     environment:
       - ME_CONFIG_MONGODB_URL=mongodb://admin:admin@database.amarok-eagle.ts.net:27017/
       - ME_CONFIG_BASICAUTH_USERNAME=admin

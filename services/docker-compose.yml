@@ -7,6 +7,7 @@ include:
   - tools.yml
   - personal.yml
   - ai.yml
+  - home_assistant.yml
 
 networks:
   default:
