@@ -5,9 +5,9 @@ include:
   - databases.yml
   - cloud_management.yml
   - tools.yml
-  - personal.yml
-  - ai.yml
   - home_assistant.yml
+  - financial_organizer.yml
+  - money_metrics.yml
 
 networks:
   default:
