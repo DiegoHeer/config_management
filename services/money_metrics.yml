@@ -1,0 +1,81 @@
+services:
+  money-metrics-open-webui:
+    container_name: money-metrics-open-webui
+    image: ghcr.io/open-webui/open-webui:v0.6.15
+    volumes:
+      - /home/${USERNAME}/services_data/money-metrics/open-webui/data:/app/backend/data
+
+  money-metrics-mcp-server:
+    container_name: money-metrics-mcp-server
+    image: ghcr.io/diegoheer/mcp-server:latest
+    environment:
+      - MONGO_USERNAME=${MONGO_USERNAME:-admin}
+      - MONGO_PASSWORD=${MONGO_PASSWORD:-password}
+      - FINANCIAL_MODELING_PREP_API_KEY=${FINANCIAL_MODELING_PREP_API_KEY}
+    volumes:
+      - /home/${USERNAME}/services_data/money-metrics/mcp_server/logs:/app/logs
+    ports:
+      - 8000:8000
+
+  money-metrics-database:
+    container_name: money-metrics-database
+    image: mongodb/mongodb-community-server:7.0.15-ubuntu2204
+    restart: unless-stopped
+    network_mode: service:money-metrics-tailscale
+    environment:
+      - MONGODB_INITDB_ROOT_USERNAME=admin
+      - MONGODB_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - /media/hd1/databases/mongodb/data:/data/db
+    depends_on:
+      - money-metrics-tailscale
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+  money-metrics-tailscale:
+    container_name: money-metrics-tailscale
+    image: tailscale/tailscale:v1.80.3
+    restart: unless-stopped
+    hostname: database
+    environment:
+      # Valid until 2025-02-28
+      - TS_AUTHKEY=${MONGODB_TAILSCALE_AUTHKEY}
+      - TS_ACCEPT_DNS=true
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+    volumes:
+      - /home/${USERNAME}/services_data/money-metrics/tailscale/state:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+      - /lib/modules:/lib/modules
+    cap_add:
+      - net_admin
+      - sys_module
+    healthcheck:
+      test: ["CMD", "tailscale", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express:latest
+    restart: unless-stopped
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:admin@database.amarok-eagle.ts.net:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
+    depends_on:
+      money-metrics-database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "ping", "-c", "3", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
