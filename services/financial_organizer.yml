@@ -1,6 +1,6 @@
 services:
-  backend:
-    container_name: backend
+  ifo-backend:
+    container_name: ifo-backend
     image: ghcr.io/diegoheer/financial-organizer-backend:latest
     env_file:
       - /home/diego/projects/financial-organizer/src/backend/.prod.env
@@ -11,25 +11,25 @@ services:
       timeout: 5s
       retries: 10
     depends_on:
-      postgres:
+      ifo-database:
         condition: service_healthy
 
-  frontend:
-    container_name: frontend
+  ifo-frontend:
+    container_name: ifo-frontend
     image: ghcr.io/diegoheer/financial-organizer-frontend:latest
     env_file:
       - /home/diego/projects/financial-organizer/src/frontend/.prod.env
     depends_on:
-      backend:
+      ifo-backend:
         condition: service_healthy
 
-  postgres:
-    container_name: postgres
+  ifo-database:
+    container_name: ifo-database
     image: postgres:15.2
     env_file:
       - /home/diego/projects/financial-organizer/src/backend/.prod.env
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - ifo-database-data:/var/lib/postgresql/data
     healthcheck:
       test: pg_isready -U postgres -d postgres
       interval: 2s
@@ -38,4 +38,4 @@ services:
       start_period: 5s
 
 volumes:
-  postgres-data:
+  ifo-database-data:
