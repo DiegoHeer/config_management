@@ -1,6 +1,6 @@
 services:
-  mongodb:
-    container_name: mongodb
+  mongo-money-metrics:
+    container_name: mongo-money-metrics
     image: mongodb/mongodb-community-server:7.0.15-ubuntu2204
     restart: unless-stopped
     network_mode: service:mongo-tailscale
@@ -53,7 +53,7 @@ services:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
     depends_on:
-      mongodb:
+      mongo-money-metrics:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "ping", "-c", "3", "localhost"]
