@@ -16,6 +16,7 @@ services:
     image: amir20/dozzle:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /home/${USERNAME}/services_data/dozzle:/data
     healthcheck:
       test: ["CMD", "/dozzle", "healthcheck"]
       interval: 3s
@@ -84,6 +85,13 @@ services:
         - PORT=9999
     volumes:
         - /home/${USERNAME}/services_data/glance/persist:/persist
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9999/status"]
+      interval: 30s
+      retries: 3
+      timeout: 5s
+      start_period: 10s
+      start_interval: 5s
 
   mealie:
     container_name: mealie
