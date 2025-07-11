@@ -23,12 +23,13 @@ services:
     restart: unless-stopped
     network_mode: service:money-metrics-tailscale
     environment:
-      - MONGODB_INITDB_ROOT_USERNAME=admin
-      - MONGODB_INITDB_ROOT_PASSWORD=admin
+      - MONGODB_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGODB_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
     volumes:
       - /media/hd1/databases/mongodb/data:/data/db
     depends_on:
-      - money-metrics-tailscale
+      money-metrics-tailscale:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
       interval: 30s
@@ -42,7 +43,6 @@ services:
     restart: unless-stopped
     hostname: database
     environment:
-      # Valid until 2025-02-28
       - TS_AUTHKEY=${MONGODB_TAILSCALE_AUTHKEY}
       - TS_ACCEPT_DNS=true
       - TS_STATE_DIR=/var/lib/tailscale
@@ -65,11 +65,11 @@ services:
     image: mongo-express:latest
     restart: unless-stopped
     environment:
-      - ME_CONFIG_MONGODB_URL=mongodb://admin:admin@database.amarok-eagle.ts.net:27017/
-      - ME_CONFIG_BASICAUTH_USERNAME=admin
-      - ME_CONFIG_BASICAUTH_PASSWORD=admin
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=admin
+      - ME_CONFIG_MONGODB_URL=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@database.amarok-eagle.ts.net:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_PASSWORD}
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_PASSWORD}
     depends_on:
       money-metrics-database:
         condition: service_healthy
