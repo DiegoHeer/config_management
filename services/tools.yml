@@ -103,3 +103,19 @@ services:
         start_period: 40s
     restart: unless-stopped
 
+  mealie:
+    container_name: mealie
+    image: ghcr.io/mealie-recipes/mealie:v2.8.0
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+    volumes:
+      - /home/${USERNAME}/services_data/mealie:/app/data/
+    environment:
+      ALLOW_SIGNUP: "false"
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Amsterdam
+      BASE_URL: mealie.dynabase.xyz
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
