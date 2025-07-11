@@ -11,6 +11,18 @@ services:
       timeout: 5s
       retries: 5
 
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: ["CMD", "/dozzle", "healthcheck"]
+      interval: 3s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
   cup:
     container_name: cup
     image: ghcr.io/sergi0g/cup:latest
