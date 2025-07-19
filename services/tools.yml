@@ -109,3 +109,14 @@ services:
       TZ: Europe/Amsterdam
       BASE_URL: mealie.dynabase.xyz
       OPENAI_API_KEY: ${OPENAI_API_KEY}
+
+  portracker:
+    container_name: portracker
+    image: mostafawahied/portracker:latest
+    network_mode: "host"
+    volumes:
+      - /home/${USERNAME}/services_data/portracker/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - DATABASE_PATH=/data/portracker.db
+      - PORT=4999
