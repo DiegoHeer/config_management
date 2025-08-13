@@ -124,3 +124,14 @@ services:
   mazanoke:
     container_name: mazanoke
     image: ghcr.io/civilblur/mazanoke:latest
+
+  n8n:
+    container_name: n8n
+    image: docker.n8n.io/n8nio/n8n:1.106.3
+    volumes:
+      - /home/${USERNAME}/services_data/n8n/data:/data
+    environment:
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - TZ=Europe/Amsterdam
+      - GENERIC_TIMEZONE=Europe/Amsterdam
