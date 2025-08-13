@@ -135,3 +135,7 @@ services:
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - TZ=Europe/Amsterdam
       - GENERIC_TIMEZONE=Europe/Amsterdam
+
+  docuseal:
+    container_name: docuseal
+    image: docuseal/docuseal:latest
