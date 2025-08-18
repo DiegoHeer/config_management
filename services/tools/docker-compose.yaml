@@ -24,13 +24,6 @@ services:
       retries: 5
       start_period: 30s
 
-  cup:
-    container_name: cup
-    image: ghcr.io/sergi0g/cup:latest
-    command: serve -p 9000
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
   it-tools:
     container_name: it-tools
     image: corentinth/it-tools:latest
@@ -101,7 +94,7 @@ services:
     container_name: n8n
     image: docker.n8n.io/n8nio/n8n:1.106.3
     volumes:
-      - /home/${USERNAME}/services_data/n8n/data:/data
+      - /home/${USERNAME}/services_data/n8n:/home/node/.n8n
     environment:
       - N8N_RUNNERS_ENABLED=true
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
@@ -111,3 +104,10 @@ services:
   docuseal:
     container_name: docuseal
     image: docuseal/docuseal:latest
+    volumes:
+      - /home/${USERNAME}/services_data/docuseal:/data
+
+networks:
+  default:
+    external: true
+    name: home_server_network

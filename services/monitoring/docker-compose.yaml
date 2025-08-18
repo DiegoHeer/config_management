@@ -17,3 +17,9 @@ services:
     environment:
       PORT: 45876
       KEY: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZ70crWOkNO8ZFv9Ow2Daz4eaGU4bEYGsVXowTbHs1A"
+
+
+networks:
+  default:
+    external: true
+    name: home_server_network

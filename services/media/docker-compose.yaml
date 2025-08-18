@@ -36,10 +36,10 @@ services:
   transmission-openvpn:
     container_name: transmission-openvpn
     image: haugene/transmission-openvpn:5.3.1
-    restart: unless-stopped
+    # restart: unless-stopped
     environment:
       - OPENVPN_PROVIDER=SURFSHARK
-      - OPENVPN_CONFIG=nl-ams.prod.surfshark.com_tcp,be-bru.prod.surfshark.com_tcp.ovpn
+      - OPENVPN_CONFIG=be-anr.prod.surfshark.com_tcp,be-bru.prod.surfshark.com_udp
       - OPENVPN_USERNAME=${TRANSMISSION_OPENVPN_USERNAME}
       - OPENVPN_PASSWORD=${TRANSMISSION_OPENVPN_PASSWORD}
       - LOCAL_NETWORK=${TRANSMISSION_LOCAL_NETWORK}
@@ -64,6 +64,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
+
+  
 
   prowlarr:
     container_name: prowlarr
@@ -117,3 +119,9 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
+
+
+networks:
+  default:
+    external: true
+    name: home_server_network

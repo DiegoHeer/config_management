@@ -63,6 +63,12 @@ services:
         'wal_compression=on',
       ]
 
+
 volumes:
   model-cache:
   immich-db:
+
+networks:
+  default:
+    external: true
+    name: home_server_network
