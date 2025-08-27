@@ -115,6 +115,12 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/docuseal:/data
 
+  convertx:
+    container_name: convertx
+    image: ghcr.io/c4illin/convertx:latest
+    volumes:
+      - /home/${USERNAME}/services_data/convertx:/app/data
+
 networks:
   default:
     external: true
