@@ -120,6 +120,9 @@ services:
     image: ghcr.io/c4illin/convertx:latest
     volumes:
       - /home/${USERNAME}/services_data/convertx:/app/data
+    environment:
+      - ALLOW_UNAUTHENTICATED=true
+      - AUTO_DELETE_EVERY_N_HOURS=1
 
 networks:
   default:
