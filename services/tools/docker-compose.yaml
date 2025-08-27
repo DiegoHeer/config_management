@@ -78,13 +78,15 @@ services:
   portracker:
     container_name: portracker
     image: mostafawahied/portracker:latest
-    network_mode: "host"
+    pid: "host"
+    cap_add:
+      - SYS_PTRACE
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
     volumes:
       - /home/${USERNAME}/services_data/portracker/data:/data
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - DATABASE_PATH=/data/portracker.db
-      - PORT=4999
 
   mazanoke:
     container_name: mazanoke
