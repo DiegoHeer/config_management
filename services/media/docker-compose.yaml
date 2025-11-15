@@ -2,6 +2,7 @@ services:
   jellyfin:
     container_name: jellyfin
     image: linuxserver/jellyfin:10.10.7
+    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
@@ -21,6 +22,7 @@ services:
   jellyseerr:
     image: fallenbagel/jellyseerr:2.5.2
     container_name: jellyseerr
+    restart: unless-stopped
     environment:
       - LOG_LEVEL=debug
       - TZ=Europe/Amsterdam
@@ -36,7 +38,7 @@ services:
   transmission-openvpn:
     container_name: transmission-openvpn
     image: haugene/transmission-openvpn:5.3.1
-    # restart: unless-stopped
+    restart: unless-stopped
     environment:
       - OPENVPN_PROVIDER=SURFSHARK
       - OPENVPN_CONFIG=be-anr.prod.surfshark.com_tcp,be-bru.prod.surfshark.com_udp
@@ -68,6 +70,7 @@ services:
   prowlarr:
     container_name: prowlarr
     image: linuxserver/prowlarr:1.34.1
+    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
@@ -84,6 +87,7 @@ services:
   sonarr:
     container_name: sonarr
     image: linuxserver/sonarr:4.0.14
+    restart: unless-stopped
     environment:
       - PUID=0
       - PGID=0
@@ -103,6 +107,7 @@ services:
   radarr:
     container_name: radarr
     image: linuxserver/radarr:5.22.4
+    restart: unless-stopped
     environment:
       - PUID=0
       - PGID=0
@@ -121,6 +126,7 @@ services:
   navidrome:
     container_name: navidrome
     image: deluan/navidrome:0.58.0
+    restart: unless-stopped
     user: 1000:1000
     volumes:
       - /home/${USERNAME}/services_data/navidrome:/data

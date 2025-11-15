@@ -1,7 +1,7 @@
 services:
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:v1.132.1
+    restart: unless-stopped
     extends:
       file: /home/${USERNAME}/services_data/immich/hwaccel.transcoding.yml
       service: quicksync

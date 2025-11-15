@@ -2,6 +2,7 @@ services:
   nextcloud:
     image: linuxserver/nextcloud:latest
     container_name: nextcloud
+    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
@@ -28,6 +29,7 @@ services:
     image: mariadb
     container_name: nextcloud_mariadb
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: unless-stopped
     volumes:
       - nextcloud-db:/var/lib/mysql
     environment:
@@ -47,6 +49,7 @@ services:
   obsidian-livesync:
     container_name: obsidian-livesync
     image: couchdb:3.4.3
+    restart: unless-stopped
     environment:
       - PUID=1000
       - PGID=1000
@@ -57,7 +60,6 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/obsidian-livesync/data:/opt/couchdb/data
       - /home/${USERNAME}/services_data/obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
-    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://obsidian:obsidian@localhost:5984/_up"]
       interval: 30s

@@ -70,6 +70,7 @@ services:
   glance:
     container_name: glance
     image: glanceapp/glance:v0.8.3
+    restart: unless-stopped
     volumes:
       - /home/${USERNAME}/services_data/glance/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
