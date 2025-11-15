@@ -81,6 +81,24 @@ services:
       retries: 3
       start_period: 10s
 
+  ironmount:
+    container_name: ironmount
+    image: ghcr.io/nicotsx/ironmount:v0.9
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse:/dev/fuse
+    volumes:
+      - /var/lib/ironmount:/var/lib/ironmount
+      - /media/hd1/nextcloud/${USERNAME}/files:/nextcloud
+      - /home/${USERNAME}/services_data:/services_data
+      - /media/hd1/photo_library:/photo_library
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4096"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   docuseal:
     container_name: docuseal
     image: docuseal/docuseal:latest
