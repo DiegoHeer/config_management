@@ -74,6 +74,9 @@ services:
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - TZ=Europe/Amsterdam
       - GENERIC_TIMEZONE=Europe/Amsterdam
+      - N8N_HOST=n8n.dynbase.xyz
+      - N8N_PROTOCOL=https
+      - WEBHOOK_URL=https://n8n.dynabase.xyz/
     healthcheck:
       test: wget --spider http://localhost:5678/healthz > /dev/null 2>&1 || exit 1
       interval: 30s
