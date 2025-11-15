@@ -1,16 +1,4 @@
 services:
-  olivetin:
-    container_name: olivetin
-    restart: unless-stopped
-    image: jamesread/olivetin:2025.4.22
-    volumes:
-      - /home/${USERNAME}/services_data/olivetin/config:/config
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:1337/api/readyz"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   dozzle:
     container_name: dozzle
     image: amir20/dozzle:latest
@@ -76,23 +64,6 @@ services:
       BASE_URL: mealie.dynabase.xyz
       OPENAI_API_KEY: ${OPENAI_API_KEY}
 
-  portracker:
-    container_name: portracker
-    image: mostafawahied/portracker:latest
-    pid: "host"
-    cap_add:
-      - SYS_PTRACE
-      - SYS_ADMIN
-    security_opt:
-      - apparmor:unconfined
-    volumes:
-      - /home/${USERNAME}/services_data/portracker/data:/data
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-
-  mazanoke:
-    container_name: mazanoke
-    image: ghcr.io/civilblur/mazanoke:latest
-
   n8n:
     container_name: n8n
     image: docker.n8n.io/n8nio/n8n:1.106.3
@@ -115,15 +86,12 @@ services:
     image: docuseal/docuseal:latest
     volumes:
       - /home/${USERNAME}/services_data/docuseal:/data
-
-  convertx:
-    container_name: convertx
-    image: ghcr.io/c4illin/convertx:latest
-    volumes:
-      - /home/${USERNAME}/services_data/convertx:/app/data
-    environment:
-      - ALLOW_UNAUTHENTICATED=true
-      - AUTO_DELETE_EVERY_N_HOURS=1
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 networks:
   default:
