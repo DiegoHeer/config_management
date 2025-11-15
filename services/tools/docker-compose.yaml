@@ -118,6 +118,7 @@ services:
       - /dev/fuse:/dev/fuse
     volumes:
       - /var/lib/ironmount:/var/lib/ironmount
+      - /home/${USERNAME}/.config/rclone:/root/.config/rclone
       - /media/hd1/nextcloud/${USERNAME}/files:/nextcloud
       - /home/${USERNAME}/services_data:/services_data
       - /media/hd1/photo_library:/photo_library
