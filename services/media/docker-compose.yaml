@@ -131,6 +131,11 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/navidrome:/data
       - /media/hd1/media/music:/music:ro
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4533"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
 networks:
