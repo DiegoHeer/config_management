@@ -111,6 +111,7 @@ services:
   ironmount:
     container_name: ironmount
     image: ghcr.io/nicotsx/ironmount:v0.9
+    restart: unless-stopped
     cap_add:
       - SYS_ADMIN
     devices:
