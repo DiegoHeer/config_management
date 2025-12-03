@@ -124,6 +124,13 @@ services:
       retries: 5
       start_period: 10s
 
+  changedetection:
+    container_name: changedetection
+    image: ghcr.io/dgtlmoon/changedetection.io
+    restart: unless-stopped
+    volumes:
+      - /home/${USERNAME}/services_data/changedetection:/datastore
+
   tandoor:
     container_name: tandoor
     image: vabene1111/recipes:2.3.5
