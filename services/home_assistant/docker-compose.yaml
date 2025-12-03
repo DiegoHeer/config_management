@@ -19,6 +19,20 @@ services:
       retries: 5
       start_period: 30s
 
+  doorbell_samba:
+    image: ghcr.io/servercontainers/samba:latest
+    container_name: doorbell_samba
+    network_mode: host
+    restart: unless-stopped
+    cap_add:
+      - CAP_NET_ADMIN
+    environment:
+      ACCOUNT_diego: ${SAMBA_ACCOUNT_PASSWORD}
+      UID_diego: 1000
+      SAMBA_VOLUME_CONFIG_doorbell: "[doorbell]; path=/doorbell; available = yes; browsable = yes; writable = yes; read only = no; force user = diego; public = yes; guest ok = yes"
+    volumes:
+      - /media/hd1/recordings/doorbell:/doorbell
+
 
 networks:
   default:
