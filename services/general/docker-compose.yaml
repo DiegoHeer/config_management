@@ -66,3 +66,23 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/glance/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
+
+  pocket-id:
+    container_name: pocket-id
+    image: ghcr.io/pocket-id/pocket-id:v1.15.0
+    restart: unless-stopped
+    environment:
+      - APP_URL=https://pocket-id.tail.dynabase.xyz
+      - INTERNAL_APP_URL=https://pocket-id.dynabase.xyz
+      - TRUST_PROXY=true
+      - MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY}
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /home/${USERNAME}/services_data/pocket-id:/app/data
+    healthcheck:
+      test: [ "CMD", "/app/pocket-id", "healthcheck" ]
+      interval: 1m30s
+      timeout: 5s
+      retries: 2
+      start_period: 10s
