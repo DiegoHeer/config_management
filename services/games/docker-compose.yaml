@@ -1,0 +1,50 @@
+services:
+  romm:
+    container_name: romm
+    image: rommapp/romm:4.4.1
+    environment:
+      - DB_HOST=romm_mariadb
+      - DB_NAME=romm
+      - DB_USER=romm-user
+      - DB_PASSWD=${MARIADB_PASSWORD}
+      - ROMM_AUTH_SECRET_KEY=${ROMM_AUTH_SECRET_KEY}
+      - STEAMGRIDDB_API_KEY=${STEAMGRIDDB_API_KEY}
+      - RETROACHIEVEMENTS_API_KEY=${RETROACHIEVEMENTS_API_KEY}
+      - SCREENSCRAPER_USER=${SCREENSCRAPER_USER}
+      - SCREENSCRAPER_PASSWORD=${SCREENSCRAPER_PASSWORD}
+      - LAUNCHBOX_API_ENABLED=true
+      - HASHEOUS_API_ENABLED=true
+      - HLTB_API_ENABLED=true
+    volumes:
+      - /home/${USERNAME}/services_data/romm/resources:/romm/resources
+      - /home/${USERNAME}/services_data/romm/redis:/redis-data
+      - /media/hd1/media/games:/romm/library
+      - /home/${USERNAME}/services_data/romm/assets:/romm/assets
+      - /home/${USERNAME}/services_data/romm/config:/romm/config
+    depends_on:
+      romm_mariadb:
+        condition: service_healthy
+        restart: true
+
+  romm_mariadb:
+    container_name: romm_mariadb
+    image: mariadb:latest
+    environment:
+      - MARIADB_DATABASE=romm
+      - MARIADB_USER=romm-user
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_PASSWORD}
+    volumes:
+      - /home/${USERNAME}/services_data/romm/mysql:/var/lib/mysql
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      start_period: 30s
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  default:
+    external: true
+    name: home_server_network
