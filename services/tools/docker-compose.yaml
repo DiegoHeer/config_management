@@ -150,6 +150,7 @@ services:
 
   tandoor_postgres:
     container_name: tandoor_postgres
+    restart: unless-stopped
     image: postgres:16-alpine
     volumes:
       - /home/${USERNAME}/services_data/tandoor/postgresql:/var/lib/postgresql/data
@@ -157,6 +158,12 @@ services:
       - POSTGRES_USER=djangodb
       - POSTGRES_PASSWORD=${TANDOOR_POSTGRES_PASSWORD}
       - POSTGRES_DB=djangodb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U djangodb -d djangodb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 networks:
   default:
