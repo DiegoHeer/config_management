@@ -34,6 +34,13 @@ services:
       - /home/${USERNAME}/services_data/portracker/data:/data
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
+  termix:
+    container_name: termix
+    image: ghcr.io/lukegus/termix:latest
+    restart: unless-stopped
+    volumes:
+      - /home/${USERNAME}/services_data/termix/data:/app/data
+
 
 networks:
   default:
