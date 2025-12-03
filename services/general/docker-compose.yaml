@@ -43,22 +43,15 @@ services:
 
   filebrowser:
     container_name: filebrowser
-    image: filebrowser/filebrowser:v2.32.0
+    image: gtstef/filebrowser:1.0.1-stable
     restart: unless-stopped
-    volumes:
-      - /media/hd1:/srv
-      - /home/${USERNAME}:/srv/home
-      - /home/${USERNAME}/services_data/filebrowser/filebrowser.db:/database.db
-      - /home/${USERNAME}/services_data/filebrowser/.filebrowser.json:/.filebrowser.json
     environment:
-      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      - PUID=1000
-      - PGID=1000
-    entrypoint:
-      - /filebrowser
-    logging:
-      driver: json-file
-      options: {}
+      TZ: "Europe/Amsterdam"
+      FILEBROWSER_CONFIG: "data/config.yaml"
+    volumes:
+      - /media/hd1:/hd1
+      - /home/${USERNAME}:/user_home
+      - /home/${USERNAME}/services_data/filebrowser/data:/home/filebrowser/data
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:80/health"]
       interval: 30s
