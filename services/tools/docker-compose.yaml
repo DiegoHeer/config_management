@@ -37,6 +37,13 @@ services:
     image: gristlabs/grist:1.5.1
     environment:
         - PORT=9999
+        - GRIST_DEFAULT_EMAIL=diegojonathanheer@gmail.com
+        - GRIST_OIDC_IDP_ISSUER=https://pocket-id.dynabase.xyz/.well-known/openid-configuration
+        - GRIST_OIDC_IDP_CLIENT_ID=8cfc1029-f371-4455-a1cd-2382bcfb03ab
+        - GRIST_OIDC_IDP_CLIENT_SECRET=lTTJxyDmwps8lzoWFQ5gHV3FTYhNg44l
+        - GRIST_OIDC_SP_HOST=https://grist.dynabase.xyz
+        - GRIST_OIDC_IDP_SCOPES=openid email profile
+        - GRIST_OIDC_IDP_SKIP_END_SESSION_ENDPOINT=true
     volumes:
         - /home/${USERNAME}/services_data/glance/persist:/persist
     healthcheck:
@@ -142,6 +149,9 @@ services:
       - POSTGRES_USER=djangodb
       - POSTGRES_PASSWORD=${TANDOOR_POSTGRES_PASSWORD}
       - POSTGRES_DB=djangodb
+      - SOCIAL_DEFAULT_ACCESS=1
+      - SOCIAL_PROVIDERS=allauth.socialaccount.providers.openid_connect
+      - SOCIALACCOUNT_PROVIDERS={"openid_connect":{"OAUTH_PKCE_ENABLED":True,"APPS":[{"provider_id":"oidc","name":"PocketID","client_id":"660f5989-ba93-4b2c-83b8-6117b17cb12e","secret":"ei9GJWbjG5APM56ix07JLo4lrimLs9W6","settings":{"fetch_userinfo":True,"oauth_pkce_enabled":True,"server_url":"https://pocket-id.dynabase.xyz/.well-known/openid-configuration"}}]}}
     volumes:
       - /home/${USERNAME}/services_data/tandoor/staticfiles:/opt/recipes/staticfiles
       - /home/${USERNAME}/services_data/tandoor/mediafiles:/opt/recipes/mediafiles

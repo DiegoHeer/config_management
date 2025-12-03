@@ -35,6 +35,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}
+      - NEXTAUTH_SECRET=RIdVj6VUqhtuNhpiLeETnmygYXYnnwhXiBMdKk1JSuY=
+      - AUTH_PROVIDERS=oidc
+      - AUTH_OIDC_CLIENT_ID=b0df7627-0e61-4f44-85a4-b4b3a5f5780d
+      - AUTH_OIDC_CLIENT_SECRET=TjWzNKCtiE0FmwHOPH13PhOCpmCBp9rn
+      - AUTH_OIDC_ISSUER=http://pocket-id:1411
+      - AUTH_LOGOUT_REDIRECT_URL=https://homarr.dynabase.xyz/auth/login
+      - AUTH_OIDC_CLIENT_NAME=Pocket ID
     healthcheck:
       test: ["CMD-SHELL", "homarr --version || exit 1"]
       interval: 30s
