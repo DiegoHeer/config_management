@@ -21,6 +21,17 @@ services:
       TOKEN: 73361fa0-654c-4c13-b63e-6cd1b7149190
       HUB_URL: https://beszel.dynabase.xyz
 
+  adguardhome:
+    container_name: adguardhome
+    image: adguard/adguardhome
+    restart: unless-stopped
+    ports:
+      - 53:53/udp
+      - 53:53/tcp
+    volumes:
+      - /home/${USERNAME}/services_data/adguardhome/conf:/opt/adguardhome/conf
+      - /home/${USERNAME}/services_data/adguardhome/work:/opt/adguardhome/work
+
   portracker:
     container_name: portracker
     image: mostafawahied/portracker:latest
