@@ -1,7 +1,7 @@
 services:
   beszel:
     container_name: beszel
-    image: henrygd/beszel:0.10.1
+    image: henrygd/beszel:0.16.1
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
@@ -9,14 +9,17 @@ services:
 
   beszel-agent:
     container_name: beszel-agent
-    image: henrygd/beszel-agent:0.10.2
+    image: henrygd/beszel-agent:0.16.1
     network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /media/hd1/.beszel:/extra-filesystems/sdb1:ro
+      - /home/${USERNAME}/services_data/beszel/agent_data:/var/lib/beszel-agent
     environment:
-      PORT: 45876
-      KEY: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZ70crWOkNO8ZFv9Ow2Daz4eaGU4bEYGsVXowTbHs1A"
+      LISTEN: 45876
+      KEY: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZ70crWOkNO8ZFv9Ow2Daz4eaGU4bEYGsVXowTbHs1A'
+      TOKEN: 73361fa0-654c-4c13-b63e-6cd1b7149190
+      HUB_URL: https://beszel.dynabase.xyz
 
 
 networks:

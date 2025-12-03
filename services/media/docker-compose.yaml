@@ -1,7 +1,7 @@
 services:
   jellyfin:
     container_name: jellyfin
-    image: linuxserver/jellyfin:10.10.7
+    image: linuxserver/jellyfin:10.11.3
     restart: unless-stopped
     environment:
       - PUID=1000
@@ -20,7 +20,7 @@ services:
       start_period: 20s
 
   jellyseerr:
-    image: fallenbagel/jellyseerr:2.5.2
+    image: fallenbagel/jellyseerr:2.7.3
     container_name: jellyseerr
     restart: unless-stopped
     environment:
@@ -69,7 +69,7 @@ services:
 
   prowlarr:
     container_name: prowlarr
-    image: linuxserver/prowlarr:1.34.1
+    image: linuxserver/prowlarr:2.3.0
     restart: unless-stopped
     environment:
       - PUID=1000
@@ -86,7 +86,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:4.0.14
+    image: linuxserver/sonarr:4.0.16
     restart: unless-stopped
     environment:
       - PUID=0
@@ -106,7 +106,7 @@ services:
 
   radarr:
     container_name: radarr
-    image: linuxserver/radarr:5.22.4
+    image: linuxserver/radarr:6.0.4
     restart: unless-stopped
     environment:
       - PUID=0

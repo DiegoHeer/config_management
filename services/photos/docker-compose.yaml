@@ -1,7 +1,7 @@
 services:
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:v1.142.1
+    image: ghcr.io/immich-app/immich-server:v2.3.1
     restart: unless-stopped
     extends:
       file: /home/${USERNAME}/services_data/immich/hwaccel.transcoding.yml
@@ -17,7 +17,7 @@ services:
 
   immich-machine-learning:
     container_name: immich_machine_learning
-    image: ghcr.io/immich-app/immich-machine-learning:v1.142.1
+    image: ghcr.io/immich-app/immich-machine-learning:v2.3.1
     restart: unless-stopped
     volumes:
       - model-cache:/cache
