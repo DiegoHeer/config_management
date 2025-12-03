@@ -165,6 +165,39 @@ services:
       retries: 5
       start_period: 10s
 
+  karakeep:
+    container_name: karakeep
+    image: ghcr.io/karakeep-app/karakeep:0.28.0
+    environment:
+      NEXTAUTH_SECRET: cT5y27aUbvkIest7LRwYKR5+drA4uZuQ9c4542DKqptNFMju
+      MEILI_MASTER_KEY: M2nna4BSVeUcInvUEsJ5AFAdTU8xH5IVoumon1YzJslvw4M+
+      NEXTAUTH_URL: https://karakeep.dynabase.xyz
+      MEILI_ADDR: http://karakeep_meilisearch:7700
+      BROWSER_WEB_URL: http://karakeep_chrome:9222
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      DATA_DIR: /data
+    volumes:
+      - /home/${USERNAME}/services_data/karakeep/data:/data
+
+  karakeep_chrome:
+    container_name: karakeep_chrome
+    image: gcr.io/zenika-hub/alpine-chrome:124
+    command:
+      - --no-sandbox
+      - --disable-gpu
+      - --disable-dev-shm-usage
+      - --remote-debugging-address=0.0.0.0
+      - --remote-debugging-port=9222
+      - --hide-scrollbars
+
+  karakeep_meilisearch:
+    container_name: karakeep_meilisearch
+    image: getmeili/meilisearch:v1.13.3
+    environment:
+      MEILI_NO_ANALYTICS: "true"
+    volumes:
+      - /home/${USERNAME}/services_data/karakeep/meilisearch:/meili_data
+
 networks:
   default:
     external: true
