@@ -21,6 +21,19 @@ services:
       TOKEN: 73361fa0-654c-4c13-b63e-6cd1b7149190
       HUB_URL: https://beszel.dynabase.xyz
 
+  portracker:
+    container_name: portracker
+    image: mostafawahied/portracker:latest
+    pid: "host"
+    cap_add:
+      - SYS_PTRACE
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - /home/${USERNAME}/services_data/portracker/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
 
 networks:
   default:
