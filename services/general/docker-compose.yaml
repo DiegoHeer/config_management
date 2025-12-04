@@ -35,13 +35,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}
-      - NEXTAUTH_SECRET=RIdVj6VUqhtuNhpiLeETnmygYXYnnwhXiBMdKk1JSuY=
-      - AUTH_PROVIDERS=oidc
-      - AUTH_OIDC_CLIENT_ID=b0df7627-0e61-4f44-85a4-b4b3a5f5780d
-      - AUTH_OIDC_CLIENT_SECRET=TjWzNKCtiE0FmwHOPH13PhOCpmCBp9rn
-      - AUTH_OIDC_ISSUER=http://pocket-id:1411
-      - AUTH_LOGOUT_REDIRECT_URL=https://homarr.dynabase.xyz/auth/login
-      - AUTH_OIDC_CLIENT_NAME=Pocket ID
     healthcheck:
       test: ["CMD-SHELL", "homarr --version || exit 1"]
       interval: 30s
@@ -73,23 +66,3 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/glance/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
-
-  pocket-id:
-    container_name: pocket-id
-    image: ghcr.io/pocket-id/pocket-id:v1.15.0
-    restart: unless-stopped
-    environment:
-      - APP_URL=https://pocket-id.tail.dynabase.xyz
-      - INTERNAL_APP_URL=https://pocket-id.dynabase.xyz
-      - TRUST_PROXY=true
-      - MAXMIND_LICENSE_KEY=${MAXMIND_LICENSE_KEY}
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - /home/${USERNAME}/services_data/pocket-id:/app/data
-    healthcheck:
-      test: [ "CMD", "/app/pocket-id", "healthcheck" ]
-      interval: 1m30s
-      timeout: 5s
-      retries: 2
-      start_period: 10s

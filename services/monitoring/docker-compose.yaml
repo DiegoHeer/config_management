@@ -17,8 +17,8 @@ services:
       - /home/${USERNAME}/services_data/beszel/agent_data:/var/lib/beszel-agent
     environment:
       LISTEN: 45876
-      KEY: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZ70crWOkNO8ZFv9Ow2Daz4eaGU4bEYGsVXowTbHs1A'
-      TOKEN: 73361fa0-654c-4c13-b63e-6cd1b7149190
+      KEY: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGkA/G2D4L3nHi5fxUSHU892XZTPdedNRmFvVM3acXVy'
+      TOKEN: 745717b0-b1b0-4ed9-8759-aa2bf46ce1b4
       HUB_URL: https://beszel.dynabase.xyz
 
   adguardhome:

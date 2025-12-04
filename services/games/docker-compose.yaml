@@ -15,12 +15,6 @@ services:
       - LAUNCHBOX_API_ENABLED=true
       - HASHEOUS_API_ENABLED=true
       - HLTB_API_ENABLED=true
-      - OIDC_ENABLED=true
-      - OIDC_PROVIDER=pocketid
-      - OIDC_CLIENT_ID=c19259ba-2dab-4ecf-bd12-c80dd4388688
-      - OIDC_CLIENT_SECRET=fOfcsHYX0sfZASewybaTQyWzHBYyi8Jf
-      - OIDC_REDIRECT_URI=https://romm.dynabase.xyz/api/oauth/openid
-      - OIDC_SERVER_APPLICATION_URL=https://pocket-id.dynabase.xyz
     volumes:
       - /home/${USERNAME}/services_data/romm/resources:/romm/resources
       - /home/${USERNAME}/services_data/romm/redis:/redis-data
