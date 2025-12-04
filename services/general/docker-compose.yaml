@@ -66,3 +66,13 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/glance/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
+
+  # OBS: this dashboard is mainly for accessing services using Tailscale
+  dashlit:
+    container_name: dashlit
+    image: ghcr.io/codewec/dashlit:latest
+    restart: unless-stopped
+    environment:
+      ORIGIN: https://dashlit.tail.dynabase.xyz
+    volumes:
+      - /home/${USERNAME}/services_data/dashlit/data:/app/data
