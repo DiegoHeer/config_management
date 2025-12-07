@@ -22,15 +22,15 @@ services:
       timeout: 5s
       retries: 5
 
-  stirling-pdf:
-    container_name: stirling-pdf
-    image: stirlingtools/stirling-pdf:0.45.6
+  bentopdf:
+    container_name: bentopdf
+    image: bentopdf/bentopdf:latest
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/info/status"]
-      interval: 20s
-      timeout: 10s
-      retries: 3
-      start_period: 15s
+      test: wget --spider http://localhost:8080 > /dev/null 2>&1 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   grist:
     container_name: grist
