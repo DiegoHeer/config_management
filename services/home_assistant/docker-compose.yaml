@@ -9,7 +9,6 @@ services:
       - /run/dbus:/run/dbus:ro
       - /dev:/dev
     privileged: true
-    network_mode: host
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
     healthcheck:
