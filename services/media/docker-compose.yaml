@@ -34,37 +34,45 @@ services:
       retries: 3
       start_period: 20s
 
-  transmission-openvpn:
-    container_name: transmission-openvpn
-    image: haugene/transmission-openvpn:5.3.1
+  gluetun:
+    container_name: gluetun
+    image: qmcgaw/gluetun
     restart: unless-stopped
-    environment:
-      - OPENVPN_PROVIDER=SURFSHARK
-      - OPENVPN_CONFIG=be-anr.prod.surfshark.com_tcp,be-bru.prod.surfshark.com_udp
-      - OPENVPN_USERNAME=${TRANSMISSION_OPENVPN_USERNAME}
-      - OPENVPN_PASSWORD=${TRANSMISSION_OPENVPN_PASSWORD}
-      - LOCAL_NETWORK=${TRANSMISSION_LOCAL_NETWORK}
-      - TRANSMISSION_WEB_UI=transmission-web-control
-      - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
-    volumes:
-      - /media/hd1/downloads/data:/data
-      - /home/${USERNAME}/services_data/transmission-openvpn/config/transmission-home:/config/transmission-home
-      - /home/${USERNAME}/services_data/transmission-openvpn/config/openvpn-credentials.txt:/config/openvpn-credentials.txt
-      - /home/${USERNAME}/services_data/transmission-openvpn/config/transmission-credentials.txt:/config/transmission-credentials.txt
     cap_add:
       - NET_ADMIN
     devices:
-      - /dev/net/tun
-    logging:
-      driver: json-file
-      options:
-        max-size: 10m
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - /home/${USERNAME}/services_data/gluetun:/gluetun
+    environment:
+      - TZ=Europe/Amsterdam
+      - VPN_SERVICE_PROVIDER=surfshark
+      - VPN_TYPE=openvpn
+      - OPENVPN_USER=${TRANSMISSION_OPENVPN_USERNAME}
+      - OPENVPN_PASSWORD=${TRANSMISSION_OPENVPN_PASSWORD}
+      - SERVER_COUNTRIES=Netherlands,Belgium
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9091/transmission/web/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
+      test: ping -c l www.google.com || exit 1
+      interval: 60s
+      timeout: 20s
+      retries: 5
+
+  qbittorrent:
+    container_name: qbittorrent
+    image: lscr.io/linuxserver/qbittorrent:latest
+    restart: unless-stopped
+    network_mode: service:gluetun
+    depends_on:
+      - gluetun
+    volumes:
+      - /home/${USERNAME}/services_data/qbittorrent/config:/config
+      - /media/hd1/data:/data
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
 
   prowlarr:
     container_name: prowlarr
