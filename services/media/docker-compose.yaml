@@ -146,6 +146,21 @@ services:
     environment:
       - TZ=Europe/Amsterdam
 
+  sabnzbd:
+    container_name: sabnzbd
+    image: lscr.io/linuxserver/sabnzbd:latest
+    restart: unless-stopped
+    network_mode: service:gluetun
+    depends_on:
+      - gluetun
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+    volumes:
+      - /home/${USERNAME}/services_data/sabnzbd/config:/config
+      - /media/hd1/data:/data
+
   navidrome:
     container_name: navidrome
     image: deluan/navidrome:0.58.0
