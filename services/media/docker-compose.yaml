@@ -136,6 +136,16 @@ services:
       retries: 3
       start_period: 20s
 
+  flaresolverr:
+    container_name: flaresolverr
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    restart: unless-stopped
+    network_mode: service:gluetun
+    depends_on:
+      - gluetun
+    environment:
+      - TZ=Europe/Amsterdam
+
   navidrome:
     container_name: navidrome
     image: deluan/navidrome:0.58.0
