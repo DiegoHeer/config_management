@@ -107,6 +107,7 @@ services:
       - /media/hd1/nextcloud/${USERNAME}/files:/nextcloud
       - /home/${USERNAME}/services_data:/services_data
       - /media/hd1/photo_library:/photo_library
+      - /media/hd3:/hd3
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:4096"]
       interval: 10s

@@ -18,7 +18,7 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/romm/resources:/romm/resources
       - /home/${USERNAME}/services_data/romm/redis:/redis-data
-      - /media/hd1/media/games:/romm/library
+      - /media/hd2/data/media/games:/romm/library
       - /home/${USERNAME}/services_data/romm/assets:/romm/assets
       - /home/${USERNAME}/services_data/romm/config:/romm/config
     depends_on:

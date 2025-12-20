@@ -8,7 +8,7 @@ services:
       - PGID=1000
       - TZ=Europe/Amsterdam
     volumes:
-      - /media/hd1/data:/data
+      - /media/hd2/data:/data
       - /home/${USERNAME}/services_data/jellyfin/config:/config
       - /dev/dri:/dev/dri
     healthcheck:
@@ -66,7 +66,7 @@ services:
       - gluetun
     volumes:
       - /home/${USERNAME}/services_data/qbittorrent/config:/config
-      - /media/hd1/data:/data
+      - /media/hd2/data:/data
     environment:
       - PUID=1000
       - PGID=1000
@@ -107,7 +107,7 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - /home/${USERNAME}/services_data/sonarr/config:/config
-      - /media/hd1/data:/data
+      - /media/hd2/data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8989/ping"]
       interval: 30s
@@ -128,7 +128,7 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - /home/${USERNAME}/services_data/radarr/config:/config
-      - /media/hd1/data:/data
+      - /media/hd2/data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7878/ping"]
       interval: 30s
@@ -159,7 +159,7 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - /home/${USERNAME}/services_data/sabnzbd/config:/config
-      - /media/hd1/data:/data
+      - /media/hd2/data:/data
 
   navidrome:
     container_name: navidrome
@@ -168,7 +168,7 @@ services:
     user: 1000:1000
     volumes:
       - /home/${USERNAME}/services_data/navidrome:/data
-      - /media/hd1/data/media/music:/music:ro
+      - /media/hd2/data/media/music:/music:ro
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:4533"]
       interval: 10s

@@ -50,6 +50,8 @@ services:
       FILEBROWSER_CONFIG: "data/config.yaml"
     volumes:
       - /media/hd1:/hd1
+      - /media/hd2:/hd2
+      - /media/hd3:/hd3
       - /home/${USERNAME}:/user_home
       - /home/${USERNAME}/services_data/filebrowser/data:/home/filebrowser/data
     healthcheck:
