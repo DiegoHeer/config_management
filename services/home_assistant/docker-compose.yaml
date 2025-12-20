@@ -18,6 +18,16 @@ services:
       retries: 5
       start_period: 30s
 
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    volumes:
+      - /home/${USERNAME}/services_data/mosquitto/log:/mosquitto/log
+      - /home/${USERNAME}/services_data/mosquitto/data:/mosquitto/data
+      - /home/${USERNAME}/services_data/mosquitto/config:/mosquitto/config
+    ports:
+      - 1883:1883
+
   doorbell_samba:
     image: ghcr.io/servercontainers/samba:latest
     container_name: doorbell_samba
