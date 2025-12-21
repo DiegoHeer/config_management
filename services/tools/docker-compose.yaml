@@ -174,7 +174,7 @@ services:
     restart: unless-stopped
     environment:
       AUTH_URL: https://norish.dynabase.xyz
-      TRUSTED_ORIGINS: https://norish.dynabase.xyz,https://norish.net.dynabase.xyz
+      TRUSTED_ORIGINS: https://norish.dynabase.xyz,https://norish.net.dynabase.xyz,http://norish:3000
       DATABASE_URL: postgres://postgres:norish@norish_postgres:5432/norish
       MASTER_KEY: qfXBXKoZLv++zvEO78iOeQni8kMx5Y4z38CxE8xxB8A=
       CHROME_WS_ENDPOINT: ws://norish_chrome:3000
