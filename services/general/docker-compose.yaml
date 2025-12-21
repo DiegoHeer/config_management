@@ -85,7 +85,7 @@ services:
     restart: unless-stopped
     environment:
       - PANGOLIN_ENDPOINT=https://pangolin.net.dynabase.xyz
-      - NEWT_ID=z3gykuf0b7hcbll
-      - NEWT_SECRET=rf0kbfidyhxmgeb5kvxqqifkb51kgvwj4520ich3a4yqi7wp
+      - NEWT_ID=${NEWT_ID}
+      - NEWT_SECRET=${NEWT_SECRET}
       - DOCKER_SOCKET=unix:///var/run/docker.sock
       - DOCKER_ENFORCE_NETWORK_VALIDATION=true
