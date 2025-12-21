@@ -69,12 +69,23 @@ services:
       - /home/${USERNAME}/services_data/glance/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
 
-  # OBS: this dashboard is mainly for accessing services using Tailscale
+  # OBS: this dashboard is mainly for accessing services using Pangolin
   dashlit:
     container_name: dashlit
     image: ghcr.io/codewec/dashlit:latest
     restart: unless-stopped
     environment:
-      ORIGIN: https://dashlit.tail.dynabase.xyz
+      ORIGIN: https://dashlit.net.dynabase.xyz
     volumes:
       - /home/${USERNAME}/services_data/dashlit/data:/app/data
+
+  pangolin_newt:
+    image: fosrl/newt
+    container_name: pangolin_newt
+    restart: unless-stopped
+    environment:
+      - PANGOLIN_ENDPOINT=https://pangolin.net.dynabase.xyz
+      - NEWT_ID=z3gykuf0b7hcbll
+      - NEWT_SECRET=rf0kbfidyhxmgeb5kvxqqifkb51kgvwj4520ich3a4yqi7wp
+      - DOCKER_SOCKET=unix:///var/run/docker.sock
+      - DOCKER_ENFORCE_NETWORK_VALIDATION=true
