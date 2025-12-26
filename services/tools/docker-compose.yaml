@@ -92,28 +92,6 @@ services:
       retries: 5
       start_period: 10s
 
-  zerobyte:
-    container_name: zerobyte
-    image: ghcr.io/nicotsx/zerobyte:v0.17.0
-    restart: unless-stopped
-    cap_add:
-      - SYS_ADMIN
-    devices:
-      - /dev/fuse:/dev/fuse
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/lib/zerobyte:/var/lib/zerobyte
-      - /home/${USERNAME}/.config/rclone:/root/.config/rclone
-      - /media/hd1/nextcloud/${USERNAME}/files:/nextcloud
-      - /home/${USERNAME}/services_data:/services_data
-      - /media/hd1/photo_library:/photo_library
-      - /media/hd3:/hd3
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4096"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   docuseal:
     container_name: docuseal
     image: docuseal/docuseal:2.2.2
