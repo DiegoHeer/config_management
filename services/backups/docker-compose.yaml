@@ -21,6 +21,13 @@ services:
       timeout: 5s
       retries: 5
 
+  databasus:
+    container_name: databasus
+    image: databasus/databasus:latest
+    volumes:
+      - /home/${USERNAME}/services_data/databasus-data:/databasus-data
+    restart: unless-stopped
+
 networks:
   default:
     external: true
