@@ -21,7 +21,10 @@ services:
       timeout: 10s
       retries: 3
 
-
+  cloudflare_tunnel:
+      container_name: cloudflare_tunnel
+      image: cloudflare/cloudflared:latest
+      command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
 
 
 networks:
