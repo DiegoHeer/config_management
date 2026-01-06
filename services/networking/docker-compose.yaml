@@ -21,35 +21,7 @@ services:
       timeout: 10s
       retries: 3
 
-  cloudflare_ddns:
-    container_name: cloudflare_ddns
-    image: timothyjmiller/cloudflare-ddns:latest
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    network_mode: host
-    environment:
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - /home/${USERNAME}/services_data/cloudflare_ddns/config.json:/config.json
-    healthcheck:
-      test: ["CMD", "pgrep", "-f", "cloudflare-ddns"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
 
-  pangolin_newt:
-    image: fosrl/newt
-    container_name: pangolin_newt
-    restart: unless-stopped
-    environment:
-      - PANGOLIN_ENDPOINT=https://pangolin.net.dynabase.xyz
-      - NEWT_ID=${NEWT_ID}
-      - NEWT_SECRET=${NEWT_SECRET}
-      - DOCKER_SOCKET=unix:///var/run/docker.sock
-      - DOCKER_ENFORCE_NETWORK_VALIDATION=true
 
 
 networks:
