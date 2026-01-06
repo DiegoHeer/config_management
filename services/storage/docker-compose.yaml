@@ -1,4 +1,24 @@
 services:
+  filebrowser:
+    container_name: filebrowser
+    image: gtstef/filebrowser:1.0.1-stable
+    restart: unless-stopped
+    environment:
+      TZ: "Europe/Amsterdam"
+      FILEBROWSER_CONFIG: "data/config.yaml"
+    volumes:
+      - /media/hd1:/hd1
+      - /media/hd2:/hd2
+      - /media/hd3:/hd3
+      - /home/${USERNAME}:/user_home
+      - /home/${USERNAME}/services_data/filebrowser/data:/home/filebrowser/data
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
   nextcloud:
     image: linuxserver/nextcloud:latest
     container_name: nextcloud

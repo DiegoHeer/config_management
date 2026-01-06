@@ -1,0 +1,29 @@
+services:
+  homarr:
+    container_name: homarr
+    restart: unless-stopped
+    image: ghcr.io/homarr-labs/homarr:v1.45.1
+    volumes:
+      - /home/${USERNAME}/services_data/homarr/appdata:/appdata
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}
+    healthcheck:
+      test: ["CMD-SHELL", "homarr --version || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  glance:
+    container_name: glance
+    image: glanceapp/glance:v0.8.4
+    restart: unless-stopped
+    volumes:
+      - /home/${USERNAME}/services_data/glance/config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  default:
+    name: home_server_network
+    driver: bridge
+    external: true
