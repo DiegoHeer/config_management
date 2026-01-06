@@ -87,29 +87,9 @@ services:
       retries: 3
       start_period: 15s
 
-  opencloud:
-    container_name: opencloud
-    image: opencloudeu/opencloud:latest
-    restart: unless-stopped
-    user: 1000:1000
-    entrypoint:
-      - /bin/sh
-    command: ["-c", "opencloud init || true; opencloud server"]
-    environment:
-      OC_URL: https://opencloud.net.dynabase.xyz
-      PROXY_TLS: "false"
-      PROXY_HTTP_ADDR: 0.0.0.0:9200
-      OC_INSECURE: false
-      FRONTEND_ARCHIVER_MAX_SIZE: "10000000000"
-      INITIAL_ADMIN_PASSWORD: admin
-    volumes:
-      - /home/${USERNAME}/services_data/opencloud/csp.yaml:/etc/opencloud/csp.yaml
-      - /home/${USERNAME}/services_data/opencloud/config:/etc/opencloud
-      - ${OC_DATA_DIR:-opencloud-data}:/var/lib/opencloud
 
 volumes:
   nextcloud-db:
-  opencloud-data:
 
 networks:
   default:
