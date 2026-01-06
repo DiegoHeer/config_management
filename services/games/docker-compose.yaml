@@ -1,7 +1,7 @@
 services:
   romm:
     container_name: romm
-    image: rommapp/romm:4.4.1
+    image: rommapp/romm:latest
     environment:
       - DB_HOST=romm_mariadb
       - DB_NAME=romm
