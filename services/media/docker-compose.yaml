@@ -190,6 +190,15 @@ services:
       timeout: 5s
       retries: 5
 
+  audiobookshelf:
+    container_name: audiobookshelf
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    restart: unless-stopped
+    volumes:
+      - /home/${USERNAME}/services_data/audiobookshelf/config:/config
+      - /home/${USERNAME}/services_data/audiobookshelf/metadata:/metadata
+      - /media/hd2/data/media/audiobooks:/audiobooks
+      - /media/hd2/data/media/podcasts:/podcasts
 
 networks:
   default:
