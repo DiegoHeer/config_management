@@ -58,9 +58,9 @@ services:
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - TZ=Europe/Amsterdam
       - GENERIC_TIMEZONE=Europe/Amsterdam
-      - N8N_HOST=n8n.dynbase.xyz
+      - N8N_HOST=n8n.dynbase.nl
       - N8N_PROTOCOL=https
-      - WEBHOOK_URL=https://n8n.dynabase.xyz/
+      - WEBHOOK_URL=https://n8n.dynabase.nl/
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=n8n_postgres
       - DB_POSTGRESDB_PORT=5432
@@ -151,8 +151,8 @@ services:
     user: 1000:1000
     restart: unless-stopped
     environment:
-      AUTH_URL: https://norish.dynabase.xyz
-      TRUSTED_ORIGINS: https://norish.dynabase.xyz,https://norish.net.dynabase.xyz,http://norish:3000
+      AUTH_URL: https://norish.dynabase.nl
+      TRUSTED_ORIGINS: https://norish.dynabase.nl,http://norish:3000
       DATABASE_URL: postgres://postgres:norish@norish_postgres:5432/norish
       MASTER_KEY: qfXBXKoZLv++zvEO78iOeQni8kMx5Y4z38CxE8xxB8A=
       CHROME_WS_ENDPOINT: ws://norish_chrome:3000
@@ -197,7 +197,7 @@ services:
     environment:
       NEXTAUTH_SECRET: cT5y27aUbvkIest7LRwYKR5+drA4uZuQ9c4542DKqptNFMju
       MEILI_MASTER_KEY: M2nna4BSVeUcInvUEsJ5AFAdTU8xH5IVoumon1YzJslvw4M+
-      NEXTAUTH_URL: https://karakeep.dynabase.xyz
+      NEXTAUTH_URL: https://karakeep.dynabase.nl
       MEILI_ADDR: http://karakeep_meilisearch:7700
       BROWSER_WEB_URL: http://karakeep_chrome:9222
       OPENAI_API_KEY: ${OPENAI_API_KEY}
