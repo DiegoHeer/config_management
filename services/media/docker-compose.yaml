@@ -1,7 +1,7 @@
 services:
   jellyfin:
     container_name: jellyfin
-    image: linuxserver/jellyfin:10.11.3
+    image: linuxserver/jellyfin:10.11.6
     restart: unless-stopped
     environment:
       - PUID=1000
@@ -19,7 +19,7 @@ services:
       start_period: 20s
 
   jellyseerr:
-    image: fallenbagel/jellyseerr:2.7.3
+    image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
     restart: unless-stopped
     environment:
@@ -178,7 +178,7 @@ services:
 
   navidrome:
     container_name: navidrome
-    image: deluan/navidrome:0.58.0
+    image: deluan/navidrome:0.59.0
     restart: unless-stopped
     user: 1000:1000
     volumes:

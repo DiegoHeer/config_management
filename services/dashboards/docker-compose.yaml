@@ -2,7 +2,7 @@ services:
   homarr:
     container_name: homarr
     restart: unless-stopped
-    image: ghcr.io/homarr-labs/homarr:v1.45.1
+    image: ghcr.io/homarr-labs/homarr:v1.51.0
     volumes:
       - /home/${USERNAME}/services_data/homarr/appdata:/appdata
       - /var/run/docker.sock:/var/run/docker.sock
@@ -16,7 +16,7 @@ services:
 
   glance:
     container_name: glance
-    image: glanceapp/glance:v0.8.4
+    image: glanceapp/glance:latest
     restart: unless-stopped
     volumes:
       - /home/${USERNAME}/services_data/glance/config:/app/config

@@ -1,7 +1,7 @@
 services:
   dozzle:
     container_name: dozzle
-    image: amir20/dozzle:v8.14.9
+    image: amir20/dozzle:v9.0.2
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -34,7 +34,7 @@ services:
 
   grist:
     container_name: grist
-    image: gristlabs/grist:1.5.1
+    image: gristlabs/grist:1.7.10
     environment:
         - PORT=9999
         - GRIST_DEFAULT_EMAIL=diegojonathanheer@gmail.com
@@ -50,7 +50,7 @@ services:
 
   n8n:
     container_name: n8n
-    image: docker.n8n.io/n8nio/n8n:1.106.3
+    image: docker.n8n.io/n8nio/n8n:2.4.6
     volumes:
       - /home/${USERNAME}/services_data/n8n:/home/node/.n8n
     environment:
@@ -94,7 +94,7 @@ services:
 
   docuseal:
     container_name: docuseal
-    image: docuseal/docuseal:2.2.2
+    image: docuseal/docuseal:2.3.0
     volumes:
       - /home/${USERNAME}/services_data/docuseal:/data
     healthcheck:
@@ -113,7 +113,7 @@ services:
 
   tandoor:
     container_name: tandoor
-    image: vabene1111/recipes:2.3.5
+    image: vabene1111/recipes:2.3.6
     environment:
       - SECRET_KEY=YOUR_SECRET_KEY
       - DB_ENGINE=django.db.backends.postgresql
@@ -147,7 +147,7 @@ services:
 
   karakeep:
     container_name: karakeep
-    image: ghcr.io/karakeep-app/karakeep:0.28.0
+    image: ghcr.io/karakeep-app/karakeep:0.30.0
     environment:
       NEXTAUTH_SECRET: cT5y27aUbvkIest7LRwYKR5+drA4uZuQ9c4542DKqptNFMju
       MEILI_MASTER_KEY: M2nna4BSVeUcInvUEsJ5AFAdTU8xH5IVoumon1YzJslvw4M+
