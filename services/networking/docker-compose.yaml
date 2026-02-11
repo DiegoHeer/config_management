@@ -26,6 +26,15 @@ services:
       image: cloudflare/cloudflared:latest
       command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
 
+  goaccess:
+    container_name: goaccess
+    image: justsky/goaccess-for-nginxproxymanager:latest
+    restart: unless-stopped
+    environment:
+        - TZ=Europe/Amsterdam
+    volumes:
+        - /home/${USERNAME}/services_data/nginx-proxy-manager/data/logs:/opt/log
+
 
 networks:
   default:
