@@ -74,21 +74,6 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
 
-  transmission:
-    container_name: transmission
-    image: lscr.io/linuxserver/transmission:latest
-    restart: unless-stopped
-    network_mode: service:gluetun
-    depends_on:
-      - gluetun
-    volumes:
-      - /home/${USERNAME}/services_data/transmission/config:/config
-      - /media/hd2/data/downloads:/downloads
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Amsterdam
-
   prowlarr:
     container_name: prowlarr
     image: linuxserver/prowlarr:2.3.0
@@ -150,6 +135,16 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
+
+  profilarr:
+    container_name: profilarr
+    image: santiagosayshey/profilarr:latest
+    volumes:
+      - /home/${USERNAME}/services_data/profilarr/config:/config
+    environment:
+      - TZ=Europe/Amsterdam
+    ports:
+      - 6868:6868
 
   flaresolverr:
     container_name: flaresolverr
