@@ -1,17 +1,4 @@
 services:
-  dozzle:
-    container_name: dozzle
-    image: amir20/dozzle:v9.0.2
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /home/${USERNAME}/services_data/dozzle:/data
-    healthcheck:
-      test: ["CMD", "/dozzle", "healthcheck"]
-      interval: 3s
-      timeout: 30s
-      retries: 5
-      start_period: 30s
 
   it-tools:
     container_name: it-tools
@@ -177,6 +164,14 @@ services:
       MEILI_NO_ANALYTICS: "true"
     volumes:
       - /home/${USERNAME}/services_data/karakeep/meilisearch:/meili_data
+
+  dockhand:
+    image: fnsys/dockhand:latest
+    container_name: dockhand
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/${USERNAME}/services_data/dockhand:/app/data
 
 networks:
   default:
