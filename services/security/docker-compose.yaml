@@ -1,0 +1,27 @@
+services:
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
+    privileged: true
+    shm_size: 512mb
+    devices:
+      - /dev/dri:/dev/dri
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /home/${USERNAME}/services_data/frigate/config:/config
+      - /media/hd3/frigate:/media/frigate
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 500000000
+    ports:
+      - 8554:8554
+      - 8555:8555/tcp
+      - 8555:8555/udp
+
+
+networks:
+  default:
+    external: true
+    name: home_server_network
