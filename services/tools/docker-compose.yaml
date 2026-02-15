@@ -173,6 +173,16 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/${USERNAME}/services_data/dockhand:/app/data
 
+  dash:
+    container_name: dash
+    image: mauricenino/dashdot:latest
+    restart: unless-stopped
+    privileged: true
+    environment:
+      DASHDOT_ENABLE_CPU_TEMPS: 'true'
+    volumes:
+      - /:/mnt/host:ro
+
 networks:
   default:
     external: true
