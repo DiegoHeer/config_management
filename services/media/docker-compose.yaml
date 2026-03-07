@@ -196,6 +196,46 @@ services:
       - /media/hd2/data/media/audiobooks:/audiobooks
       - /media/hd2/data/media/podcasts:/podcasts
 
+  booklore:
+    container_name: booklore
+    image: booklore/booklore:latest
+    environment:
+      - USER_ID=1000
+      - GROUP_ID=1000
+      - TZ=Europe/Amsterdam
+      - DATABASE_URL=jdbc:mariadb://booklore_mariadb:3306/booklore
+      - DATABASE_USERNAME=booklore
+      - DATABASE_PASSWORD=booklore
+      - BOOKLORE_PORT=6060
+    depends_on:
+      booklore_mariadb:
+        condition: service_healthy
+    volumes:
+      - /home/${USERNAME}/services_data/booklore/data:/app/data
+      - /home/${USERNAME}/services_data/booklore/bookdrop:/bookdrop
+      - /media/hd2/data/media/books:/books
+    restart: unless-stopped
+
+  booklore_mariadb:
+    image: lscr.io/linuxserver/mariadb:11.4.5
+    container_name: booklore_mariadb
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Amsterdam
+      - MYSQL_ROOT_PASSWORD=booklore
+      - MYSQL_DATABASE=booklore
+      - MYSQL_USER=booklore
+      - MYSQL_PASSWORD=booklore
+    volumes:
+      - /home/${USERNAME}/services_data/booklore/mariadb/config:/config
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "mariadb-admin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 networks:
   default:
     external: true
