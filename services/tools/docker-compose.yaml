@@ -101,6 +101,7 @@ services:
   tandoor:
     container_name: tandoor
     image: vabene1111/recipes:2.3.6
+    restart: unless-stopped
     environment:
       - SECRET_KEY=YOUR_SECRET_KEY
       - DB_ENGINE=django.db.backends.postgresql

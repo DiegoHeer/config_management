@@ -22,6 +22,7 @@ services:
   mosquitto:
     container_name: mosquitto
     image: eclipse-mosquitto
+    restart: unless-stopped
     volumes:
       - /home/${USERNAME}/services_data/mosquitto/log:/mosquitto/log
       - /home/${USERNAME}/services_data/mosquitto/data:/mosquitto/data
@@ -29,6 +30,7 @@ services:
     ports:
       - 1883:1883
 
+  # TODO: check if this properly works
   doorbell_samba:
     image: ghcr.io/servercontainers/samba:latest
     container_name: doorbell_samba
