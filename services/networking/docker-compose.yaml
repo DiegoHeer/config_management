@@ -4,6 +4,10 @@ services:
     image: jc21/nginx-proxy-manager:2.13.6
     container_name: nginx-proxy-manager
     restart: unless-stopped
+    dns:
+      - 127.0.0.11
+      - 1.1.1.1
+      - 8.8.8.8
     environment:
       - PUID=1000
       - PGID=1000
@@ -22,10 +26,10 @@ services:
       retries: 3
 
   cloudflare_tunnel:
-      container_name: cloudflare_tunnel
-      image: cloudflare/cloudflared:latest
-      restart: unless-stopped
-      command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
+    container_name: cloudflare_tunnel
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
 
 networks:
   default:
