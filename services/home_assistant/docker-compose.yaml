@@ -30,6 +30,41 @@ services:
     ports:
       - 1883:1883
 
+  openthread_border_router:
+    container_name: openthread_border_router
+    image: ghcr.io/ownbee/hass-otbr-docker
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    environment:
+      DEVICE: "/dev/ttyUSB1"
+      BACKBONE_IF: wlp1s0
+      FLOW_CONTROL: 0
+      FIREWALL: 1
+      NAT64: 1
+      BAUDRATE: 460800
+      OTBR_REST_PORT: 8081
+      OTBR_WEB_PORT: 7586
+      AUTOFLASH_FIRMWARE: 0
+      OTBR_LOG_LEVEL: info
+    devices:
+      - /dev/ttyUSB1:/dev/ttyUSB1
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - /home/${USERNAME}/services_data/otbr/otbr_data:/data/thread
+      - /etc/localtime:/etc/localtime:ro
+
+  matter-server:
+    image: ghcr.io/home-assistant-libs/python-matter-server:stable
+    container_name: matter-server
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /home/${USERNAME}/services_data/matter:/data/
+
   # TODO: check if this properly works
   doorbell_samba:
     image: ghcr.io/servercontainers/samba:latest
