@@ -148,16 +148,6 @@ services:
     ports:
       - 6868:6868
 
-  flaresolverr:
-    container_name: flaresolverr
-    image: ghcr.io/flaresolverr/flaresolverr:latest
-    restart: unless-stopped
-    network_mode: service:gluetun
-    depends_on:
-      - gluetun
-    environment:
-      - TZ=Europe/Amsterdam
-
   sabnzbd:
     container_name: sabnzbd
     image: lscr.io/linuxserver/sabnzbd:latest
