@@ -22,6 +22,16 @@ services:
       - /home/${USERNAME}/services_data/glance/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
 
+  dash:
+    container_name: dash
+    image: mauricenino/dashdot:latest
+    restart: unless-stopped
+    privileged: true
+    environment:
+      DASHDOT_ENABLE_CPU_TEMPS: 'true'
+    volumes:
+      - /:/mnt/host:ro
+
 networks:
   default:
     name: home_server_network
