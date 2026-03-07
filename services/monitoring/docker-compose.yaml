@@ -2,14 +2,22 @@ services:
   beszel:
     container_name: beszel
     image: henrygd/beszel:0.18.2
+    restart: unless-stopped
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
       - /home/${USERNAME}/services_data/beszel:/beszel_data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   beszel-agent:
     container_name: beszel-agent
     image: henrygd/beszel-agent:0.18.2
+    restart: unless-stopped
     network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -19,8 +27,8 @@ services:
       - /home/${USERNAME}/services_data/beszel/agent_data:/var/lib/beszel-agent
     environment:
       LISTEN: 45876
-      KEY: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGkA/G2D4L3nHi5fxUSHU892XZTPdedNRmFvVM3acXVy'
-      TOKEN: 745717b0-b1b0-4ed9-8759-aa2bf46ce1b4
+      KEY: ${BESZEL_AGENT_KEY}
+      TOKEN: ${BESZEL_AGENT_TOKEN}
       HUB_URL: https://beszel.dynabase.nl
 
   adguardhome:
@@ -37,6 +45,7 @@ services:
   portracker:
     container_name: portracker
     image: mostafawahied/portracker:latest
+    restart: unless-stopped
     pid: "host"
     cap_add:
       - SYS_PTRACE

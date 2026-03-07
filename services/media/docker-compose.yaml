@@ -140,6 +140,7 @@ services:
   profilarr:
     container_name: profilarr
     image: santiagosayshey/profilarr:latest
+    restart: unless-stopped
     volumes:
       - /home/${USERNAME}/services_data/profilarr/config:/config
     environment:
@@ -195,6 +196,12 @@ services:
       - /home/${USERNAME}/services_data/audiobookshelf/metadata:/metadata
       - /media/hd2/data/media/audiobooks:/audiobooks
       - /media/hd2/data/media/podcasts:/podcasts
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:13378/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   booklore:
     container_name: booklore
@@ -204,8 +211,8 @@ services:
       - GROUP_ID=1000
       - TZ=Europe/Amsterdam
       - DATABASE_URL=jdbc:mariadb://booklore_mariadb:3306/booklore
-      - DATABASE_USERNAME=booklore
-      - DATABASE_PASSWORD=booklore
+      - DATABASE_USERNAME=${BOOKLORE_DB_USER}
+      - DATABASE_PASSWORD=${BOOKLORE_DB_PASSWORD}
       - BOOKLORE_PORT=6060
     depends_on:
       booklore_mariadb:
@@ -223,10 +230,10 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Amsterdam
-      - MYSQL_ROOT_PASSWORD=booklore
+      - MYSQL_ROOT_PASSWORD=${BOOKLORE_DB_ROOT_PASSWORD}
       - MYSQL_DATABASE=booklore
-      - MYSQL_USER=booklore
-      - MYSQL_PASSWORD=booklore
+      - MYSQL_USER=${BOOKLORE_DB_USER}
+      - MYSQL_PASSWORD=${BOOKLORE_DB_PASSWORD}
     volumes:
       - /home/${USERNAME}/services_data/booklore/mariadb/config:/config
     restart: unless-stopped

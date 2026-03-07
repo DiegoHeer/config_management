@@ -28,8 +28,8 @@ services:
       - PGID=1000
       - TZ=Europe/Amsterdam
       - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=dbpassword
+      - MYSQL_USER=${NEXTCLOUD_DB_USER}
+      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
       - MYSQL_HOST=nextcloud_mariadb
     volumes:
       - /home/${USERNAME}/services_data/nextcloud/config:/config
@@ -55,9 +55,9 @@ services:
     environment:
       - TZ=Europe/Amsterdam
       - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_PASSWORD=dbpassword
+      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
       - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
+      - MYSQL_USER=${NEXTCLOUD_DB_USER}
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       start_period: 10s
@@ -75,13 +75,13 @@ services:
       - PGID=1000
       - UMASK=0022
       - TZ=Europe/Amsterdam
-      - COUCHDB_USER=obsidian
-      - COUCHDB_PASSWORD=obsidian
+      - COUCHDB_USER=${OBSIDIAN_COUCHDB_USER}
+      - COUCHDB_PASSWORD=${OBSIDIAN_COUCHDB_PASSWORD}
     volumes:
       - /home/${USERNAME}/services_data/obsidian-livesync/data:/opt/couchdb/data
       - /home/${USERNAME}/services_data/obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://obsidian:obsidian@localhost:5984/_up"]
+      test: ["CMD", "curl", "-f", "http://${OBSIDIAN_COUCHDB_USER}:${OBSIDIAN_COUCHDB_PASSWORD}@localhost:5984/_up"]
       interval: 30s
       timeout: 10s
       retries: 3
