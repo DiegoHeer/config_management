@@ -38,51 +38,6 @@ services:
       start_period: 10s
       start_interval: 5s
 
-  n8n:
-    container_name: n8n
-    image: docker.n8n.io/n8nio/n8n:2.4.6
-    restart: unless-stopped
-    volumes:
-      - /home/${USERNAME}/services_data/n8n:/home/node/.n8n
-    environment:
-      - N8N_RUNNERS_ENABLED=true
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      - TZ=Europe/Amsterdam
-      - GENERIC_TIMEZONE=Europe/Amsterdam
-      - N8N_HOST=n8n.dynbase.nl
-      - N8N_PROTOCOL=https
-      - WEBHOOK_URL=https://n8n.dynabase.nl/
-      - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_HOST=n8n_postgres
-      - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE=n8n
-      - DB_POSTGRESDB_USER=n8n
-      - DB_POSTGRESDB_PASSWORD=${N8N_POSTGRES_PASSWORD}
-      - DB_POSTGRESDB_SCHEMA=public
-    healthcheck:
-      test: wget --spider http://localhost:5678/healthz > /dev/null 2>&1 || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-
-  n8n_postgres:
-    container_name: n8n_postgres
-    image: postgres:16
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: n8n
-      POSTGRES_PASSWORD: ${N8N_POSTGRES_PASSWORD}
-      POSTGRES_DB: n8n
-    volumes:
-      - /home/${USERNAME}/services_data/n8n/postgres:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U n8n -d n8n"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-
   docuseal:
     container_name: docuseal
     image: docuseal/docuseal:2.3.0
@@ -145,42 +100,6 @@ services:
       retries: 5
       start_period: 10s
 
-  karakeep:
-    container_name: karakeep
-    image: ghcr.io/karakeep-app/karakeep:0.30.0
-    restart: unless-stopped
-    environment:
-      NEXTAUTH_SECRET: ${KARAKEEP_NEXTAUTH_SECRET}
-      MEILI_MASTER_KEY: ${KARAKEEP_MEILI_MASTER_KEY}
-      NEXTAUTH_URL: https://karakeep.dynabase.nl
-      MEILI_ADDR: http://karakeep_meilisearch:7700
-      BROWSER_WEB_URL: http://karakeep_chrome:9222
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      DATA_DIR: /data
-    volumes:
-      - /home/${USERNAME}/services_data/karakeep/data:/data
-
-  karakeep_chrome:
-    container_name: karakeep_chrome
-    image: gcr.io/zenika-hub/alpine-chrome:124
-    restart: unless-stopped
-    command:
-      - --no-sandbox
-      - --disable-gpu
-      - --disable-dev-shm-usage
-      - --remote-debugging-address=0.0.0.0
-      - --remote-debugging-port=9222
-      - --hide-scrollbars
-
-  karakeep_meilisearch:
-    container_name: karakeep_meilisearch
-    image: getmeili/meilisearch:v1.13.3
-    restart: unless-stopped
-    environment:
-      MEILI_NO_ANALYTICS: "true"
-    volumes:
-      - /home/${USERNAME}/services_data/karakeep/meilisearch:/meili_data
-
   dockhand:
     image: fnsys/dockhand:latest
     container_name: dockhand
@@ -189,15 +108,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/${USERNAME}/services_data/dockhand:/app/data
 
-  dash:
-    container_name: dash
-    image: mauricenino/dashdot:latest
-    restart: unless-stopped
-    privileged: true
-    environment:
-      DASHDOT_ENABLE_CPU_TEMPS: 'true'
-    volumes:
-      - /:/mnt/host:ro
 
 networks:
   default:
