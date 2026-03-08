@@ -8,11 +8,11 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/beszel:/beszel_data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8090/api/health"]
-      interval: 30s
-      timeout: 10s
+      test: ["CMD", "/beszel", "health", "--url", "http://localhost:8090"]
+      interval: 120s
+      timeout: 5s
       retries: 3
-      start_period: 20s
+      start_period: 5s
 
   beszel-agent:
     container_name: beszel-agent
@@ -30,6 +30,15 @@ services:
       KEY: ${BESZEL_AGENT_KEY}
       TOKEN: ${BESZEL_AGENT_TOKEN}
       HUB_URL: https://beszel.dynabase.nl
+    healthcheck:
+      test: ["CMD", "/agent", "health"]
+      interval: 120s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    depends_on:
+      beszel:
+        condition: service_healthy
 
   adguardhome:
     container_name: adguardhome

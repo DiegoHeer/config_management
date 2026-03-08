@@ -187,7 +187,7 @@ services:
       - /media/hd2/data/media/audiobooks:/audiobooks
       - /media/hd2/data/media/podcasts:/podcasts
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:13378/healthcheck"]
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/healthcheck || exit 1
       interval: 30s
       timeout: 10s
       retries: 3
