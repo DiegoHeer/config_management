@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Default scenario placeholder
+      ansible.builtin.debug:
+        msg: "Default scenario — run molecule with -s <scenario> to test a specific role"
