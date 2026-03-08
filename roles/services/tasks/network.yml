@@ -1,0 +1,6 @@
+---
+- name: Create home server Docker network
+  community.docker.docker_network:
+    name: home_server_network
+    driver: bridge
+    state: present

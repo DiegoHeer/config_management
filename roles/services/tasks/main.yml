@@ -4,6 +4,8 @@
   loop:
     - checks.yml
     - packages.yml
+    - network.yml
     - env.yml
+    - compose.yml
   loop_control:
     loop_var: task
