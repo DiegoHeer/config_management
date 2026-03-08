@@ -23,11 +23,11 @@ Service categories: home_assistant, media, monitoring, storage, tools, dashboard
 
 ```bash
 # Dependencies
-poetry install
-poetry run ansible-galaxy install -r requirements.yml
+uv sync
+uv run ansible-galaxy install -r requirements.yml
 
 # Run a playbook
-poetry run ansible-playbook playbooks/<playbook>.yml
+uv run ansible-playbook playbooks/<playbook>.yml
 
 # Test a role with Molecule
 molecule test -s <role>
@@ -36,8 +36,8 @@ molecule login -s <role>       # shell into test container
 molecule destroy -s <role>     # teardown
 
 # Linting
-poetry run yamllint .
-poetry run ansible-lint
+uv run yamllint .
+uv run ansible-lint
 
 # Backups (run from backup/ directory)
 resticprofile -n <profile> backup

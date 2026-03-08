@@ -41,7 +41,7 @@
       "Bash(PORT=:*)",
       "Bash(find:*)",
       "Bash(docker:*)",
-      "Bash(poetry:*)",
+      "Bash(uv:*)",
       "Bash(python:*)",
       "Bash(python3:*)",
       "Write(*)",

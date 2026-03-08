@@ -40,15 +40,15 @@ molecule/       # Ansible role testing (one scenario per role)
 
 - Ubuntu 24.04 (other versions/distros untested)
 - Python >= 3.11
-- Poetry >= 2.0.0
+- uv >= 0.6.0
 
 ### Setup
 
 1. Install packages and Ansible Galaxy roles:
 
 ```bash
-poetry install
-poetry run ansible-galaxy install -r requirements.yml
+uv sync
+uv run ansible-galaxy install -r requirements.yml
 ```
 
 2. Generate an SSH key (skip passphrases when prompted):
@@ -68,7 +68,7 @@ ssh-copy-id -i ~/.ssh/id_ed25519 <host user>@<host ip address>
 5. Verify connectivity:
 
 ```bash
-poetry run ansible <host group> -m ping
+uv run ansible <host group> -m ping
 ```
 
 ### Usage
@@ -78,13 +78,13 @@ poetry run ansible <host group> -m ping
 2. Run a playbook:
 
 ```bash
-poetry run ansible-playbook playbooks/<playbook>.yml
+uv run ansible-playbook playbooks/<playbook>.yml
 ```
 
 Or with an interactive vault prompt:
 
 ```bash
-poetry run ansible-playbook playbooks/<playbook>.yml --ask-vault-pass
+uv run ansible-playbook playbooks/<playbook>.yml --ask-vault-pass
 ```
 
 #### Ansible Pull (optional)
@@ -126,8 +126,8 @@ After creation, delete `creation.yml` and `destroy.yml`, then edit `molecule.yml
 ### Linting
 
 ```bash
-poetry run yamllint .
-poetry run ansible-lint
+uv run yamllint .
+uv run ansible-lint
 ```
 
 ---
