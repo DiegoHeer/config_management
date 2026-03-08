@@ -4,7 +4,7 @@
     paths: "{{ services_docker_src }}"
     file_type: directory
     depth: 1
-  register: service_dirs
+  register: services_dirs
   when: services_run_compose
 
 - name: Pull and start docker compose stacks
@@ -12,8 +12,9 @@
     project_src: "{{ item.path }}"
     pull: always
     state: present
-  loop: "{{ service_dirs.files | default([]) }}"
+  loop: "{{ services_dirs.files | default([]) }}"
   loop_control:
     label: "{{ item.path | basename }}"
+  become: true
   become_user: "{{ username }}"
   when: services_run_compose

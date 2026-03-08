@@ -2,14 +2,14 @@
 - name: Check if git is installed
   ansible.builtin.stat:
     path: /usr/bin/git
-  register: git_check
+  register: projects_git_check
 
 - name: Install git
   ansible.builtin.package:
     name: git
     state: present
     update_cache: true
-  when: not git_check.stat.exists
+  when: not projects_git_check.stat.exists
 
 - name: Configure git user name
   become: false
@@ -67,7 +67,7 @@
     state: present
     owner: "{{ username }}"
     group: "{{ username }}"
-  register: ssh_key
+  register: projects_ssh_key
 
 - name: Create projects folder
   ansible.builtin.file:

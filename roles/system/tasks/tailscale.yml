@@ -25,10 +25,10 @@
 - name: Authenticate Tailscale (interactive)
   ansible.builtin.command: tailscale up
   when: system_tailscale_auth_key is not defined
-  register: tailscale_up
+  register: system_tailscale_up
   changed_when: false
 
 - name: Display Tailscale login URL (if interactive)
   ansible.builtin.debug:
-    msg: "Please visit the following URL to authenticate Tailscale: {{ tailscale_up.stdout }}"
-  when: system_tailscale_auth_key is not defined and tailscale_up.stdout is defined
+    msg: "Please visit the following URL to authenticate Tailscale: {{ system_tailscale_up.stdout }}"
+  when: system_tailscale_auth_key is not defined and system_tailscale_up.stdout is defined
