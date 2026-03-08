@@ -154,7 +154,7 @@ services:
     ports:
       - 6868:6868
     healthcheck:
-      test: ["CMD", "wget", "--spider", "--no-verbose" , "http://localhost:6868"]
+      test: ["CMD", "wget", "--spider", "--no-verbose", "http://localhost:6868"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -252,7 +252,7 @@ services:
       - /home/${USERNAME}/services_data/booklore/mariadb/config:/config
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "mariadb-admin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
       interval: 5s
       timeout: 5s
       retries: 10

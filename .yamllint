@@ -9,7 +9,11 @@ yaml-files:
 ignore:
   - .venv
   - .github
+  - .ansible/
+  - roles/*/vars/main/vault.yml
+  - roles/*/vars/main/env_vault.yml
 
 rules:
   line-length:
     max: 120
+  document-start: disable

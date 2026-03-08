@@ -26,10 +26,10 @@ services:
     image: gristlabs/grist:1.7.10
     restart: unless-stopped
     environment:
-        - PORT=9999
-        - GRIST_DEFAULT_EMAIL=${GRIST_DEFAULT_EMAIL}
+      - PORT=9999
+      - GRIST_DEFAULT_EMAIL=${GRIST_DEFAULT_EMAIL}
     volumes:
-        - /home/${USERNAME}/services_data/grist/persist:/persist
+      - /home/${USERNAME}/services_data/grist/persist:/persist
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9999/status"]
       interval: 30s
@@ -58,7 +58,7 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/changedetection:/datastore
     healthcheck:
-      test: ["CMD-SHELL", "python3 -c \"import sys, urllib.request; sys.exit(1) if 200 != urllib.request.urlopen('http://localhost:5000/').status else sys.exit(0)\""]
+      test: ["CMD-SHELL", "python3 -c \"import sys, urllib.request; sys.exit(1) if 200 != urllib.request.urlopen('http://localhost:5000/').status else sys.exit(0)\""]  # yamllint disable-line rule:line-length
       interval: 60s
       timeout: 2s
       retries: 5
