@@ -20,7 +20,7 @@ provisioner:
   inventory:
     group_vars:
       all:
-        username: test_user
+        username: diego
   env:
     ANSIBLE_CONFIG: ../../ansible.cfg
 
