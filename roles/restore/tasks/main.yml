@@ -1,12 +1,4 @@
 ---
-- name: Run System role
-  ansible.builtin.include_role:
-    name: system
-
-- name: Run Projects role
-  ansible.builtin.include_role:
-    name: projects
-
 - name: Restore relevant data
   ansible.builtin.include_tasks: "{{ task }}"
   loop:
