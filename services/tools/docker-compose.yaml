@@ -81,6 +81,12 @@ services:
     depends_on:
       tandoor_postgres:
         condition: service_healthy
+    healthcheck:
+      test: wget --spider --no-verbose http://localhost:80/openapi/ || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   tandoor_postgres:
     container_name: tandoor_postgres
@@ -106,6 +112,12 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/${USERNAME}/services_data/dockhand:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
 
 networks:

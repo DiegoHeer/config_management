@@ -29,6 +29,12 @@ services:
       - /home/${USERNAME}/services_data/mosquitto/config:/mosquitto/config
     ports:
       - 1883:1883
+    healthcheck:
+      test: ["CMD", "mosquitto_sub", "-u", "healthcheck_user", "-P", "healthcheck_password", "-h", "localhost", "-t", "$$SYS/broker/uptime", "-C", "1", "-i", "healthcheck", "-W", "3"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   openthread_border_router:
     container_name: openthread_border_router
@@ -56,14 +62,26 @@ services:
     volumes:
       - /home/${USERNAME}/services_data/otbr/otbr_data:/data/thread
       - /etc/localtime:/etc/localtime:ro
+    healthcheck:
+      test: ["CMD-SHELL", "test -S /run/openthread-wpan0.sock && nc -z localhost 8081"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
 
-  matter-server:
+  matter_server:
     image: ghcr.io/home-assistant-libs/python-matter-server:stable
-    container_name: matter-server
+    container_name: matter_server
     restart: unless-stopped
     network_mode: host
     volumes:
       - /home/${USERNAME}/services_data/matter:/data/
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 5 bash -c ':> /dev/tcp/127.0.0.1/5580' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # TODO: check if this properly works
   doorbell_samba:
@@ -79,6 +97,12 @@ services:
       SAMBA_VOLUME_CONFIG_doorbell: "[doorbell]; path=/doorbell; available = yes; browsable = yes; writable = yes; read only = no; force user = diego; public = yes; guest ok = yes"
     volumes:
       - /media/hd1/recordings/doorbell:/doorbell
+    healthcheck:
+      test: ["CMD", "/container/scripts/docker-healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
 
 networks:

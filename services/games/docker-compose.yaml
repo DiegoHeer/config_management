@@ -26,6 +26,12 @@ services:
       romm_mariadb:
         condition: service_healthy
         restart: true
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 10s bash -c ':> /dev/tcp/127.0.0.1/8080' || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 90s
 
   romm_mariadb:
     container_name: romm_mariadb
