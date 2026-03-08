@@ -1,7 +1,0 @@
----
-- name: Play for configuring home server
-  hosts: laptop
-  become: true
-
-  roles:
-    - role: gui

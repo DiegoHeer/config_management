@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Personal IaC repository for Ubuntu home servers and workstations. Three pillars:
+Personal IaC repository for Ubuntu home servers. Three pillars:
 - **Ansible playbooks** for automatic system configuration
 - **Docker Compose services** for containerized home lab applications
 - **Restic backups** implementing the 3-2-1 backup rule
@@ -10,8 +10,8 @@ Personal IaC repository for Ubuntu home servers and workstations. Three pillars:
 ## Project Structure
 
 ```
-roles/          # Ansible roles: system, development, gui, projects, services, restore
-playbooks/      # Playbooks: home_server.yml, laptop.yml
+roles/          # Ansible roles: system, projects, services, restore
+playbooks/      # Playbooks: home_server.yml
 services/       # Docker Compose service groups (14 categories)
 backup/         # Restic backup profiles and config
 molecule/       # Ansible role testing (one scenario per role)
