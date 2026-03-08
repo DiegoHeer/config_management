@@ -1,5 +1,7 @@
 .venv/
+.ansible/
 .env
+services/**/.env
 
 .terraform/
 terraform.tfstate
