@@ -1,0 +1,63 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "Bash(molecule:*)",
+      "Bash(ansible:*)",
+      "Bash(ansible-*)",
+      "Bash(yamllint:*)",
+      "Bash(ansible-lint:*)",
+      "Bash(resticprofile:*)",
+      "Bash(restic:*)",
+      "Bash(gh:*)",
+      "Bash(which:*)",
+      "Bash(brew:*)",
+      "Bash(yq:*)",
+      "Bash(rg:*)",
+      "Bash(sd:*)",
+      "Bash(cat:*)",
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(git:*)",
+      "Bash(mv:*)",
+      "Bash(echo:*)",
+      "Bash(sed:*)",
+      "Bash(source:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(pkill:*)",
+      "Bash(touch:*)",
+      "Bash(grep:*)",
+      "Bash(curl:*)",
+      "Bash(rg:*)",
+      "Bash(chmod:*)",
+      "Bash(lsof:*)",
+      "Bash(make:*)",
+      "Bash(PORT=:*)",
+      "Bash(find:*)",
+      "Bash(docker:*)",
+      "Bash(poetry:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Write(*)",
+      "Update(*)",
+      "Update(*:*)"
+    ],
+    "deny": [
+      "Bash(rm *)",
+      "Bash(docker rm *)",
+      "Bash(docker rmi *)",
+      "Bash(docker volume rm *)",
+      "Bash(docker system prune *)",
+      "Bash(git push * --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(git branch -D *)",
+      "Bash(git clean *)"
+    ]
+  }
+}
