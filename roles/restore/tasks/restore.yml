@@ -15,7 +15,7 @@
     AWS_ACCESS_KEY_ID: "{{ restore_aws_access_key_id }}"
     AWS_SECRET_ACCESS_KEY: "{{ restore_aws_secret_access_key }}"
     AWS_DEFAULT_REGION: "auto"
-  changed_when: not restore_services_data_folder_check.stat.exists
+  changed_when: false
   when: not restore_services_data_folder_check.stat.exists
 
 - name: Check if nextcloud data folder exists
@@ -34,5 +34,5 @@
     AWS_ACCESS_KEY_ID: "{{ restore_aws_access_key_id }}"
     AWS_SECRET_ACCESS_KEY: "{{ restore_aws_secret_access_key }}"
     AWS_DEFAULT_REGION: "auto"
-  changed_when: not restore_nextcloud_data_folder_check.stat.exists
+  changed_when: false
   when: not restore_nextcloud_data_folder_check.stat.exists
