@@ -1,0 +1,9 @@
+---
+- name: Prepare for system role
+  hosts: localhost
+  tasks:
+    - name: Generate SSH keypair for molecule test
+      community.crypto.openssh_keypair:
+        path: "{{ lookup('env', 'HOME') + '/.ssh/id_ed25519' }}"
+        type: ed25519
+        state: present
