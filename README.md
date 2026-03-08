@@ -4,7 +4,7 @@ Personal infrastructure-as-code for automatically setting up Ubuntu home servers
 
 - **Ansible playbooks** for automatic system configuration
 - **Docker Compose services** for containerized home lab applications
-- **Restic Profile** for automated backups using the 3-2-1 Backup Rule
+- **Restic backups** implementing the 3-2-1 backup rule (managed by the Ansible restore role)
 
 ## Project Structure
 
@@ -12,7 +12,6 @@ Personal infrastructure-as-code for automatically setting up Ubuntu home servers
 roles/          # Ansible roles: system, development, gui, projects, services, restore
 playbooks/      # Playbooks: home_server.yml, laptop.yml
 services/       # Docker Compose service groups (12 categories)
-backup/         # Restic backup profiles and config
 molecule/       # Ansible role testing (one scenario per role)
 ```
 
@@ -132,56 +131,6 @@ uv run ansible-lint
 
 ---
 
-## Backups
-
-Automated backups use [Restic](https://restic.net) and [Restic Profile](https://creativeprojects.github.io/resticprofile/index.html), following the 3-2-1 Backup Rule (3 copies, different media, one offsite).
-
-### Setup
-
-1. Install restic and restic profile:
-
-```bash
-sudo apt install restic curl -y
-curl -sfL https://raw.githubusercontent.com/creativeprojects/resticprofile/master/install.sh | sh
-```
-
-2. Enter the backup folder:
-
-```bash
-cd backup
-```
-
-3. Create the restic password file:
-
-```bash
-echo <password> > .resticprofile_key
-```
-
-4. Create an `.env` file by copying `.env.template` and fill in the required variables.
-
-5. Edit `profiles.yaml` if needed (backup sources and repository locations).
-
-### Usage
-
-```bash
-# List available profiles
-resticprofile profiles
-
-# Initialize a new repository
-resticprofile -n <profile> init
-
-# Check existing snapshots
-resticprofile -n <profile> snapshots
-
-# Run a backup
-resticprofile -n <profile> backup
-
-# Restore to a target directory
-resticprofile -n <profile> restore latest --target <target directory>
-```
-
----
-
 ## Docker Compose Services
 
 Each service category lives in `services/<category>/` with its own `docker-compose.yaml` and `.env` file.
@@ -190,13 +139,7 @@ Each service category lives in `services/<category>/` with its own `docker-compo
 
 1. For each service category, create an `.env` file inside its directory and fill in the required environment variables (refer to the `docker-compose.yaml` for which variables are needed).
 
-2. Ensure all volume mount paths exist locally. You can restore them from a backup if available:
-
-```bash
-cd backup
-export $(grep -v "^#" .env | xargs -d "\n")
-resticprofile -n services restore latest --target /
-```
+2. Ensure all volume mount paths exist locally. You can restore them from a backup by running the Ansible `restore` role, which handles Restic-based restoration automatically.
 
 3. Start the services:
 

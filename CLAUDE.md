@@ -13,7 +13,6 @@ Personal IaC repository for Ubuntu home servers. Three pillars:
 roles/          # Ansible roles: system, projects, services, restore
 playbooks/      # Playbooks: home_server.yml
 services/       # Docker Compose service groups (14 categories)
-backup/         # Restic backup profiles and config
 molecule/       # Ansible role testing (one scenario per role)
 ```
 
@@ -38,10 +37,6 @@ molecule destroy -s <role>     # teardown
 # Linting
 uv run yamllint .
 uv run ansible-lint
-
-# Backups (run from backup/ directory)
-resticprofile -n <profile> backup
-resticprofile -n <profile> snapshots
 ```
 
 ## Conventions
@@ -88,15 +83,8 @@ Services|Update: updated multiple services to latest versions
 - Max line length: 120 characters (yamllint)
 - Files use `.yaml` extension
 
-### Backups
-
-- Tier naming: `s_tier` (critical), `a_tier` (large), `b_tier`, `c_tier`
-- Profile inheritance via `inherit: default`
-- Env template syntax: `{{ .Env.VARIABLE_NAME }}`
-
 ## Secrets
 
 - Never commit `.env` files or vault passwords
 - Ansible vault key: `.vault_key` (root dir)
-- Restic key: `backup/.resticprofile_key`
 - Use `.env.template` files as reference for required variables
