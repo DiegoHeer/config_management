@@ -21,6 +21,8 @@ provisioner:
     group_vars:
       all:
         username: test_user
+        projects_github_repos:
+          - config_management
   env:
     ANSIBLE_CONFIG: ../../ansible.cfg
 

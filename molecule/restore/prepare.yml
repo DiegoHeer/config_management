@@ -1,0 +1,25 @@
+---
+- name: Prepare for restore role
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure test user exists
+      ansible.builtin.user:
+        name: "{{ username }}"
+        shell: /bin/bash
+
+    - name: Ensure resticprofile config directory exists
+      ansible.builtin.file:
+        path: "/home/{{ username }}/projects/config_management/backup"
+        state: directory
+        owner: "{{ username }}"
+        group: "{{ username }}"
+        mode: "0755"
+
+    - name: Create stub profiles.yaml for testing
+      ansible.builtin.copy:
+        content: "# stub for molecule testing"
+        dest: "/home/{{ username }}/projects/config_management/backup/profiles.yaml"
+        owner: "{{ username }}"
+        group: "{{ username }}"
+        mode: "0644"

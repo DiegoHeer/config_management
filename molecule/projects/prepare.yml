@@ -1,0 +1,17 @@
+---
+- name: Prepare for projects role
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure test user exists
+      ansible.builtin.user:
+        name: "{{ username }}"
+        shell: /bin/bash
+
+    - name: Ensure .ssh directory exists
+      ansible.builtin.file:
+        path: "/home/{{ username }}/.ssh"
+        state: directory
+        owner: "{{ username }}"
+        group: "{{ username }}"
+        mode: "0700"
