@@ -1,0 +1,105 @@
+---
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Configure Poetry
+        run: poetry config virtualenvs.in-project true
+
+      - name: Cache Poetry virtualenv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: Install dependencies
+        run: poetry install --no-interaction
+
+      - name: Cache Galaxy roles
+        uses: actions/cache@v4
+        with:
+          path: .venv/.ansible/roles
+          key: galaxy-${{ hashFiles('requirements.yml') }}
+
+      - name: Install Galaxy roles
+        run: poetry run ansible-galaxy install -r requirements.yml
+
+      - name: Create Ansible vault key
+        run: echo "${{ secrets.VAULT_PASSWORD }}" > .vault_key
+
+      - name: Run yamllint
+        run: poetry run yamllint .
+
+      - name: Run ansible-lint
+        run: poetry run ansible-lint
+
+  molecule:
+    name: Molecule - ${{ matrix.scenario }}
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - system
+          - projects
+          - services
+          - restore
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Configure Poetry
+        run: poetry config virtualenvs.in-project true
+
+      - name: Cache Poetry virtualenv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: Install dependencies
+        run: poetry install --no-interaction
+
+      - name: Cache Galaxy roles
+        uses: actions/cache@v4
+        with:
+          path: .venv/.ansible/roles
+          key: galaxy-${{ hashFiles('requirements.yml') }}
+
+      - name: Install Galaxy roles
+        run: poetry run ansible-galaxy install -r requirements.yml
+
+      - name: Create Ansible vault key
+        run: echo "${{ secrets.VAULT_PASSWORD }}" > .vault_key
+
+      - name: Run Molecule
+        run: poetry run molecule test -s ${{ matrix.scenario }}

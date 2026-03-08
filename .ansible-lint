@@ -1,0 +1,9 @@
+---
+profile: moderate
+
+exclude_paths:
+  - .venv
+  - .github
+
+skip_list:
+  - yaml[line-length]  # already enforced by yamllint

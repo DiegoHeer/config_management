@@ -11,6 +11,8 @@
     "files.associations": {
       "**/config_management/**/*.yml": "ansible",
       "**/config_management/services/*.yml": "yaml",
+      "**/config_management/.github/**/*.yml": "yaml",
+
     },
     "ansible.python.interpreterPath": "${workspaceFolder}/.venv/bin/python",
     "ansible.ansible.path": "./.venv/bin/ansible",
