@@ -16,34 +16,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Setup Ansible dependencies
+        uses: ./.github/actions/setup-ansible-deps
         with:
-          python-version: "3.14"
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Cache uv virtualenv
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: uv-${{ hashFiles('uv.lock') }}
-
-      - name: Install dependencies
-        run: uv sync
-
-      - name: Cache Galaxy roles
-        uses: actions/cache@v4
-        with:
-          path: .venv/.ansible/roles
-          key: galaxy-${{ hashFiles('requirements.yml') }}
-
-      - name: Install Galaxy roles
-        run: uv run ansible-galaxy install -r requirements.yml
-
-      - name: Create Ansible vault key
-        run: echo "${{ secrets.VAULT_PASSWORD }}" > .vault_key
+          vault-password: ${{ secrets.VAULT_PASSWORD }}
 
       - name: Run yamllint
         run: uv run yamllint .
@@ -68,34 +44,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Setup Ansible dependencies
+        uses: ./.github/actions/setup-ansible-deps
         with:
-          python-version: "3.14"
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Cache uv virtualenv
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: uv-${{ hashFiles('uv.lock') }}
-
-      - name: Install dependencies
-        run: uv sync
-
-      - name: Cache Galaxy roles
-        uses: actions/cache@v4
-        with:
-          path: .venv/.ansible/roles
-          key: galaxy-${{ hashFiles('requirements.yml') }}
-
-      - name: Install Galaxy roles
-        run: uv run ansible-galaxy install -r requirements.yml
-
-      - name: Create Ansible vault key
-        run: echo "${{ secrets.VAULT_PASSWORD }}" > .vault_key
+          vault-password: ${{ secrets.VAULT_PASSWORD }}
 
       - name: Run Molecule
         run: uv run molecule test -s ${{ matrix.scenario }}
