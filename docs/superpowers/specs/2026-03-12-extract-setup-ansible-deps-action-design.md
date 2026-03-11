@@ -21,13 +21,15 @@ Create a new lightweight composite action `setup-ansible-deps` that encapsulates
 
 **Steps (in order):**
 
+All `run:` steps must specify `shell: bash` (required for composite actions).
+
 1. Set up Python 3.14 (`actions/setup-python@v5`)
 2. Install uv (`astral-sh/setup-uv@v5`)
-3. Cache uv virtualenv (`actions/cache@v4`, key: `uv-${{ hashFiles('uv.lock') }}`)
+3. Cache uv virtualenv (`actions/cache@v4`, path: `.venv`, key: `uv-${{ hashFiles('uv.lock') }}`)
 4. Install dependencies (`uv sync`)
-5. Cache Galaxy roles (`actions/cache@v4`, key: `galaxy-${{ hashFiles('requirements.yml') }}`)
+5. Cache Galaxy roles (`actions/cache@v4`, path: `.venv/.ansible/roles`, key: `galaxy-${{ hashFiles('requirements.yml') }}`)
 6. Install Galaxy roles (`uv run ansible-galaxy install -r requirements.yml`)
-7. **Conditional**: Create `.vault_key` file — only when `vault-password` input is provided
+7. **Conditional**: Create `.vault_key` file, guarded by `if: inputs.vault-password != ''`
 
 ## Changes to Existing Files
 
@@ -53,7 +55,7 @@ Both `lint` and `molecule` jobs replace their 7 setup steps with a single action
     vault-password: ${{ secrets.VAULT_PASSWORD }}
 ```
 
-The rest of each job (lint commands, molecule test command) remains unchanged.
+The Checkout step and the job-specific commands (yamllint/ansible-lint, molecule test) remain unchanged.
 
 ### `.github/workflows/update-home-server.yml`
 
@@ -91,6 +93,6 @@ Same change as `update-home-server.yml` — split into two sequential action cal
 
 ## Design Decisions
 
-- **`vault-password` is optional** so the action can be used in contexts where vault decryption is not needed, without requiring a dummy value.
-- **`setup-ansible` is not nested inside `setup-ansible-deps`** because GitHub composite actions cannot call other local composite actions via `uses:`. Instead, workflows call both actions sequentially.
+- **`vault-password` is optional at the action level** so it can be used in contexts where vault decryption is not needed. However, deployment workflows (`update-home-server.yml`, `restore-home-server.yml`) and the quality check workflow must always provide it since they run encrypted playbooks or linting that requires vault access.
+- **Workflows call both actions sequentially** rather than nesting `setup-ansible-deps` inside `setup-ansible`. This keeps the dependency graph flat and explicit, making it clear what each workflow requires.
 - **Action named `setup-ansible-deps`** to clearly convey it handles the dependency chain, distinguishing it from `setup-ansible` which handles deployment connectivity.
