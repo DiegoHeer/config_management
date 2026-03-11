@@ -27,3 +27,4 @@ jobs:
         run: >-
           uv run ansible-playbook playbooks/restore_home_server.yml
           -i deploy_inventory.yml
+          -v
