@@ -1,0 +1,46 @@
+---
+name: Setup Ansible Dependencies
+description: >-
+  Shared dependency setup for all Ansible workflows: installs Python, uv,
+  dependencies, and Galaxy roles. Optionally creates the Ansible vault key.
+
+inputs:
+  vault-password:
+    description: Ansible vault password (optional — skips vault key creation if omitted)
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.14"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+
+    - name: Cache uv virtualenv
+      uses: actions/cache@v4
+      with:
+        path: .venv
+        key: uv-${{ hashFiles('uv.lock') }}
+
+    - name: Install dependencies
+      shell: bash
+      run: uv sync
+
+    - name: Cache Galaxy roles
+      uses: actions/cache@v4
+      with:
+        path: .venv/.ansible/roles
+        key: galaxy-${{ hashFiles('requirements.yml') }}
+
+    - name: Install Galaxy roles
+      shell: bash
+      run: uv run ansible-galaxy install -r requirements.yml
+
+    - name: Create Ansible vault key
+      if: inputs.vault-password != ''
+      shell: bash
+      run: echo "${{ inputs.vault-password }}" > .vault_key
