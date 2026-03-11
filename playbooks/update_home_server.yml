@@ -5,4 +5,5 @@
 
   roles:
     - role: system
+    - role: projects
     - role: services
