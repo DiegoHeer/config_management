@@ -18,3 +18,16 @@
   become: true
   become_user: "{{ username }}"
   when: services_run_compose
+  timeout: 600
+  register: services_compose_result
+  ignore_errors: true
+
+- name: Report failed docker compose stacks
+  ansible.builtin.debug:
+    msg: "WARNING: {{ item.item.path | basename }} failed: {{ item.msg | default('timeout or error') }}"
+  loop: "{{ services_compose_result.results | default([]) }}"
+  loop_control:
+    label: "{{ item.item.path | basename }}"
+  when:
+    - services_run_compose
+    - item.failed | default(false)
