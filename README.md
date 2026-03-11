@@ -1,6 +1,6 @@
 # Configuration Management
 
-Personal infrastructure-as-code for automatically setting up Ubuntu home servers, laptops, and desktops. Three pillars:
+Personal infrastructure-as-code for automatically setting up Ubuntu home servers. Three pillars:
 
 - **Ansible playbooks** for automatic system configuration
 - **Docker Compose services** for containerized home lab applications
@@ -51,7 +51,44 @@ uv sync
 uv run ansible-galaxy install -r requirements.yml
 ```
 
-2. Create a `.vault_key` file in the repo root with your Ansible vault password. All `vault.yml` files require this password to decrypt. Substitute vault files in roles if needed (check each task to verify which variables come from a `vault.yml`).
+2. Create a `.vault_key` file in the repo root with your Ansible vault password (see Secret Management below).
+
+### Secret Management
+
+Secrets are managed with [Ansible Vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html). The vault password is read from `.vault_key` (configured in `ansible.cfg`). Four encrypted vault files exist across roles:
+
+| Vault file | Contents |
+|---|---|
+| `roles/system/vars/main/vault.yml` | User password (`vault_password`) |
+| `roles/projects/vars/main/vault.yml` | Project-specific secrets |
+| `roles/restore/vars/main/vault.yml` | Backup/restore credentials |
+| `roles/services/vars/main/env_vault.yml` | All Docker service env vars (`vault_services_env`) |
+
+#### Service environment sync
+
+Docker Compose services need `.env` files with secrets. The script `scripts/sync_env_to_vault.py` handles syncing local `.env` files into the encrypted vault:
+
+1. Reads `.env` files from each `services/<category>/` directory
+2. Builds a `vault_services_env` YAML dictionary (service name → key/value pairs)
+3. Encrypts and writes it to `roles/services/vars/main/env_vault.yml`
+
+Run the sync script whenever `.env` files change:
+
+```bash
+uv run python scripts/sync_env_to_vault.py
+```
+
+During deployment, the Ansible `services` role reads `vault_services_env` and templates `.env` files onto the target server (see `roles/services/tasks/env.yml`).
+
+#### Editing vault files
+
+```bash
+# View an encrypted vault file
+uv run ansible-vault view roles/<role>/vars/main/vault.yml
+
+# Edit an encrypted vault file in-place
+uv run ansible-vault edit roles/<role>/vars/main/vault.yml
+```
 
 ### Deployment
 
