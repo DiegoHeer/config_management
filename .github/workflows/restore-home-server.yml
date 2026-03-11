@@ -13,10 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Ansible dependencies
+        uses: ./.github/actions/setup-ansible-deps
+        with:
+          vault-password: ${{ secrets.VAULT_PASSWORD }}
+
       - name: Setup Ansible environment
         uses: ./.github/actions/setup-ansible
         with:
-          vault-password: ${{ secrets.VAULT_PASSWORD }}
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           tailscale-oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
           tailscale-oauth-client-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
