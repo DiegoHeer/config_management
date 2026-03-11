@@ -7,10 +7,32 @@
   register: services_dirs
   when: services_run_compose
 
-- name: Pull and start docker compose stacks
+- name: Pull docker compose images
+  community.docker.docker_compose_v2_pull:
+    project_src: "{{ item.path }}"
+  loop: "{{ services_dirs.files | default([]) }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  become: true
+  become_user: "{{ username }}"
+  when: services_run_compose
+  register: services_pull_result
+  ignore_errors: true
+
+- name: Report failed docker compose pulls
+  ansible.builtin.debug:
+    msg: "WARNING: {{ item.item.path | basename }} pull failed: {{ item.msg | default('timeout or error') }}"
+  loop: "{{ services_pull_result.results | default([]) }}"
+  loop_control:
+    label: "{{ item.item.path | basename }}"
+  when:
+    - services_run_compose
+    - item.failed | default(false)
+
+- name: Start docker compose stacks
   community.docker.docker_compose_v2:
     project_src: "{{ item.path }}"
-    pull: always
+    pull: never
     state: present
   loop: "{{ services_dirs.files | default([]) }}"
   loop_control:
