@@ -9,10 +9,11 @@ Personal infrastructure-as-code for automatically setting up Ubuntu home servers
 ## Project Structure
 
 ```
-roles/          # Ansible roles: system, development, gui, projects, services, restore
-playbooks/      # Playbooks: home_server.yml, laptop.yml
+roles/          # Ansible roles: system, projects, services, restore
+playbooks/      # Playbooks: update_home_server.yml, restore_home_server.yml
 services/       # Docker Compose service groups (12 categories)
 molecule/       # Ansible role testing (one scenario per role)
+.github/        # CI workflows and shared composite actions
 ```
 
 ### Services Overview
@@ -50,55 +51,20 @@ uv sync
 uv run ansible-galaxy install -r requirements.yml
 ```
 
-2. Generate an SSH key (skip passphrases when prompted):
+2. Create a `.vault_key` file in the repo root with your Ansible vault password. All `vault.yml` files require this password to decrypt. Substitute vault files in roles if needed (check each task to verify which variables come from a `vault.yml`).
 
-```bash
-ssh-keygen -t ed25519 -C <email address>
-```
+### Deployment
 
-3. Copy the public key to each managed host:
+Deployments are handled through GitHub Actions workflows (triggered manually via `workflow_dispatch`):
 
-```bash
-ssh-copy-id -i ~/.ssh/id_ed25519 <host user>@<host ip address>
-```
+- **Update Home Server** — runs `update_home_server.yml` (system + services roles)
+- **Restore Home Server** — runs `restore_home_server.yml` (system + projects + restore + services roles)
 
-4. Edit `inventory.yml` — add hosts and adjust variables as needed.
-
-5. Verify connectivity:
-
-```bash
-uv run ansible <host group> -m ping
-```
-
-### Usage
-
-1. Create a `.vault_key` file in the repo root with your Ansible vault password. All `vault.yml` files require this password to decrypt. Substitute vault files in roles if needed (check each task to verify which variables come from a `vault.yml`).
-
-2. Run a playbook:
-
-```bash
-uv run ansible-playbook playbooks/<playbook>.yml
-```
-
-Or with an interactive vault prompt:
-
-```bash
-uv run ansible-playbook playbooks/<playbook>.yml --ask-vault-pass
-```
-
-#### Ansible Pull (optional)
-
-Playbooks can run locally on the target server using `ansible-pull`:
-
-```bash
-sudo apt update
-sudo apt install ansible -y
-ansible-pull -U git@github.com:DiegoHeer/config_management.git --vault-password-file .vault_key --ask-become-pass
-```
+Both workflows use a shared composite action (`.github/actions/setup-ansible/`) that handles Python/uv setup, Galaxy roles, vault key, SSH, and Tailscale connectivity.
 
 ### Testing
 
-Testing is done with [Molecule](https://ansible.readthedocs.io/projects/molecule/). Available roles: `system`, `projects`, `development`, `gui`, `restore`, `services`
+Testing is done with [Molecule](https://ansible.readthedocs.io/projects/molecule/). Available scenarios: `system`, `projects`, `restore`, `services`
 
 ```bash
 # Run the full test sequence

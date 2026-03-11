@@ -11,9 +11,10 @@ Personal IaC repository for Ubuntu home servers. Three pillars:
 
 ```
 roles/          # Ansible roles: system, projects, services, restore
-playbooks/      # Playbooks: home_server.yml
+playbooks/      # Playbooks: update_home_server.yml, restore_home_server.yml
 services/       # Docker Compose service groups (14 categories)
 molecule/       # Ansible role testing (one scenario per role)
+.github/        # CI workflows and shared composite actions
 ```
 
 Service categories: home_assistant, media, monitoring, storage, tools, dashboards, security, photos, backups, networking, games, experimental
