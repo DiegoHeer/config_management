@@ -59,5 +59,8 @@
       "Bash(git branch -D *)",
       "Bash(git clean *)"
     ]
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
   }
 }
