@@ -1,6 +1,9 @@
 ---
 dependency:
   name: galaxy
+  options:
+    role-file: requirements.yml
+    roles-path: .venv/.ansible/roles
 
 driver:
   name: docker
