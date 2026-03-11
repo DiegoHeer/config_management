@@ -61,13 +61,13 @@
 
 - name: Generate target SSH key for accessing Github
   community.crypto.openssh_keypair:
-    path: "/home/{{ username }}/.ssh/id_rsa"
+    path: "/home/{{ username }}/.ssh/github"
     type: rsa
     size: 4096
     state: present
     owner: "{{ username }}"
     group: "{{ username }}"
-  register: projects_ssh_key
+  register: projects_github_ssh_key
 
 - name: Create projects folder
   ansible.builtin.file:

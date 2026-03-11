@@ -2,7 +2,7 @@
 - name: Authorize target SSH public key with GitHub
   community.general.github_deploy_key:
     name: ansible_key
-    key: "{{ projects_ssh_key.public_key }}"
+    key: "{{ projects_github_ssh_key.public_key }}"
     read_only: false
     state: present
     owner: "{{ projects_github_owner }}"
@@ -18,7 +18,7 @@
   ansible.builtin.git:
     repo: "git@github.com:{{ projects_github_owner }}/{{ repo }}.git"
     dest: "/home/{{ username }}/projects/{{ repo }}"
-    key_file: "{{ projects_ssh_key.filename }}"
+    key_file: "{{ projects_github_ssh_key.filename }}"
     accept_newhostkey: true
     clone: true
     version: main
