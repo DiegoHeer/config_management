@@ -1,13 +1,10 @@
 ---
 name: Setup Ansible Environment
 description: >-
-  Shared setup for Ansible playbook workflows: installs Python, uv,
-  dependencies, Galaxy roles, vault key, SSH, and Tailscale connectivity.
+  Deployment connectivity for Ansible playbook workflows: sets up SSH,
+  Tailscale, and deploy inventory. Expects setup-ansible-deps to have run first.
 
 inputs:
-  vault-password:
-    description: Ansible vault password
-    required: true
   ssh-private-key:
     description: SSH private key for server access
     required: true
@@ -27,38 +24,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.14"
-
-    - name: Install uv
-      uses: astral-sh/setup-uv@v5
-
-    - name: Cache uv virtualenv
-      uses: actions/cache@v4
-      with:
-        path: .venv
-        key: uv-${{ hashFiles('uv.lock') }}
-
-    - name: Install dependencies
-      shell: bash
-      run: uv sync
-
-    - name: Cache Galaxy roles
-      uses: actions/cache@v4
-      with:
-        path: .venv/.ansible/roles
-        key: galaxy-${{ hashFiles('requirements.yml') }}
-
-    - name: Install Galaxy roles
-      shell: bash
-      run: uv run ansible-galaxy install -r requirements.yml
-
-    - name: Create Ansible vault key
-      shell: bash
-      run: echo "${{ inputs.vault-password }}" > .vault_key
-
     - name: Set up SSH agent
       uses: webfactory/ssh-agent@v0.9.0
       with:
