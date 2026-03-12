@@ -4,8 +4,9 @@
     name: ansible_key
     pubkey: "{{ projects_github_ssh_key.public_key }}"
     state: present
-    force: false
+    force: true
     token: "{{ github_access_token }}"
+  when: projects_github_ssh_key.changed
 
 - name: Clone Github repos
   become: false
