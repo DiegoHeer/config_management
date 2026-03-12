@@ -5,6 +5,7 @@
     - user.yml
     - settings.yml
     - packages.yml
+    - linuxbrew.yml
     - tmux.yml
     - oh_my_posh.yml
   loop_control:

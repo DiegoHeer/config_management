@@ -20,4 +20,8 @@
       - curl
       - flatpak
       - snapd
+      - build-essential
+      - procps
+      - file
+      - git
     state: present
