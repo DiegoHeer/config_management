@@ -26,8 +26,8 @@
 
 - name: Copy oh-my-posh theme
   ansible.builtin.copy:
-    src: poshthemes/dynatron.omp.json
-    dest: /home/{{ username }}/.themes/dynatron.omp.json
+    src: poshthemes/server.omp.json
+    dest: /home/{{ username }}/.themes/server.omp.json
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: u=rw,g=rw
@@ -36,6 +36,6 @@
 - name: Auto initialize oh-my-posh theme
   ansible.builtin.lineinfile:
     path: /home/{{ username }}/.bashrc
-    line: eval "$(oh-my-posh init bash --config /home/{{ username }}/.themes/dynatron.omp.json)"
+    line: eval "$(oh-my-posh init bash --config /home/{{ username }}/.themes/server.omp.json)"
   when: not system_oh_my_posh_check.stat.exists
   notify: Apply updated PATH
