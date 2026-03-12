@@ -1,16 +1,11 @@
 ---
 - name: Authorize target SSH public key with GitHub
-  community.general.github_deploy_key:
+  community.general.github_key:
     name: ansible_key
-    key: "{{ projects_github_ssh_key.public_key }}"
-    read_only: false
+    pubkey: "{{ projects_github_ssh_key.public_key }}"
     state: present
-    owner: "{{ projects_github_owner }}"
-    repo: "{{ repo }}"
+    force: false
     token: "{{ github_access_token }}"
-  loop: "{{ projects_github_repos }}"
-  loop_control:
-    loop_var: repo
 
 - name: Clone Github repos
   become: false
