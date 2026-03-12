@@ -6,7 +6,6 @@
     state: present
     force: true
     token: "{{ github_access_token }}"
-  when: projects_github_ssh_key.changed
 
 - name: Clone Github repos
   become: false
