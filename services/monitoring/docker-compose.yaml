@@ -40,22 +40,6 @@ services:
       beszel:
         condition: service_healthy
 
-  adguardhome:
-    container_name: adguardhome
-    image: adguard/adguardhome
-    restart: unless-stopped
-    ports:
-      - 53:53/udp
-      - 53:53/tcp
-    volumes:
-      - ./adguardhome/conf:/opt/adguardhome/conf
-      - ./adguardhome/work:/opt/adguardhome/work
-    healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "53"]
-      interval: 45s
-      timeout: 30s
-      retries: 3
-
   portracker:
     container_name: portracker
     image: mostafawahied/portracker:latest
