@@ -1,0 +1,8 @@
+---
+- name: Sync docker compose files to server
+  ansible.builtin.copy:
+    src: "{{ services_local_src }}/"
+    dest: "{{ services_docker_src }}/"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0755"
