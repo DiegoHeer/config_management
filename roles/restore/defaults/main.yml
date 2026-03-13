@@ -1,3 +1,5 @@
 ---
-restore_services_data_dir: /home/{{ username }}/services_data
+restore_services_dir: /home/{{ username }}/services
+restore_services_target: /home/{{ username }}
 restore_nextcloud_data_dir: /media/hd1/nextcloud/{{ username }}/files
+restore_nextcloud_target: /media/hd1

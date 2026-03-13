@@ -7,19 +7,3 @@
       ansible.builtin.user:
         name: "{{ username }}"
         shell: /bin/bash
-
-    - name: Copy services directory into test container
-      ansible.builtin.copy:
-        src: "{{ playbook_dir }}/../../services/"
-        dest: "/home/{{ username }}/projects/config_management/services/"
-        owner: "{{ username }}"
-        group: "{{ username }}"
-        mode: "0755"
-
-    - name: Ensure services data directory exists
-      ansible.builtin.file:
-        path: "/home/{{ username }}/services_data"
-        state: directory
-        owner: "{{ username }}"
-        group: "{{ username }}"
-        mode: "0755"

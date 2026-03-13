@@ -1,4 +1,4 @@
 ---
-services_docker_src: /home/{{ username }}/projects/config_management/services
-services_data_src: /home/{{ username }}/services_data
+services_docker_src: /home/{{ username }}/services
+services_local_src: "{{ role_path }}/../../services"
 services_run_compose: true
