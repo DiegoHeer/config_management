@@ -21,13 +21,10 @@
 
 - name: Report failed docker compose pulls
   ansible.builtin.debug:
-    msg: "WARNING: {{ item.item.path | basename }} pull failed: {{ item.msg | default('timeout or error') }}"
-  loop: "{{ services_pull_result.results | default([]) }}"
-  loop_control:
-    label: "{{ item.item.path | basename }}"
+    msg: "{{ services_pull_result.results | default([]) | selectattr('failed', 'defined') | selectattr('failed') | map(attribute='item') | map(attribute='path') | map('basename') | list }}"
   when:
     - services_run_compose
-    - item.failed | default(false)
+    - services_pull_result.results | default([]) | selectattr('failed', 'defined') | selectattr('failed') | list | length > 0
 
 - name: Start docker compose stacks
   community.docker.docker_compose_v2:
@@ -46,10 +43,7 @@
 
 - name: Report failed docker compose stacks
   ansible.builtin.debug:
-    msg: "WARNING: {{ item.item.path | basename }} failed: {{ item.msg | default('timeout or error') }}"
-  loop: "{{ services_compose_result.results | default([]) }}"
-  loop_control:
-    label: "{{ item.item.path | basename }}"
+    msg: "{{ services_compose_result.results | default([]) | selectattr('failed', 'defined') | selectattr('failed') | map(attribute='item') | map(attribute='path') | map('basename') | list }}"
   when:
     - services_run_compose
-    - item.failed | default(false)
+    - services_compose_result.results | default([]) | selectattr('failed', 'defined') | selectattr('failed') | list | length > 0

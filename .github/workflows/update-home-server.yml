@@ -31,4 +31,3 @@ jobs:
         run: >-
           uv run ansible-playbook playbooks/update_home_server.yml
           -i deploy_inventory.yml
-          -v
