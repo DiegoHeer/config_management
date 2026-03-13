@@ -12,12 +12,12 @@ Personal IaC repository for Ubuntu home servers. Three pillars:
 ```
 roles/          # Ansible roles: system, projects, services, restore
 playbooks/      # Playbooks: update_home_server.yml, restore_home_server.yml
-services/       # Docker Compose service groups (14 categories)
+services/       # Docker Compose service groups (11 categories)
 molecule/       # Ansible role testing (one scenario per role)
 .github/        # CI workflows and shared composite actions
 ```
 
-Service categories: home_assistant, media, monitoring, storage, tools, dashboards, security, photos, backups, networking, games, experimental
+Service categories: home_assistant, media, monitoring, storage, tools, dashboards, security, photos, backups, networking, games
 
 ## Common Commands
 
@@ -69,15 +69,15 @@ Services|Update: updated multiple services to latest versions
 
 ### Docker Compose
 
-- Files at `services/<category>/docker-compose.yaml` with matching `.env`
+- Files at `services/<category>/docker-compose.yaml`
 - Container names: snake_case, matching the service key
 - All services on external `home_server_network` bridge
-- Config volumes: `/home/${USERNAME}/services_data/<service>/config`
+- Config/data volumes use `./` relative paths (e.g. `./beszel:/beszel_data`)
 - Media/data volumes on `/media/hd1-3/`
 - VPN-routed services use `network_mode: service:gluetun`
 - Health checks on all services (curl/wget, 30s interval, 10s timeout, 3-5 retries)
 - Restart policy: `unless-stopped`
-- Env vars sourced from `.env` files (never committed; `.env.template` provided)
+- Env vars sourced from `.env` files (never committed; generated from Ansible vault)
 
 ### YAML
 
@@ -88,4 +88,4 @@ Services|Update: updated multiple services to latest versions
 
 - Never commit `.env` files or vault passwords
 - Ansible vault key: `.vault_key` (root dir)
-- Use `.env.template` files as reference for required variables
+- `.env` files are generated from Ansible vault; reference `docker-compose.yaml` for required variables

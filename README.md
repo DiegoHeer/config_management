@@ -11,7 +11,7 @@ Personal infrastructure-as-code for automatically setting up Ubuntu home servers
 ```
 roles/          # Ansible roles: system, projects, services, restore
 playbooks/      # Playbooks: update_home_server.yml, restore_home_server.yml
-services/       # Docker Compose service groups (12 categories)
+services/       # Docker Compose service groups (11 categories)
 molecule/       # Ansible role testing (one scenario per role)
 .github/        # CI workflows and shared composite actions
 ```
@@ -20,14 +20,14 @@ molecule/       # Ansible role testing (one scenario per role)
 
 | Category | Services |
 |---|---|
-| **Home Assistant** | Home Assistant, Mosquitto (MQTT), Doorbell Samba |
-| **Media** | Jellyfin, Seerr, Gluetun (VPN), qBittorrent, Prowlarr, Sonarr, Radarr, Profilarr, FlareSolverr, SABnzbd, Navidrome, Audiobookshelf, Booklore |
+| **Home Assistant** | Home Assistant, Mosquitto (MQTT), OpenThread Border Router, Matter Server, Doorbell Samba |
+| **Media** | Jellyfin, Seerr, Gluetun (VPN), qBittorrent, Prowlarr, Sonarr, Radarr, Profilarr, SABnzbd, Navidrome, Audiobookshelf, Booklore |
 | **Networking** | Nginx Proxy Manager, Cloudflare Tunnel |
-| **Monitoring** | Beszel, AdGuard Home, Portracker, Termix |
+| **Monitoring** | Beszel, AdGuard Home, Portracker |
 | **Storage** | Filebrowser, Nextcloud, Obsidian LiveSync |
 | **Photos** | Immich (server + ML), Redis, PostgreSQL |
-| **Tools** | IT-Tools, BentoPDF, Grist, n8n, Docuseal, Changedetection, Tandoor, Karakeep, Dockhand, Dash |
-| **Dashboards** | Homarr, Glance |
+| **Tools** | IT-Tools, BentoPDF, Grist, Docuseal, Changedetection, Tandoor, Dockhand |
+| **Dashboards** | Homarr, Glance, Dashdot, Homepage |
 | **Security** | Frigate (NVR) |
 | **Games** | RomM |
 | **Backups** | Zerobyte, Databasus |
@@ -39,7 +39,7 @@ molecule/       # Ansible role testing (one scenario per role)
 ### Requirements
 
 - Ubuntu 24.04 (other versions/distros untested)
-- Python >= 3.11
+- Python >= 3.14
 - uv >= 0.6.0
 
 ### Setup
@@ -94,7 +94,7 @@ uv run ansible-vault edit roles/<role>/vars/main/vault.yml
 
 Deployments are handled through GitHub Actions workflows (triggered manually via `workflow_dispatch`):
 
-- **Update Home Server** — runs `update_home_server.yml` (system + services roles)
+- **Update Home Server** — runs `update_home_server.yml` (system + projects + services roles)
 - **Restore Home Server** — runs `restore_home_server.yml` (system + projects + restore + services roles)
 
 Both workflows use a shared composite action (`.github/actions/setup-ansible/`) that handles Python/uv setup, Galaxy roles, vault key, SSH, and Tailscale connectivity.
@@ -136,11 +136,11 @@ uv run ansible-lint
 
 ## Docker Compose Services
 
-Each service category lives in `services/<category>/` with its own `docker-compose.yaml` and `.env` file.
+Each service category lives in `services/<category>/` with its own `docker-compose.yaml`. Environment variables are managed through Ansible vault and deployed as `.env` files during provisioning (see Secret Management above).
 
 ### Setup
 
-1. For each service category, create an `.env` file inside its directory and fill in the required environment variables (refer to the `docker-compose.yaml` for which variables are needed).
+1. For each service category, ensure an `.env` file exists in its directory with the required environment variables (refer to the `docker-compose.yaml` for which variables are needed). During Ansible deployment, `.env` files are generated automatically from vault.
 
 2. Ensure all volume mount paths exist locally. You can restore them from a backup by running the Ansible `restore` role, which handles Restic-based restoration automatically.
 
