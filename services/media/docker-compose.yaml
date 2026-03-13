@@ -9,7 +9,7 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - /media/hd2/data:/data
-      - /home/${USERNAME}/services_data/jellyfin/config:/config
+      - ./jellyfin/config:/config
       - /dev/dri:/dev/dri
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8096"]
@@ -27,7 +27,7 @@ services:
       - LOG_LEVEL=debug
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/${USERNAME}/services_data/seerr/config:/app/config
+      - ./seerr/config:/app/config
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
       start_period: 20s
@@ -44,7 +44,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - /home/${USERNAME}/services_data/gluetun:/gluetun
+      - ./gluetun:/gluetun
     environment:
       - TZ=Europe/Amsterdam
       - VPN_SERVICE_PROVIDER=surfshark
@@ -66,7 +66,7 @@ services:
     depends_on:
       - gluetun
     volumes:
-      - /home/${USERNAME}/services_data/qbittorrent/config:/config
+      - ./qbittorrent/config:/config
       - /media/hd2/data:/data
     environment:
       - PUID=1000
@@ -93,7 +93,7 @@ services:
       - PGID=1000
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/${USERNAME}/services_data/prowlarr/config:/config
+      - ./prowlarr/config:/config
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9696/ping"]
       interval: 30s
@@ -113,7 +113,7 @@ services:
       - PGID=0
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/${USERNAME}/services_data/sonarr/config:/config
+      - ./sonarr/config:/config
       - /media/hd2/data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8989/ping"]
@@ -134,7 +134,7 @@ services:
       - PGID=1000
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/${USERNAME}/services_data/radarr/config:/config
+      - ./radarr/config:/config
       - /media/hd2/data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7878/ping"]
@@ -148,7 +148,7 @@ services:
     image: santiagosayshey/profilarr:latest
     restart: unless-stopped
     volumes:
-      - /home/${USERNAME}/services_data/profilarr/config:/config
+      - ./profilarr/config:/config
     environment:
       - TZ=Europe/Amsterdam
     ports:
@@ -172,7 +172,7 @@ services:
       - PGID=1000
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/${USERNAME}/services_data/sabnzbd/config:/config
+      - ./sabnzbd/config:/config
       - /media/hd2/data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
@@ -187,7 +187,7 @@ services:
     restart: unless-stopped
     user: 1000:1000
     volumes:
-      - /home/${USERNAME}/services_data/navidrome:/data
+      - ./navidrome:/data
       - /media/hd2/data/media/music:/music:ro
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:4533"]
@@ -200,8 +200,8 @@ services:
     image: ghcr.io/advplyr/audiobookshelf:latest
     restart: unless-stopped
     volumes:
-      - /home/${USERNAME}/services_data/audiobookshelf/config:/config
-      - /home/${USERNAME}/services_data/audiobookshelf/metadata:/metadata
+      - ./audiobookshelf/config:/config
+      - ./audiobookshelf/metadata:/metadata
       - /media/hd2/data/media/audiobooks:/audiobooks
       - /media/hd2/data/media/podcasts:/podcasts
     healthcheck:
@@ -226,8 +226,8 @@ services:
       booklore_mariadb:
         condition: service_healthy
     volumes:
-      - /home/${USERNAME}/services_data/booklore/data:/app/data
-      - /home/${USERNAME}/services_data/booklore/bookdrop:/bookdrop
+      - ./booklore/data:/app/data
+      - ./booklore/bookdrop:/bookdrop
       - /media/hd2/data/media/books:/books
     restart: unless-stopped
     healthcheck:
@@ -249,7 +249,7 @@ services:
       - MYSQL_USER=${BOOKLORE_DB_USER}
       - MYSQL_PASSWORD=${BOOKLORE_DB_PASSWORD}
     volumes:
-      - /home/${USERNAME}/services_data/booklore/mariadb/config:/config
+      - ./booklore/mariadb/config:/config
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]

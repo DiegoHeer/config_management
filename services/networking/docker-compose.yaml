@@ -16,9 +16,9 @@ services:
       - 80:80
       - 81:81
     volumes:
-      - /home/${USERNAME}/services_data/nginx-proxy-manager/data:/data
-      - /home/${USERNAME}/services_data/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
-      - /home/${USERNAME}/services_data/nginx-proxy-manager/logrotate.custom:/etc/logrotate.d/nginx-proxy-manager
+      - ./nginx-proxy-manager/data:/data
+      - ./nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - ./nginx-proxy-manager/logrotate.custom:/etc/logrotate.d/nginx-proxy-manager
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:81"]
       interval: 30s

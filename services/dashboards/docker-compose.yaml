@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     image: ghcr.io/homarr-labs/homarr:v1.51.0
     volumes:
-      - /home/${USERNAME}/services_data/homarr/appdata:/appdata
+      - ./homarr/appdata:/appdata
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}
@@ -19,7 +19,7 @@ services:
     image: glanceapp/glance:v0.8.4
     restart: unless-stopped
     volumes:
-      - /home/${USERNAME}/services_data/glance/config:/app/config
+      - ./glance/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8080/api/healthz || exit 1
@@ -55,7 +55,7 @@ services:
       - PGID=1000
       - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS}
     volumes:
-      - /home/${USERNAME}/services_data/homepage/config:/app/config
+      - ./homepage/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]

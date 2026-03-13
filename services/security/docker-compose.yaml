@@ -9,7 +9,7 @@ services:
       - /dev/dri:/dev/dri
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /home/${USERNAME}/services_data/frigate/config:/config
+      - ./frigate/config:/config
       - /media/hd3/frigate:/media/frigate
       - type: tmpfs
         target: /tmp/cache

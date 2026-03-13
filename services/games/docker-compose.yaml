@@ -17,11 +17,11 @@ services:
       - HASHEOUS_API_ENABLED=true
       - HLTB_API_ENABLED=true
     volumes:
-      - /home/${USERNAME}/services_data/romm/resources:/romm/resources
-      - /home/${USERNAME}/services_data/romm/redis:/redis-data
+      - ./romm/resources:/romm/resources
+      - ./romm/redis:/redis-data
       - /media/hd2/data/media/games:/romm/library
-      - /home/${USERNAME}/services_data/romm/assets:/romm/assets
-      - /home/${USERNAME}/services_data/romm/config:/romm/config
+      - ./romm/assets:/romm/assets
+      - ./romm/config:/romm/config
     depends_on:
       romm_mariadb:
         condition: service_healthy
@@ -43,7 +43,7 @@ services:
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - MARIADB_ROOT_PASSWORD=${MARIADB_PASSWORD}
     volumes:
-      - /home/${USERNAME}/services_data/romm/mysql:/var/lib/mysql
+      - ./romm/mysql:/var/lib/mysql
     healthcheck:
       test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
       start_period: 30s

@@ -11,7 +11,7 @@ services:
       - /media/hd2:/hd2
       - /media/hd3:/hd3
       - /home/${USERNAME}:/user_home
-      - /home/${USERNAME}/services_data/filebrowser/data:/home/filebrowser/data
+      - ./filebrowser/data:/home/filebrowser/data
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:80/health"]
       interval: 30s
@@ -32,8 +32,8 @@ services:
       - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
       - MYSQL_HOST=nextcloud_mariadb
     volumes:
-      - /home/${USERNAME}/services_data/nextcloud/config:/config
-      - /home/${USERNAME}/services_data/nextcloud/themes:/themes
+      - ./nextcloud/config:/config
+      - ./nextcloud/themes:/themes
       - /media/hd1/nextcloud:/data
     depends_on:
       nextcloud_mariadb:
@@ -78,8 +78,8 @@ services:
       - COUCHDB_USER=${OBSIDIAN_COUCHDB_USER}
       - COUCHDB_PASSWORD=${OBSIDIAN_COUCHDB_PASSWORD}
     volumes:
-      - /home/${USERNAME}/services_data/obsidian-livesync/data:/opt/couchdb/data
-      - /home/${USERNAME}/services_data/obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
+      - ./obsidian-livesync/data:/opt/couchdb/data
+      - ./obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
     healthcheck:
       test: ["CMD", "curl", "-f", "http://${OBSIDIAN_COUCHDB_USER}:${OBSIDIAN_COUCHDB_PASSWORD}@localhost:5984/_up"]
       interval: 30s

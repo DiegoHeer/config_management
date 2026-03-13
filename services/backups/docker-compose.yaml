@@ -12,7 +12,7 @@ services:
       - /var/lib/zerobyte:/var/lib/zerobyte
       - /home/${USERNAME}/.config/rclone:/root/.config/rclone
       - /media/hd1/nextcloud/${USERNAME}/files:/nextcloud
-      - /home/${USERNAME}/services_data:/services_data
+      - ../:/services
       - /media/hd1/photo_library:/photo_library
       - /media/hd3:/hd3
     healthcheck:
@@ -25,7 +25,7 @@ services:
     container_name: databasus
     image: databasus/databasus:latest
     volumes:
-      - /home/${USERNAME}/services_data/databasus-data:/databasus-data
+      - ./databasus-data:/databasus-data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:4005"]

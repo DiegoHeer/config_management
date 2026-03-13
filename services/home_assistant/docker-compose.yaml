@@ -4,7 +4,7 @@ services:
     image: ghcr.io/home-assistant/home-assistant:stable
     restart: unless-stopped
     volumes:
-      - /home/${USERNAME}/services_data/homeassistant/config:/config
+      - ./homeassistant/config:/config
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
       - /dev:/dev
@@ -24,9 +24,9 @@ services:
     image: eclipse-mosquitto
     restart: unless-stopped
     volumes:
-      - /home/${USERNAME}/services_data/mosquitto/log:/mosquitto/log
-      - /home/${USERNAME}/services_data/mosquitto/data:/mosquitto/data
-      - /home/${USERNAME}/services_data/mosquitto/config:/mosquitto/config
+      - ./mosquitto/log:/mosquitto/log
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/config:/mosquitto/config
     ports:
       - 1883:1883
     healthcheck:
@@ -60,7 +60,7 @@ services:
       - /dev/ttyUSB1:/dev/ttyUSB1
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - /home/${USERNAME}/services_data/otbr/otbr_data:/data/thread
+      - ./otbr/otbr_data:/data/thread
       - /etc/localtime:/etc/localtime:ro
     healthcheck:
       test: ["CMD-SHELL", "test -S /run/openthread-wpan0.sock && nc -z localhost 8081"]
@@ -75,7 +75,7 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - /home/${USERNAME}/services_data/matter:/data/
+      - ./matter:/data/
     healthcheck:
       test: ["CMD-SHELL", "timeout 5 bash -c ':> /dev/tcp/127.0.0.1/5580' || exit 1"]
       interval: 30s

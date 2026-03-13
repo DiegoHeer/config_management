@@ -4,7 +4,7 @@ services:
     image: ghcr.io/immich-app/immich-server:v2.4.1
     restart: unless-stopped
     extends:
-      file: /home/${USERNAME}/services_data/immich/hwaccel.transcoding.yml
+      file: ./immich/hwaccel.transcoding.yml
       service: quicksync
     volumes:
       - /media/hd1/photo_library:/usr/src/app/upload
