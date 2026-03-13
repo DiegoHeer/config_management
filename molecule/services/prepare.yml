@@ -7,4 +7,3 @@
       ansible.builtin.user:
         name: "{{ username }}"
         shell: /bin/bash
-
