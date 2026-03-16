@@ -12,6 +12,10 @@ services:
       - /media/hd3:/hd3
       - /home/${USERNAME}:/user_home
       - ./filebrowser/data:/home/filebrowser/data
+    deploy:
+      resources:
+        limits:
+          memory: 200M
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:80/health"]
       interval: 30s

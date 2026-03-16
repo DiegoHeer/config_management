@@ -214,6 +214,7 @@ services:
   booklore:
     container_name: booklore
     image: booklore/booklore:latest
+    restart: unless-stopped
     environment:
       - USER_ID=1000
       - GROUP_ID=1000
@@ -229,7 +230,10 @@ services:
       - ./booklore/data:/app/data
       - ./booklore/bookdrop:/bookdrop
       - /media/hd2/data/media/books:/books
-    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 500M
     healthcheck:
       test: wget -q -O - http://localhost:6060/api/v1/healthcheck || exit 1
       interval: 30s
