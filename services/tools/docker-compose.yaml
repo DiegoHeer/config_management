@@ -81,6 +81,10 @@ services:
     depends_on:
       tandoor_postgres:
         condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 1G
     healthcheck:
       test: wget --spider --no-verbose http://localhost:80/openapi/ || exit 1
       interval: 30s
@@ -104,20 +108,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-
-  dockhand:
-    image: fnsys/dockhand:latest
-    container_name: dockhand
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./dockhand:/app/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
 
 
 networks:
