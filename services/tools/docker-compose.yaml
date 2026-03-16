@@ -23,7 +23,7 @@ services:
 
   grist:
     container_name: grist
-    image: gristlabs/grist:1.7.10
+    image: gristlabs/grist:1.7.11
     restart: unless-stopped
     environment:
       - PORT=9999
