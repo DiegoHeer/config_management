@@ -74,6 +74,10 @@ services:
       - TZ=Europe/Amsterdam
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
+    deploy:
+      resources:
+        limits:
+          memory: 500M
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 30s
