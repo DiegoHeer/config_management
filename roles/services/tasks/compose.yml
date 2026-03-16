@@ -20,11 +20,17 @@
   ignore_errors: true
 
 - name: Report failed docker compose pulls
+  vars:
+    failed_pulls: >-
+      {{ services_pull_result.results | default([])
+         | selectattr('failed', 'defined') | selectattr('failed')
+         | map(attribute='item') | map(attribute='path')
+         | map('basename') | list }}
   ansible.builtin.debug:
-    msg: "{{ services_pull_result.results | default([]) | selectattr('failed', 'defined') | selectattr('failed') | map(attribute='item') | map(attribute='path') | map('basename') | list }}"
+    msg: "{{ failed_pulls }}"
   when:
     - services_run_compose
-    - services_pull_result.results | default([]) | selectattr('failed', 'defined') | selectattr('failed') | list | length > 0
+    - failed_pulls | length > 0
 
 - name: Start docker compose stacks
   community.docker.docker_compose_v2:
@@ -42,8 +48,14 @@
   ignore_errors: true
 
 - name: Report failed docker compose stacks
+  vars:
+    failed_stacks: >-
+      {{ services_compose_result.results | default([])
+         | selectattr('failed', 'defined') | selectattr('failed')
+         | map(attribute='item') | map(attribute='path')
+         | map('basename') | list }}
   ansible.builtin.debug:
-    msg: "{{ services_compose_result.results | default([]) | selectattr('failed', 'defined') | selectattr('failed') | map(attribute='item') | map(attribute='path') | map('basename') | list }}"
+    msg: "{{ failed_stacks }}"
   when:
     - services_run_compose
-    - services_compose_result.results | default([]) | selectattr('failed', 'defined') | selectattr('failed') | list | length > 0
+    - failed_stacks | length > 0
