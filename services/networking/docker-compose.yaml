@@ -1,29 +1,48 @@
 services:
-  # Reference: https://www.youtube.com/watch?v=qlcVx-k-02E
-  nginx-proxy-manager:
-    image: jc21/nginx-proxy-manager:2.14.0
-    container_name: nginx-proxy-manager
+  traefik:
+    container_name: traefik
+    image: traefik:v3.4
     restart: unless-stopped
-    dns:
-      - 127.0.0.11
-      - 1.1.1.1
-      - 8.8.8.8
-    environment:
-      - PUID=1000
-      - PGID=1000
     ports:
-      - 443:443
       - 80:80
-      - 81:81
+      - 443:443
+    environment:
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     volumes:
-      - ./nginx-proxy-manager/data:/data
-      - ./nginx-proxy-manager/letsencrypt:/etc/letsencrypt
-      - ./nginx-proxy-manager/logrotate.custom:/etc/logrotate.d/nginx-proxy-manager
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/acme:/acme
+      - ./traefik/dynamic:/dynamic
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=home_server_network"
+      - "--providers.file.directory=/dynamic"
+      - "--providers.file.watch=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
+      - "--certificatesresolvers.cloudflare.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.cloudflare.acme.storage=/acme/acme.json"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.dynabase.nl`)"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.tls.certresolver=cloudflare"
+      - "traefik.http.routers.dashboard.tls.domains[0].main=dynabase.nl"
+      - "traefik.http.routers.dashboard.tls.domains[0].sans=*.dynabase.nl"
+      - "traefik.http.routers.dashboard.service=api@internal"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:81"]
+      test: ["CMD", "traefik", "healthcheck"]
       interval: 30s
       timeout: 10s
       retries: 3
+    mem_limit: 256m
 
   cloudflare_tunnel:
     container_name: cloudflare_tunnel

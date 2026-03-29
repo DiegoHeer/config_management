@@ -4,6 +4,12 @@ services:
     container_name: it-tools
     image: corentinth/it-tools:latest
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.it-tools.rule=Host(`it-tools.dynabase.nl`)"
+      - "traefik.http.routers.it-tools.entrypoints=websecure"
+      - "traefik.http.routers.it-tools.tls=true"
+      - "traefik.http.services.it-tools.loadbalancer.server.port=80"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80"]
       interval: 10s
@@ -14,6 +20,12 @@ services:
     container_name: bentopdf
     image: bentopdf/bentopdf:latest
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bentopdf.rule=Host(`bentopdf.dynabase.nl`)"
+      - "traefik.http.routers.bentopdf.entrypoints=websecure"
+      - "traefik.http.routers.bentopdf.tls=true"
+      - "traefik.http.services.bentopdf.loadbalancer.server.port=8080"
     healthcheck:
       test: wget --spider http://localhost:8080 > /dev/null 2>&1 || exit 1
       interval: 10s
@@ -25,6 +37,12 @@ services:
     container_name: grist
     image: gristlabs/grist:1.7.11
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grist.rule=Host(`grist.dynabase.nl`)"
+      - "traefik.http.routers.grist.entrypoints=websecure"
+      - "traefik.http.routers.grist.tls=true"
+      - "traefik.http.services.grist.loadbalancer.server.port=9999"
     environment:
       - PORT=9999
       - GRIST_DEFAULT_EMAIL=${GRIST_DEFAULT_EMAIL}
@@ -42,6 +60,12 @@ services:
     container_name: docuseal
     image: docuseal/docuseal:2.3.0
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.docuseal.rule=Host(`docuseal.dynabase.nl`)"
+      - "traefik.http.routers.docuseal.entrypoints=websecure"
+      - "traefik.http.routers.docuseal.tls=true"
+      - "traefik.http.services.docuseal.loadbalancer.server.port=3000"
     volumes:
       - ./docuseal:/data
     healthcheck:
@@ -55,6 +79,12 @@ services:
     container_name: changedetection
     image: ghcr.io/dgtlmoon/changedetection.io
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.changedetection.rule=Host(`changedetection.dynabase.nl`)"
+      - "traefik.http.routers.changedetection.entrypoints=websecure"
+      - "traefik.http.routers.changedetection.tls=true"
+      - "traefik.http.services.changedetection.loadbalancer.server.port=5000"
     volumes:
       - ./changedetection:/datastore
     healthcheck:
@@ -67,6 +97,12 @@ services:
     container_name: tandoor
     image: vabene1111/recipes:2.3.6
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tandoor.rule=Host(`tandoor.dynabase.nl`)"
+      - "traefik.http.routers.tandoor.entrypoints=websecure"
+      - "traefik.http.routers.tandoor.tls=true"
+      - "traefik.http.services.tandoor.loadbalancer.server.port=80"
     environment:
       - SECRET_KEY=${TANDOOR_SECRET_KEY}
       - DB_ENGINE=django.db.backends.postgresql
