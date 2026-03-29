@@ -13,15 +13,15 @@ runs:
   using: composite
   steps:
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: "3.14"
 
     - name: Install uv
-      uses: astral-sh/setup-uv@v5
+      uses: astral-sh/setup-uv@v7
 
     - name: Cache uv virtualenv
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: .venv
         key: uv-${{ hashFiles('uv.lock') }}
@@ -31,7 +31,7 @@ runs:
       run: uv sync
 
     - name: Cache Galaxy roles
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: .venv/.ansible/roles
         key: galaxy-${{ hashFiles('requirements.yml') }}
