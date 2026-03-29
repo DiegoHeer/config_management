@@ -1,7 +1,7 @@
 http:
   routers:
     homeassistant:
-      rule: "Host(`ha.dynabase.nl`)"
+      rule: "Host(`homeassistant.dynabase.nl`)"
       entryPoints:
         - websecure
       tls: {}
