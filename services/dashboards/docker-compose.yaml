@@ -42,7 +42,7 @@ services:
 
   dash:
     container_name: dash
-    image: mauricenino/dashdot:latest
+    image: mauricenino/dashdot:6.3.4
     restart: unless-stopped
     privileged: true
     environment:
@@ -64,7 +64,7 @@ services:
 
   homepage:
     container_name: homepage
-    image: ghcr.io/gethomepage/homepage:latest
+    image: ghcr.io/gethomepage/homepage:v1.12.1
     restart: unless-stopped
     ports:
       - 3000:3000

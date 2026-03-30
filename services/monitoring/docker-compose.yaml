@@ -68,7 +68,7 @@ services:
 
   portracker:
     container_name: portracker
-    image: mostafawahied/portracker:latest
+    image: mostafawahied/portracker:1.3.5
     restart: unless-stopped
     pid: "host"
     cap_add:
