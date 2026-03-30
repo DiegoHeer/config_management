@@ -32,7 +32,7 @@ services:
         limits:
           memory: 1G
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3100"]
+      test: ["CMD", "curl", "-f", "http://localhost:3100"]
       interval: 30s
       timeout: 10s
       retries: 3
