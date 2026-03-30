@@ -53,7 +53,7 @@ Description should be concise and explain *what* changed. Group commits by chang
 
 Examples:
 ```
-Services|Add: included booklore for book management
+Services|Add: included grimmory for book management
 Services|Remove: removed Go Access from networking stack
 Services|Fix: added missing restart policies to mosquitto, cloudflare_tunnel, and tandoor
 Services|Refactor: migrated jellyseerr to seerr
