@@ -287,8 +287,8 @@ services:
       - APP_GROUP_ID=1000
       - TZ=Europe/Amsterdam
       - DATABASE_URL=jdbc:mariadb://grimmory_mariadb:3306/grimmory
-      - DB_USER=${GRIMMORY_DB_USER}
-      - DB_PASSWORD=${GRIMMORY_DB_PASSWORD}
+      - DATABASE_USERNAME=${GRIMMORY_DB_USER}
+      - DATABASE_PASSWORD=${GRIMMORY_DB_PASSWORD}
       - DISK_TYPE=LOCAL
     depends_on:
       grimmory_mariadb:
