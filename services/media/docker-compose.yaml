@@ -283,13 +283,12 @@ services:
       - "traefik.http.routers.grimmory.tls=true"
       - "traefik.http.services.grimmory.loadbalancer.server.port=6060"
     environment:
-      - APP_USER_ID=1000
-      - APP_GROUP_ID=1000
+      - USER_ID=1000
+      - GROUP_ID=1000
       - TZ=Europe/Amsterdam
       - DATABASE_URL=jdbc:mariadb://grimmory_mariadb:3306/grimmory
       - DATABASE_USERNAME=${GRIMMORY_DB_USER}
       - DATABASE_PASSWORD=${GRIMMORY_DB_PASSWORD}
-      - DISK_TYPE=LOCAL
     depends_on:
       grimmory_mariadb:
         condition: service_healthy
