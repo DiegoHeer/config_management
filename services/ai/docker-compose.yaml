@@ -1,0 +1,62 @@
+services:
+
+  paperclip:
+    container_name: paperclip
+    image: reeoss/paperclipai-paperclip:latest
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.paperclip.rule=Host(`paperclip.dynabase.nl`)"
+      - "traefik.http.routers.paperclip.entrypoints=websecure"
+      - "traefik.http.routers.paperclip.tls=true"
+      - "traefik.http.services.paperclip.loadbalancer.server.port=3100"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3100
+      - PAPERCLIP_HOME=/paperclip
+      - PAPERCLIP_INSTANCE_ID=default
+      - PAPERCLIP_DEPLOYMENT_MODE=authenticated
+      - PAPERCLIP_DEPLOYMENT_EXPOSURE=private
+      - PAPERCLIP_PUBLIC_URL=https://paperclip.dynabase.nl
+      - NODE_ENV=production
+      - SERVE_UI=true
+      - BETTER_AUTH_SECRET=${PAPERCLIP_BETTER_AUTH_SECRET}
+      - DATABASE_URL=postgresql://paperclip:${PAPERCLIP_POSTGRES_PASSWORD}@paperclip_postgres:5432/paperclip
+    volumes:
+      - ./paperclip/data:/paperclip
+    depends_on:
+      paperclip_postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3100"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  paperclip_postgres:
+    container_name: paperclip_postgres
+    restart: unless-stopped
+    image: postgres:16.13-alpine
+    volumes:
+      - ./paperclip/postgresql:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=paperclip
+      - POSTGRES_PASSWORD=${PAPERCLIP_POSTGRES_PASSWORD}
+      - POSTGRES_DB=paperclip
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paperclip -d paperclip"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+
+networks:
+  default:
+    external: true
+    name: home_server_network
