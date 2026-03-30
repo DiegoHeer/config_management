@@ -70,7 +70,7 @@ services:
       start_period: 120s
 
   matter_server:
-    image: ghcr.io/home-assistant-libs/python-matter-server:8.1.2
+    image: ghcr.io/home-assistant-libs/python-matter-server:8.1.0
     container_name: matter_server
     restart: unless-stopped
     network_mode: host
