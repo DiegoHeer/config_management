@@ -7,7 +7,7 @@ services:
       - 80:80
       - 443:443
     environment:
-      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+      - CF_DNS_API_TOKEN=${CLOUDFLARE_TOKEN}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/acme:/acme
