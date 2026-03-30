@@ -272,30 +272,30 @@ services:
       retries: 3
       start_period: 20s
 
-  booklore:
-    container_name: booklore
-    image: booklore/booklore:v2.2.1
+  grimmory:
+    container_name: grimmory
+    image: grimmory/grimmory:v2.3.0
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.booklore.rule=Host(`booklore.dynabase.nl`)"
-      - "traefik.http.routers.booklore.entrypoints=websecure"
-      - "traefik.http.routers.booklore.tls=true"
-      - "traefik.http.services.booklore.loadbalancer.server.port=6060"
+      - "traefik.http.routers.grimmory.rule=Host(`grimmory.dynabase.nl`)"
+      - "traefik.http.routers.grimmory.entrypoints=websecure"
+      - "traefik.http.routers.grimmory.tls=true"
+      - "traefik.http.services.grimmory.loadbalancer.server.port=6060"
     environment:
-      - USER_ID=1000
-      - GROUP_ID=1000
+      - APP_USER_ID=1000
+      - APP_GROUP_ID=1000
       - TZ=Europe/Amsterdam
-      - DATABASE_URL=jdbc:mariadb://booklore_mariadb:3306/booklore
-      - DATABASE_USERNAME=${BOOKLORE_DB_USER}
-      - DATABASE_PASSWORD=${BOOKLORE_DB_PASSWORD}
-      - BOOKLORE_PORT=6060
+      - DATABASE_URL=jdbc:mariadb://grimmory_mariadb:3306/grimmory
+      - DB_USER=${GRIMMORY_DB_USER}
+      - DB_PASSWORD=${GRIMMORY_DB_PASSWORD}
+      - DISK_TYPE=LOCAL
     depends_on:
-      booklore_mariadb:
+      grimmory_mariadb:
         condition: service_healthy
     volumes:
-      - ./booklore/data:/app/data
-      - ./booklore/bookdrop:/bookdrop
+      - ./grimmory/data:/app/data
+      - ./grimmory/bookdrop:/bookdrop
       - /media/hd2/data/media/books:/books
     deploy:
       resources:
@@ -308,19 +308,19 @@ services:
       retries: 5
       start_period: 60s
 
-  booklore_mariadb:
+  grimmory_mariadb:
     image: lscr.io/linuxserver/mariadb:11.4.5
-    container_name: booklore_mariadb
+    container_name: grimmory_mariadb
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Amsterdam
-      - MYSQL_ROOT_PASSWORD=${BOOKLORE_DB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=booklore
-      - MYSQL_USER=${BOOKLORE_DB_USER}
-      - MYSQL_PASSWORD=${BOOKLORE_DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${GRIMMORY_DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=grimmory
+      - MYSQL_USER=${GRIMMORY_DB_USER}
+      - MYSQL_PASSWORD=${GRIMMORY_DB_PASSWORD}
     volumes:
-      - ./booklore/mariadb/config:/config
+      - ./grimmory/mariadb/config:/config
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
