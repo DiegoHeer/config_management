@@ -35,7 +35,7 @@ services:
 
   grist:
     container_name: grist
-    image: gristlabs/grist:1.7.11
+    image: gristlabs/grist:1.7.12
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
