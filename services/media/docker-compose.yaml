@@ -5,8 +5,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.dynabase.nl`)"
-      - "traefik.http.routers.jellyfin.entrypoints=websecure"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.local.dynabase.nl`)"
+      - "traefik.http.routers.jellyfin.entrypoints=https"
       - "traefik.http.routers.jellyfin.tls=true"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     environment:
@@ -31,8 +31,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.seerr.rule=Host(`seerr.dynabase.nl`)"
-      - "traefik.http.routers.seerr.entrypoints=websecure"
+      - "traefik.http.routers.seerr.rule=Host(`seerr.local.dynabase.nl`)"
+      - "traefik.http.routers.seerr.entrypoints=https"
       - "traefik.http.routers.seerr.tls=true"
       - "traefik.http.services.seerr.loadbalancer.server.port=5055"
     environment:
@@ -54,32 +54,32 @@ services:
     labels:
       - "traefik.enable=true"
       # qBittorrent (port 8080)
-      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.dynabase.nl`)"
-      - "traefik.http.routers.qbittorrent.entrypoints=websecure"
+      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.local.dynabase.nl`)"
+      - "traefik.http.routers.qbittorrent.entrypoints=https"
       - "traefik.http.routers.qbittorrent.tls=true"
       - "traefik.http.routers.qbittorrent.service=qbittorrent"
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
       # Prowlarr (port 9696)
-      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.dynabase.nl`)"
-      - "traefik.http.routers.prowlarr.entrypoints=websecure"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.local.dynabase.nl`)"
+      - "traefik.http.routers.prowlarr.entrypoints=https"
       - "traefik.http.routers.prowlarr.tls=true"
       - "traefik.http.routers.prowlarr.service=prowlarr"
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
       # Sonarr (port 8989)
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.dynabase.nl`)"
-      - "traefik.http.routers.sonarr.entrypoints=websecure"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.local.dynabase.nl`)"
+      - "traefik.http.routers.sonarr.entrypoints=https"
       - "traefik.http.routers.sonarr.tls=true"
       - "traefik.http.routers.sonarr.service=sonarr"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
       # Radarr (port 7878)
-      - "traefik.http.routers.radarr.rule=Host(`radarr.dynabase.nl`)"
-      - "traefik.http.routers.radarr.entrypoints=websecure"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.local.dynabase.nl`)"
+      - "traefik.http.routers.radarr.entrypoints=https"
       - "traefik.http.routers.radarr.tls=true"
       - "traefik.http.routers.radarr.service=radarr"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
       # SABnzbd (port 8085)
-      - "traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.dynabase.nl`)"
-      - "traefik.http.routers.sabnzbd.entrypoints=websecure"
+      - "traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.local.dynabase.nl`)"
+      - "traefik.http.routers.sabnzbd.entrypoints=https"
       - "traefik.http.routers.sabnzbd.tls=true"
       - "traefik.http.routers.sabnzbd.service=sabnzbd"
       - "traefik.http.services.sabnzbd.loadbalancer.server.port=8085"
@@ -197,8 +197,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.profilarr.rule=Host(`profilarr.dynabase.nl`)"
-      - "traefik.http.routers.profilarr.entrypoints=websecure"
+      - "traefik.http.routers.profilarr.rule=Host(`profilarr.local.dynabase.nl`)"
+      - "traefik.http.routers.profilarr.entrypoints=https"
       - "traefik.http.routers.profilarr.tls=true"
       - "traefik.http.services.profilarr.loadbalancer.server.port=6868"
     volumes:
@@ -241,8 +241,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.navidrome.rule=Host(`navidrome.dynabase.nl`)"
-      - "traefik.http.routers.navidrome.entrypoints=websecure"
+      - "traefik.http.routers.navidrome.rule=Host(`navidrome.local.dynabase.nl`)"
+      - "traefik.http.routers.navidrome.entrypoints=https"
       - "traefik.http.routers.navidrome.tls=true"
       - "traefik.http.services.navidrome.loadbalancer.server.port=4533"
     user: 1000:1000
@@ -261,8 +261,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.audiobookshelf.rule=Host(`audiobookshelf.dynabase.nl`)"
-      - "traefik.http.routers.audiobookshelf.entrypoints=websecure"
+      - "traefik.http.routers.audiobookshelf.rule=Host(`audiobookshelf.local.dynabase.nl`)"
+      - "traefik.http.routers.audiobookshelf.entrypoints=https"
       - "traefik.http.routers.audiobookshelf.tls=true"
       - "traefik.http.services.audiobookshelf.loadbalancer.server.port=80"
     volumes:
@@ -283,8 +283,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grimmory.rule=Host(`grimmory.dynabase.nl`)"
-      - "traefik.http.routers.grimmory.entrypoints=websecure"
+      - "traefik.http.routers.grimmory.rule=Host(`grimmory.local.dynabase.nl`)"
+      - "traefik.http.routers.grimmory.entrypoints=https"
       - "traefik.http.routers.grimmory.tls=true"
       - "traefik.http.services.grimmory.loadbalancer.server.port=6060"
     environment:

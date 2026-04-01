@@ -14,8 +14,8 @@ services:
       - ./filebrowser/data:/home/filebrowser/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.filebrowser.rule=Host(`filebrowser.dynabase.nl`)"
-      - "traefik.http.routers.filebrowser.entrypoints=websecure"
+      - "traefik.http.routers.filebrowser.rule=Host(`filebrowser.local.dynabase.nl`)"
+      - "traefik.http.routers.filebrowser.entrypoints=https"
       - "traefik.http.routers.filebrowser.tls=true"
       - "traefik.http.services.filebrowser.loadbalancer.server.port=80"
     deploy:
@@ -47,8 +47,8 @@ services:
       - /media/hd1/nextcloud:/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.dynabase.nl`)"
-      - "traefik.http.routers.nextcloud.entrypoints=websecure"
+      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.local.dynabase.nl`)"
+      - "traefik.http.routers.nextcloud.entrypoints=https"
       - "traefik.http.routers.nextcloud.tls=true"
       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
     depends_on:
@@ -98,8 +98,8 @@ services:
       - ./obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.obsidian-livesync.rule=Host(`obsidian.dynabase.nl`)"
-      - "traefik.http.routers.obsidian-livesync.entrypoints=websecure"
+      - "traefik.http.routers.obsidian-livesync.rule=Host(`obsidian.local.dynabase.nl`)"
+      - "traefik.http.routers.obsidian-livesync.entrypoints=https"
       - "traefik.http.routers.obsidian-livesync.tls=true"
       - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
     healthcheck:

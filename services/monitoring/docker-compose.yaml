@@ -9,8 +9,8 @@ services:
       - ./beszel:/beszel_data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.beszel.rule=Host(`beszel.dynabase.nl`)"
-      - "traefik.http.routers.beszel.entrypoints=websecure"
+      - "traefik.http.routers.beszel.rule=Host(`beszel.local.dynabase.nl`)"
+      - "traefik.http.routers.beszel.entrypoints=https"
       - "traefik.http.routers.beszel.tls=true"
       - "traefik.http.services.beszel.loadbalancer.server.port=8090"
     healthcheck:
@@ -55,8 +55,8 @@ services:
       - ./dozzle:/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dozzle.rule=Host(`dozzle.dynabase.nl`)"
-      - "traefik.http.routers.dozzle.entrypoints=websecure"
+      - "traefik.http.routers.dozzle.rule=Host(`dozzle.local.dynabase.nl`)"
+      - "traefik.http.routers.dozzle.entrypoints=https"
       - "traefik.http.routers.dozzle.tls=true"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
     healthcheck:
@@ -81,8 +81,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.portracker.rule=Host(`portracker.dynabase.nl`)"
-      - "traefik.http.routers.portracker.entrypoints=websecure"
+      - "traefik.http.routers.portracker.rule=Host(`portracker.local.dynabase.nl`)"
+      - "traefik.http.routers.portracker.entrypoints=https"
       - "traefik.http.routers.portracker.tls=true"
       - "traefik.http.services.portracker.loadbalancer.server.port=4999"
     healthcheck:

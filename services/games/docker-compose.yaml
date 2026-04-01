@@ -24,8 +24,8 @@ services:
       - ./romm/config:/romm/config
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.romm.rule=Host(`romm.dynabase.nl`)"
-      - "traefik.http.routers.romm.entrypoints=websecure"
+      - "traefik.http.routers.romm.rule=Host(`romm.local.dynabase.nl`)"
+      - "traefik.http.routers.romm.entrypoints=https"
       - "traefik.http.routers.romm.tls=true"
       - "traefik.http.services.romm.loadbalancer.server.port=8080"
     depends_on:

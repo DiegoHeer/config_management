@@ -1,0 +1,14 @@
+http:
+  routers:
+    pihole:
+      rule: "Host(`pihole.local.dynabase.nl`)"
+      entryPoints:
+        - "https"
+      service: pihole
+      tls: {}
+
+  services:
+    pihole:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.10:7088"

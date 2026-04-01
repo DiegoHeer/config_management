@@ -1,48 +1,50 @@
 services:
   traefik:
     container_name: traefik
-    image: traefik:v3.6.10
+    image: traefik:v3.6.12
     restart: unless-stopped
     ports:
       - 80:80
+      - 8080:8080
       - 443:443
     environment:
-      - CF_DNS_API_TOKEN=${CLOUDFLARE_TOKEN}
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik/acme:/acme
-      - ./traefik/dynamic:/dynamic
-    command:
-      - "--api.dashboard=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.network=home_server_network"
-      - "--providers.file.directory=/dynamic"
-      - "--providers.file.watch=true"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
-      - "--certificatesresolvers.cloudflare.acme.email=${ACME_EMAIL}"
-      - "--certificatesresolvers.cloudflare.acme.storage=/acme/acme.json"
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik/traefik.yml:/traefik.yml:ro
+      - ./traefik/acme.json:/acme.json
+      - ./traefik/config.yml:/config.yml:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`traefik.dynabase.nl`)"
-      - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.routers.dashboard.tls=true"
-      - "traefik.http.routers.dashboard.tls.certresolver=cloudflare"
-      - "traefik.http.routers.dashboard.tls.domains[0].main=dynabase.nl"
-      - "traefik.http.routers.dashboard.tls.domains[0].sans=*.dynabase.nl"
-      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.local.dynabase.nl`)"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.traefik-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.rule=Host(`traefik.local.dynabase.nl`)"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].main=local.dynabase.nl"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.local.dynabase.nl"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
     healthcheck:
-      test: ["CMD", "traefik", "healthcheck"]
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
       interval: 30s
       timeout: 10s
       retries: 3
-    mem_limit: 256m
+
+  traefik-pihole-dns-sync:
+    image: ghcr.io/rpressiani/traefik-pihole-dns-sync:v0.1.0
+    container_name: traefik-pihole-dns-sync
+    restart: unless-stopped
+    environment:
+      - TRAEFIK_API_URL=https://traefik.local.dynabase.nl/api/http/routers
+      - PIHOLE_URL=https://pihole.local.dynabase.nl
+      - PIHOLE_PASSWORD=${PIHOLE_PASSWORD}
+      - TRAEFIK_HOST_IP=${TRAEFIK_HOST_IP}
+      - SYNC_INTERVAL=@every 1m
 
   cloudflare_tunnel:
     container_name: cloudflare_tunnel

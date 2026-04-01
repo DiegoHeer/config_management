@@ -6,8 +6,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.paperclip.rule=Host(`paperclip.dynabase.nl`)"
-      - "traefik.http.routers.paperclip.entrypoints=websecure"
+      - "traefik.http.routers.paperclip.rule=Host(`paperclip.local.dynabase.nl`)"
+      - "traefik.http.routers.paperclip.entrypoints=https"
       - "traefik.http.routers.paperclip.tls=true"
       - "traefik.http.services.paperclip.loadbalancer.server.port=3100"
     environment:
