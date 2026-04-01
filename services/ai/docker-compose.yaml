@@ -64,7 +64,7 @@ services:
       - "traefik.http.routers.n8n-local.rule=Host(`n8n.local.dynabase.nl`)"
       - "traefik.http.routers.n8n-local.entrypoints=https"
       - "traefik.http.routers.n8n-local.tls=true"
-      - "traefik.http.routers.n8n-external.rule=Host(`n8n.dynbase.nl`)"
+      - "traefik.http.routers.n8n-external.rule=Host(`n8n.dynabase.nl`)"
       - "traefik.http.routers.n8n-external.entrypoints=https"
       - "traefik.http.routers.n8n-external.tls=true"
       - "traefik.http.services.n8n.loadbalancer.server.port=5678"
@@ -73,9 +73,9 @@ services:
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - TZ=Europe/Amsterdam
       - GENERIC_TIMEZONE=Europe/Amsterdam
-      - N8N_HOST=n8n.dynbase.nl
+      - N8N_HOST=n8n.dynabase.nl
       - N8N_PROTOCOL=https
-      - WEBHOOK_URL=https://n8n.dynbase.nl/
+      - WEBHOOK_URL=https://n8n.dynabase.nl/
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=n8n_postgres
       - DB_POSTGRESDB_PORT=5432
