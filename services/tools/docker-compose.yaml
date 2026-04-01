@@ -6,8 +6,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.it-tools.rule=Host(`it-tools.dynabase.nl`)"
-      - "traefik.http.routers.it-tools.entrypoints=websecure"
+      - "traefik.http.routers.it-tools.rule=Host(`it-tools.local.dynabase.nl`)"
+      - "traefik.http.routers.it-tools.entrypoints=https"
       - "traefik.http.routers.it-tools.tls=true"
       - "traefik.http.services.it-tools.loadbalancer.server.port=80"
     healthcheck:
@@ -22,8 +22,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.bentopdf.rule=Host(`bentopdf.dynabase.nl`)"
-      - "traefik.http.routers.bentopdf.entrypoints=websecure"
+      - "traefik.http.routers.bentopdf.rule=Host(`bentopdf.local.dynabase.nl`)"
+      - "traefik.http.routers.bentopdf.entrypoints=https"
       - "traefik.http.routers.bentopdf.tls=true"
       - "traefik.http.services.bentopdf.loadbalancer.server.port=8080"
     healthcheck:
@@ -39,8 +39,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grist.rule=Host(`grist.dynabase.nl`)"
-      - "traefik.http.routers.grist.entrypoints=websecure"
+      - "traefik.http.routers.grist.rule=Host(`grist.local.dynabase.nl`)"
+      - "traefik.http.routers.grist.entrypoints=https"
       - "traefik.http.routers.grist.tls=true"
       - "traefik.http.services.grist.loadbalancer.server.port=9999"
     environment:
@@ -62,8 +62,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.docuseal.rule=Host(`docuseal.dynabase.nl`)"
-      - "traefik.http.routers.docuseal.entrypoints=websecure"
+      - "traefik.http.routers.docuseal.rule=Host(`docuseal.local.dynabase.nl`)"
+      - "traefik.http.routers.docuseal.entrypoints=https"
       - "traefik.http.routers.docuseal.tls=true"
       - "traefik.http.services.docuseal.loadbalancer.server.port=3000"
     volumes:
@@ -81,8 +81,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.changedetection.rule=Host(`changedetection.dynabase.nl`)"
-      - "traefik.http.routers.changedetection.entrypoints=websecure"
+      - "traefik.http.routers.changedetection.rule=Host(`changedetection.local.dynabase.nl`)"
+      - "traefik.http.routers.changedetection.entrypoints=https"
       - "traefik.http.routers.changedetection.tls=true"
       - "traefik.http.services.changedetection.loadbalancer.server.port=5000"
     volumes:
@@ -99,8 +99,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tandoor.rule=Host(`tandoor.dynabase.nl`)"
-      - "traefik.http.routers.tandoor.entrypoints=websecure"
+      - "traefik.http.routers.tandoor.rule=Host(`tandoor.local.dynabase.nl`)"
+      - "traefik.http.routers.tandoor.entrypoints=https"
       - "traefik.http.routers.tandoor.tls=true"
       - "traefik.http.services.tandoor.loadbalancer.server.port=80"
     environment:

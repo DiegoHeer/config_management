@@ -15,8 +15,8 @@ services:
       retries: 3
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.homarr.rule=Host(`homarr.dynabase.nl`)"
-      - "traefik.http.routers.homarr.entrypoints=websecure"
+      - "traefik.http.routers.homarr.rule=Host(`homarr.local.dynabase.nl`)"
+      - "traefik.http.routers.homarr.entrypoints=https"
       - "traefik.http.routers.homarr.tls=true"
       - "traefik.http.services.homarr.loadbalancer.server.port=7575"
 
@@ -35,8 +35,8 @@ services:
       start_period: 20s
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.glance.rule=Host(`glance.dynabase.nl`)"
-      - "traefik.http.routers.glance.entrypoints=websecure"
+      - "traefik.http.routers.glance.rule=Host(`glance.local.dynabase.nl`)"
+      - "traefik.http.routers.glance.entrypoints=https"
       - "traefik.http.routers.glance.tls=true"
       - "traefik.http.services.glance.loadbalancer.server.port=8080"
 
@@ -57,8 +57,8 @@ services:
       start_period: 20s
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dash.rule=Host(`dash.dynabase.nl`)"
-      - "traefik.http.routers.dash.entrypoints=websecure"
+      - "traefik.http.routers.dash.rule=Host(`dash.local.dynabase.nl`)"
+      - "traefik.http.routers.dash.entrypoints=https"
       - "traefik.http.routers.dash.tls=true"
       - "traefik.http.services.dash.loadbalancer.server.port=3001"
 
@@ -83,8 +83,8 @@ services:
       start_period: 20s
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.homepage.rule=Host(`homepage.dynabase.nl`)"
-      - "traefik.http.routers.homepage.entrypoints=websecure"
+      - "traefik.http.routers.homepage.rule=Host(`homepage.local.dynabase.nl`)"
+      - "traefik.http.routers.homepage.entrypoints=https"
       - "traefik.http.routers.homepage.tls=true"
       - "traefik.http.services.homepage.loadbalancer.server.port=3000"
 

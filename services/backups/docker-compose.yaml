@@ -17,8 +17,8 @@ services:
       - /media/hd3:/hd3
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.zerobyte.rule=Host(`zerobyte.dynabase.nl`)"
-      - "traefik.http.routers.zerobyte.entrypoints=websecure"
+      - "traefik.http.routers.zerobyte.rule=Host(`zerobyte.local.dynabase.nl`)"
+      - "traefik.http.routers.zerobyte.entrypoints=https"
       - "traefik.http.routers.zerobyte.tls=true"
       - "traefik.http.services.zerobyte.loadbalancer.server.port=4096"
     healthcheck:
@@ -35,8 +35,8 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.databasus.rule=Host(`databasus.dynabase.nl`)"
-      - "traefik.http.routers.databasus.entrypoints=websecure"
+      - "traefik.http.routers.databasus.rule=Host(`databasus.local.dynabase.nl`)"
+      - "traefik.http.routers.databasus.entrypoints=https"
       - "traefik.http.routers.databasus.tls=true"
       - "traefik.http.services.databasus.loadbalancer.server.port=4005"
     healthcheck:
