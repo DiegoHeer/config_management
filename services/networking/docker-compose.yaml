@@ -40,8 +40,8 @@ services:
     container_name: traefik-pihole-dns-sync
     restart: unless-stopped
     environment:
-      - TRAEFIK_API_URL=https://traefik.local.dynabase.nl/api/http/routers
-      - PIHOLE_URL=https://pihole.local.dynabase.nl
+      - TRAEFIK_API_URL=http://traefik:8080/api/http/routers
+      - PIHOLE_URL=${PIHOLE_URL}
       - PIHOLE_PASSWORD=${PIHOLE_PASSWORD}
       - TRAEFIK_HOST_IP=${TRAEFIK_HOST_IP}
       - SYNC_INTERVAL=@every 1m
