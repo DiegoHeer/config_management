@@ -1,5 +1,12 @@
 http:
   routers:
+    router:
+      rule: "Host(`router.local.dynabase.nl`)"
+      entryPoints:
+        - "https"
+      service: router
+      tls: {}
+
     pihole:
       rule: "Host(`pihole.local.dynabase.nl`)"
       entryPoints:
@@ -7,8 +14,25 @@ http:
       service: pihole
       tls: {}
 
+    homeassistant:
+      rule: "Host(`homeassistant.local.dynabase.nl`)"
+      entryPoints:
+        - "https"
+      service: homeassistant
+      tls: {}
+
   services:
+    router:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.1.1:443"
+
     pihole:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.10:7088"
+          - url: "http://192.168.1.11:7088"
+
+    homeassistant:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.229:8123"
