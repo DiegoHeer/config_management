@@ -17,7 +17,7 @@ services:
       - PAPERCLIP_INSTANCE_ID=default
       - PAPERCLIP_DEPLOYMENT_MODE=authenticated
       - PAPERCLIP_DEPLOYMENT_EXPOSURE=private
-      - PAPERCLIP_PUBLIC_URL=https://paperclip.dynabase.nl
+      - PAPERCLIP_PUBLIC_URL=https://paperclip.local.dynabase.nl
       - NODE_ENV=production
       - SERVE_UI=true
       - BETTER_AUTH_SECRET=${PAPERCLIP_BETTER_AUTH_SECRET}

@@ -42,7 +42,7 @@ http:
     homeassistant:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.229:8123"
+          - url: "http://192.168.1.10:8123"
 
     proxmox:
       loadBalancer:
