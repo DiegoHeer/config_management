@@ -22,7 +22,7 @@ http:
       tls: {}
 
     proxmox:
-      rule: "Host('proxmox.local.dynabase.nl')"
+      rule: "Host(`proxmox.local.dynabase.nl`)"
       entryPoints:
         - "https"
       service: proxmox
