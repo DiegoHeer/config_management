@@ -6,6 +6,5 @@
     - network.yml
     - sync.yml
     - env.yml
-    - compose.yml
   loop_control:
     loop_var: task
