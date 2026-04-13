@@ -4,6 +4,7 @@
 import sys
 from pathlib import Path
 
+import yaml
 from ansible.constants import DEFAULT_VAULT_ID_MATCH
 from ansible.parsing.vault import VaultLib, VaultSecret
 
@@ -44,6 +45,17 @@ def build_yaml(services_env: dict[str, dict[str, str]]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def load_existing_vault(vault: VaultLib) -> dict[str, dict[str, str]]:
+    """Decrypt and parse the existing vault file, returning the services env dict."""
+    if not VAULT_OUTPUT.exists():
+        return {}
+    decrypted = vault.decrypt(VAULT_OUTPUT.read_bytes())
+    data = yaml.safe_load(decrypted)
+    if data and "vault_services_env" in data:
+        return data["vault_services_env"]
+    return {}
+
+
 def main() -> int:
     if not VAULT_KEY_FILE.exists():
         print(f"Error: Vault key file not found at {VAULT_KEY_FILE}", file=sys.stderr)
@@ -52,15 +64,18 @@ def main() -> int:
     vault_key = VAULT_KEY_FILE.read_text().strip()
     vault = VaultLib([(DEFAULT_VAULT_ID_MATCH, VaultSecret(vault_key.encode()))])
 
-    services_env = {}
+    services_env = load_existing_vault(vault)
+
+    local_count = 0
     for env_file in sorted(SERVICES_DIR.glob("*/.env")):
         service_name = env_file.parent.name
         env_vars = parse_env_file(env_file)
         if env_vars:
             services_env[service_name] = env_vars
+            local_count += 1
 
     if not services_env:
-        print("No .env files found", file=sys.stderr)
+        print("No .env files found and no existing vault entries", file=sys.stderr)
         return 1
 
     yaml_content = build_yaml(services_env)
@@ -68,7 +83,7 @@ def main() -> int:
 
     VAULT_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     VAULT_OUTPUT.write_bytes(encrypted)
-    print(f"Synced {len(services_env)} service .env files to {VAULT_OUTPUT}")
+    print(f"Synced {local_count} local .env file(s), {len(services_env)} total service(s) in {VAULT_OUTPUT}")
     return 0
 
 
