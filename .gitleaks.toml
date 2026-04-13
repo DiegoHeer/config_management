@@ -1,0 +1,5 @@
+[allowlist]
+paths = [
+    '''roles/.*/vars/main/vault\.yml''',
+    '''roles/.*/vars/main/env_vault\.yml''',
+]
