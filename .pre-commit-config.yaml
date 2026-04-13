@@ -48,12 +48,3 @@ repos:
     rev: v1.7.12
     hooks:
       - id: actionlint
-
-  - repo: local
-    hooks:
-      - id: sync-env-to-vault
-        name: Sync .env files to Ansible vault
-        entry: bash -c 'uv run python scripts/sync_env_to_vault.py && git add roles/services/vars/main/env_vault.yml'
-        language: system
-        files: 'services/.*/docker-compose\.yaml$'
-        pass_filenames: false
