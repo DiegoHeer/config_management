@@ -15,3 +15,6 @@ working_dir: services/tools
 ---
 name: backups
 working_dir: services/backups
+---
+name: ai
+working_dir: services/ai

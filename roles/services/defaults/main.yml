@@ -11,3 +11,4 @@ services_migrated_categories:
   - dashboards
   - tools
   - backups
+  - ai

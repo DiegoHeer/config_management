@@ -4,6 +4,7 @@ services:
     container_name: paperclip
     image: reeoss/paperclipai-paperclip@sha256:677649a2ea0571cc83ab8cff2e1d29343c0641684113b464853c4fde16809e46
     restart: unless-stopped
+    env_file: paperclip.enc.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.paperclip.rule=Host(`paperclip.local.dynabase.nl`)"
@@ -20,10 +21,8 @@ services:
       - PAPERCLIP_PUBLIC_URL=https://paperclip.local.dynabase.nl
       - NODE_ENV=production
       - SERVE_UI=true
-      - BETTER_AUTH_SECRET=${PAPERCLIP_BETTER_AUTH_SECRET}
-      - DATABASE_URL=postgresql://paperclip:${PAPERCLIP_POSTGRES_PASSWORD}@paperclip_postgres:5432/paperclip
     volumes:
-      - ./paperclip/data:/paperclip
+      - /home/diego/services_data/ai/paperclip/data:/paperclip
     depends_on:
       paperclip_postgres:
         condition: service_healthy
@@ -42,11 +41,11 @@ services:
     container_name: paperclip_postgres
     restart: unless-stopped
     image: postgres:16.13-alpine
+    env_file: paperclip.enc.env
     volumes:
-      - ./paperclip/postgresql:/var/lib/postgresql/data
+      - /home/diego/services_data/ai/paperclip/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=paperclip
-      - POSTGRES_PASSWORD=${PAPERCLIP_POSTGRES_PASSWORD}
       - POSTGRES_DB=paperclip
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U paperclip -d paperclip"]
@@ -59,6 +58,7 @@ services:
     container_name: n8n
     image: docker.n8n.io/n8nio/n8n:2.16.1
     restart: unless-stopped
+    env_file: n8n.enc.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.n8n-local.rule=Host(`n8n.local.dynabase.nl`)"
@@ -81,10 +81,9 @@ services:
       - DB_POSTGRESDB_PORT=5432
       - DB_POSTGRESDB_DATABASE=n8n
       - DB_POSTGRESDB_USER=n8n
-      - DB_POSTGRESDB_PASSWORD=${N8N_POSTGRES_PASSWORD}
       - DB_POSTGRESDB_SCHEMA=public
     volumes:
-      - ./n8n/data:/home/node/.n8n
+      - /home/diego/services_data/ai/n8n/data:/home/node/.n8n
     depends_on:
       n8n_postgres:
         condition: service_healthy
@@ -103,11 +102,11 @@ services:
     container_name: n8n_postgres
     restart: unless-stopped
     image: postgres:16.13-alpine
+    env_file: n8n.enc.env
     volumes:
-      - ./n8n/postgresql:/var/lib/postgresql/data
+      - /home/diego/services_data/ai/n8n/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=n8n
-      - POSTGRES_PASSWORD=${N8N_POSTGRES_PASSWORD}
       - POSTGRES_DB=n8n
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U n8n -d n8n"]
