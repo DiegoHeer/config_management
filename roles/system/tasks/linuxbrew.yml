@@ -42,6 +42,7 @@
       - gh
       - claude-code
       - tree
+      - sops
     state: present
   become: true
   become_user: "{{ username }}"
