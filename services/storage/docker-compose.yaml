@@ -83,7 +83,7 @@ services:
 
   rustfs:
     container_name: rustfs
-    image: rustfs/rustfs:latest
+    image: rustfs/rustfs:1.0.0-alpha.94
     restart: unless-stopped
     labels:
       - "traefik.enable=true"

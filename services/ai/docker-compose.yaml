@@ -2,7 +2,7 @@ services:
 
   paperclip:
     container_name: paperclip
-    image: reeoss/paperclipai-paperclip:latest
+    image: reeoss/paperclipai-paperclip@sha256:677649a2ea0571cc83ab8cff2e1d29343c0641684113b464853c4fde16809e46
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
