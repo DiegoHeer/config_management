@@ -1,7 +1,7 @@
 services:
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:v2.4.1
+    image: ghcr.io/immich-app/immich-server:v2.7.5
     restart: unless-stopped
     extends:
       file: ./immich/hwaccel.transcoding.yml
@@ -23,7 +23,7 @@ services:
 
   immich-machine-learning:
     container_name: immich_machine_learning
-    image: ghcr.io/immich-app/immich-machine-learning:v2.4.1
+    image: ghcr.io/immich-app/immich-machine-learning:v2.7.5
     restart: unless-stopped
     volumes:
       - model-cache:/cache
@@ -39,8 +39,9 @@ services:
 
   database:
     container_name: immich_postgres
-    image: tensorchord/pgvecto-rs:pg14-v0.3.0
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
     restart: unless-stopped
+    shm_size: 128mb
     environment:
       POSTGRES_DB: immich
       POSTGRES_PASSWORD: ${IMMICH_DB_PASSWORD}
@@ -49,26 +50,7 @@ services:
     volumes:
       - immich-db:/var/lib/postgresql/data
     healthcheck:
-      test: pg_isready --dbname='immich' --username='${IMMICH_DB_USER}' || exit 1; Chksum="$$(psql --dbname='immich' --username='${IMMICH_DB_USER}' --tuples-only --no-align --command='SELECT COALESCE(SUM(checksum_failures), 0) FROM pg_stat_database')"; echo "checksum failure count is $$Chksum"; [ "$$Chksum" = '0' ] || exit 1  # yamllint disable-line rule:line-length
-      interval: 5m
-      start_interval: 30s
-      start_period: 5m
-    command:
-      [
-        'postgres',
-        '-c',
-        'shared_preload_libraries=vectors.so',
-        '-c',
-        'search_path="$$user", public, vectors',
-        '-c',
-        'logging_collector=on',
-        '-c',
-        'max_wal_size=2GB',
-        '-c',
-        'shared_buffers=512MB',
-        '-c',
-        'wal_compression=on',
-      ]
+      disable: false
 
 
 volumes:
