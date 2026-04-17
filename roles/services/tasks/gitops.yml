@@ -1,0 +1,25 @@
+---
+- name: Ensure SOPS age key directory exists
+  ansible.builtin.file:
+    path: "/home/{{ username }}/.config/sops/age"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0700"
+
+- name: Plant SOPS age secret key for DocoCD
+  ansible.builtin.copy:
+    dest: "/home/{{ username }}/.config/sops/age/keys.txt"
+    content: "{{ vault_sops_age_key }}"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0600"
+  no_log: true
+
+- name: Ensure services data root exists
+  ansible.builtin.file:
+    path: "/home/{{ username }}/services_data"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0755"

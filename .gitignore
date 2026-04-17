@@ -2,6 +2,7 @@
 .ansible/
 .env
 services/**/.env
+.superpowers/
 
 .terraform/
 terraform.tfstate

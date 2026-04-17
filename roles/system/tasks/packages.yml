@@ -24,4 +24,6 @@
       - procps
       - file
       - git
+      - age
+      - sops
     state: present

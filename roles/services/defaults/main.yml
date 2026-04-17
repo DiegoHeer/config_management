@@ -2,3 +2,8 @@
 services_docker_src: /home/{{ username }}/services
 services_local_src: "{{ role_path }}/../../services"
 services_run_compose: true
+
+# Categories that have migrated to DocoCD-managed deploys.
+# Listed here so sync.yml and env.yml skip them (DocoCD owns them end-to-end).
+# Append a category here as part of each migration PR.
+services_migrated_categories: []

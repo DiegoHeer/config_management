@@ -4,6 +4,7 @@
   loop:
     - packages.yml
     - network.yml
+    - gitops.yml
     - sync.yml
     - env.yml
   loop_control:
