@@ -7,3 +7,6 @@ services_run_compose: true
 # Listed here so sync.yml and env.yml skip them (DocoCD owns them end-to-end).
 # Append a category here as part of each migration PR.
 services_migrated_categories: []
+
+# SOPS is not in Ubuntu apt repos; installed from upstream .deb release.
+services_sops_version: "3.12.2"

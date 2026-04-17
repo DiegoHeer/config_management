@@ -1,4 +1,16 @@
 ---
+- name: Check if sops is installed
+  ansible.builtin.command: sops --version
+  register: services_sops_check
+  changed_when: false
+  failed_when: false
+
+- name: Install sops from upstream .deb (not in Ubuntu apt)
+  ansible.builtin.apt:
+    deb: "https://github.com/getsops/sops/releases/download/\
+      v{{ services_sops_version }}/sops_{{ services_sops_version }}_amd64.deb"
+  when: services_sops_check.rc != 0
+
 - name: Ensure SOPS age key directory exists
   ansible.builtin.file:
     path: "/home/{{ username }}/.config/sops/age"
