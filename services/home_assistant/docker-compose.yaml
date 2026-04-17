@@ -1,7 +1,7 @@
 services:
   homeassistant:
     container_name: homeassistant
-    image: ghcr.io/home-assistant/home-assistant:2026.3.4
+    image: ghcr.io/home-assistant/home-assistant:2026.4.2
     restart: unless-stopped
     volumes:
       - ./homeassistant/config:/config
@@ -21,7 +21,7 @@ services:
 
   mosquitto:
     container_name: mosquitto
-    image: eclipse-mosquitto:2.0.22
+    image: eclipse-mosquitto:2.1.2
     restart: unless-stopped
     volumes:
       - ./mosquitto/log:/mosquitto/log
@@ -85,7 +85,7 @@ services:
 
   # TODO: check if this properly works
   doorbell_samba:
-    image: ghcr.io/servercontainers/samba:a3.18.0-s4.18.2-r0
+    image: ghcr.io/servercontainers/samba:a3.22.1-s4.21.4-r4
     container_name: doorbell_samba
     network_mode: host
     restart: unless-stopped
