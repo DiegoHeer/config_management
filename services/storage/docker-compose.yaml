@@ -1,7 +1,7 @@
 services:
   filebrowser:
     container_name: filebrowser
-    image: gtstef/filebrowser:1.2.3-stable
+    image: gtstef/filebrowser:1.2.4-stable
     restart: unless-stopped
     environment:
       TZ: "Europe/Amsterdam"
@@ -30,7 +30,7 @@ services:
       start_period: 10s
 
   nextcloud:
-    image: linuxserver/nextcloud:33.0.1
+    image: linuxserver/nextcloud:33.0.2
     container_name: nextcloud
     restart: unless-stopped
     environment:

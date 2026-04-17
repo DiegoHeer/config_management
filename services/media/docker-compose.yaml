@@ -1,7 +1,7 @@
 services:
   jellyfin:
     container_name: jellyfin
-    image: linuxserver/jellyfin:10.11.6
+    image: linuxserver/jellyfin:10.11.8
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -131,7 +131,7 @@ services:
 
   prowlarr:
     container_name: prowlarr
-    image: linuxserver/prowlarr:2.3.0
+    image: linuxserver/prowlarr:2.3.5.5327
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -151,7 +151,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:4.0.16
+    image: linuxserver/sonarr:4.0.17.2952
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -313,7 +313,7 @@ services:
       start_period: 60s
 
   grimmory_mariadb:
-    image: lscr.io/linuxserver/mariadb:11.4.5
+    image: lscr.io/linuxserver/mariadb:11.4.9-r0-ls212
     container_name: grimmory_mariadb
     environment:
       - PUID=1000

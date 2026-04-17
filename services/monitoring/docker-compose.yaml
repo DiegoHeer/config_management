@@ -1,7 +1,7 @@
 services:
   beszel:
     container_name: beszel
-    image: henrygd/beszel:0.18.2
+    image: henrygd/beszel:0.18.7
     restart: unless-stopped
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -22,7 +22,7 @@ services:
 
   beszel-agent:
     container_name: beszel-agent
-    image: henrygd/beszel-agent:0.18.2
+    image: henrygd/beszel-agent:0.18.7
     restart: unless-stopped
     network_mode: host
     volumes:
@@ -68,7 +68,7 @@ services:
 
   portracker:
     container_name: portracker
-    image: mostafawahied/portracker:1.3.5
+    image: mostafawahied/portracker:1.3.7
     restart: unless-stopped
     pid: "host"
     cap_add:
