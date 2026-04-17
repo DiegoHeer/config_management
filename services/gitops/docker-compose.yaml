@@ -8,22 +8,19 @@ services:
     environment:
       TZ: Europe/Amsterdam
       WEBHOOK_SECRET: ${WEBHOOK_SECRET}
-      SOPS_AGE_KEY_FILE: /run/secrets/sops_age_key
+      # DocoCD's SOPS_AGE_KEY_FILE variant does not load the key (v0.80.1 as of 2026-04);
+      # pass the secret key content directly via SOPS_AGE_KEY, sourced from the Ansible-
+      # templated .env file.
+      SOPS_AGE_KEY: ${SOPS_AGE_KEY}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - doco-cd-data:/data
-    secrets:
-      - sops_age_key
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.doco-cd.rule=Host(`doco-cd.dynabase.nl`)"
       - "traefik.http.routers.doco-cd.entrypoints=https"
       - "traefik.http.routers.doco-cd.tls=true"
       - "traefik.http.services.doco-cd.loadbalancer.server.port=80"
-
-secrets:
-  sops_age_key:
-    file: /home/diego/.config/sops/age/keys.txt
 
 volumes:
   doco-cd-data:
