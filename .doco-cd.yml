@@ -9,3 +9,6 @@ working_dir: services/monitoring
 ---
 name: dashboards
 working_dir: services/dashboards
+---
+name: tools
+working_dir: services/tools

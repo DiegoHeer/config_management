@@ -37,6 +37,7 @@ services:
     container_name: grist
     image: gristlabs/grist:1.7.12
     restart: unless-stopped
+    env_file: secrets.enc.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grist.rule=Host(`grist.local.dynabase.nl`)"
@@ -47,7 +48,7 @@ services:
       - PORT=9999
       - GRIST_DEFAULT_EMAIL=${GRIST_DEFAULT_EMAIL}
     volumes:
-      - ./grist/persist:/persist
+      - /home/diego/services_data/tools/grist/persist:/persist
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9999/status"]
       interval: 30s
@@ -67,7 +68,7 @@ services:
       - "traefik.http.routers.docuseal.tls=true"
       - "traefik.http.services.docuseal.loadbalancer.server.port=3000"
     volumes:
-      - ./docuseal:/data
+      - /home/diego/services_data/tools/docuseal:/data
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:3000"]
       interval: 10s
@@ -86,7 +87,7 @@ services:
       - "traefik.http.routers.changedetection.tls=true"
       - "traefik.http.services.changedetection.loadbalancer.server.port=5000"
     volumes:
-      - ./changedetection:/datastore
+      - /home/diego/services_data/tools/changedetection:/datastore
     healthcheck:
       test: ["CMD-SHELL", "python3 -c \"import sys, urllib.request; sys.exit(1) if 200 != urllib.request.urlopen('http://localhost:5000/').status else sys.exit(0)\""]  # yamllint disable-line rule:line-length
       interval: 60s
@@ -97,6 +98,7 @@ services:
     container_name: tandoor
     image: vabene1111/recipes:2.6.9
     restart: unless-stopped
+    env_file: secrets.enc.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tandoor.rule=Host(`tandoor.local.dynabase.nl`)"
@@ -112,8 +114,8 @@ services:
       - POSTGRES_PASSWORD=${TANDOOR_POSTGRES_PASSWORD}
       - POSTGRES_DB=djangodb
     volumes:
-      - ./tandoor/staticfiles:/opt/recipes/staticfiles
-      - ./tandoor/mediafiles:/opt/recipes/mediafiles
+      - /home/diego/services_data/tools/tandoor/staticfiles:/opt/recipes/staticfiles
+      - /home/diego/services_data/tools/tandoor/mediafiles:/opt/recipes/mediafiles
     depends_on:
       tandoor_postgres:
         condition: service_healthy
@@ -132,8 +134,9 @@ services:
     container_name: tandoor_postgres
     restart: unless-stopped
     image: postgres:16.13-alpine
+    env_file: secrets.enc.env
     volumes:
-      - ./tandoor/postgresql:/var/lib/postgresql/data
+      - /home/diego/services_data/tools/tandoor/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=djangodb
       - POSTGRES_PASSWORD=${TANDOOR_POSTGRES_PASSWORD}
