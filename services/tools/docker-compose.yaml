@@ -46,7 +46,6 @@ services:
       - "traefik.http.services.grist.loadbalancer.server.port=9999"
     environment:
       - PORT=9999
-      - GRIST_DEFAULT_EMAIL=${GRIST_DEFAULT_EMAIL}
     volumes:
       - /home/diego/services_data/tools/grist/persist:/persist
     healthcheck:
@@ -106,12 +105,10 @@ services:
       - "traefik.http.routers.tandoor.tls=true"
       - "traefik.http.services.tandoor.loadbalancer.server.port=80"
     environment:
-      - SECRET_KEY=${TANDOOR_SECRET_KEY}
       - DB_ENGINE=django.db.backends.postgresql
       - POSTGRES_HOST=tandoor_postgres
       - POSTGRES_PORT=5432
       - POSTGRES_USER=djangodb
-      - POSTGRES_PASSWORD=${TANDOOR_POSTGRES_PASSWORD}
       - POSTGRES_DB=djangodb
     volumes:
       - /home/diego/services_data/tools/tandoor/staticfiles:/opt/recipes/staticfiles
@@ -139,7 +136,6 @@ services:
       - /home/diego/services_data/tools/tandoor/postgresql:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=djangodb
-      - POSTGRES_PASSWORD=${TANDOOR_POSTGRES_PASSWORD}
       - POSTGRES_DB=djangodb
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U djangodb -d djangodb"]

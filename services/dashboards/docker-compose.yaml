@@ -7,8 +7,6 @@ services:
     volumes:
       - /home/diego/services_data/dashboards/homarr/appdata:/appdata
       - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}
     healthcheck:
       test: ["CMD-SHELL", "homarr --version || exit 1"]
       interval: 30s
@@ -73,7 +71,6 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS}
     volumes:
       - /home/diego/services_data/dashboards/homepage/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro

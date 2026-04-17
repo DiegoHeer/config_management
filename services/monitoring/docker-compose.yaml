@@ -5,7 +5,6 @@ services:
     restart: unless-stopped
     extra_hosts:
       - host.docker.internal:host-gateway
-    env_file: secrets.enc.env
     volumes:
       - /home/diego/services_data/monitoring/beszel:/beszel_data
     labels:
@@ -35,8 +34,6 @@ services:
       - /home/diego/services_data/monitoring/beszel/agent_data:/var/lib/beszel-agent
     environment:
       LISTEN: 45876
-      KEY: ${BESZEL_AGENT_KEY}
-      TOKEN: ${BESZEL_AGENT_TOKEN}
       HUB_URL: https://beszel.dynabase.nl
     healthcheck:
       test: ["CMD", "/agent", "health"]
