@@ -1,7 +1,8 @@
 # DocoCD stack registry.
-# Each document below is one stack DocoCD will manage.
-# Add a new `---` block when a category migrates from Ansible-managed to DocoCD-managed.
-# Auto-discovery is intentionally off until the full migration is complete; otherwise
-# DocoCD would try to take over every services/<cat>/docker-compose.yaml on every push.
-name: gitops
-working_dir: services/gitops
+# Append a `---` block per category as it migrates from Ansible to DocoCD.
+# Auto-discovery stays off; each managed stack is listed explicitly.
+#
+# NOT listed here on purpose:
+# - gitops/: DocoCD cannot manage its own container (self-deploy kills the
+#   running process mid-recreate). It stays Ansible-managed forever.
+auto_discover: false
