@@ -7,15 +7,14 @@ services:
       - SYS_ADMIN
     devices:
       - /dev/fuse:/dev/fuse
-    environment:
-      - APP_SECRET=${ZEROBYTE_APP_SECRET}
-      - BASE_URL=${ZEROBYTE_BASE_URL}
+    env_file: secrets.enc.env
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/lib/zerobyte:/var/lib/zerobyte
-      - /home/${USERNAME}/.config/rclone:/root/.config/rclone
-      - /media/hd1/nextcloud/${USERNAME}/files:/nextcloud
-      - ../:/services
+      - /home/diego/.config/rclone:/root/.config/rclone
+      - /media/hd1/nextcloud/diego/files:/nextcloud
+      - /home/diego/services:/services:ro
+      - /home/diego/services_data:/services_data:ro
       - /media/hd1/photo_library:/photo_library
       - /media/hd3:/hd3
     labels:
@@ -33,9 +32,9 @@ services:
   databasus:
     container_name: databasus
     image: databasus/databasus:v3.32.1
-    volumes:
-      - ./databasus:/databasus-data
     restart: unless-stopped
+    volumes:
+      - /home/diego/services_data/backups/databasus:/databasus-data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.databasus.rule=Host(`databasus.local.dynabase.nl`)"

@@ -10,3 +10,4 @@ services_migrated_categories:
   - monitoring
   - dashboards
   - tools
+  - backups

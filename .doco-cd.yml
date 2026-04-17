@@ -12,3 +12,6 @@ working_dir: services/dashboards
 ---
 name: tools
 working_dir: services/tools
+---
+name: backups
+working_dir: services/backups
