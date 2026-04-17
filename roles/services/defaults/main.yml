@@ -8,3 +8,4 @@ services_run_compose: true
 # Append a category here as part of each migration PR.
 services_migrated_categories:
   - monitoring
+  - dashboards

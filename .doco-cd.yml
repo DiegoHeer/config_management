@@ -6,3 +6,6 @@
 # - gitops/: DocoCD cannot manage its own container (self-deploy recursion).
 name: monitoring
 working_dir: services/monitoring
+---
+name: dashboards
+working_dir: services/dashboards

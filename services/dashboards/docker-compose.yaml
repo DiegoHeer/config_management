@@ -3,8 +3,9 @@ services:
     container_name: homarr
     restart: unless-stopped
     image: ghcr.io/homarr-labs/homarr:v1.59.1
+    env_file: secrets.enc.env
     volumes:
-      - ./homarr/appdata:/appdata
+      - /home/diego/services_data/dashboards/homarr/appdata:/appdata
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - SECRET_ENCRYPTION_KEY=${HOMARR_SECRET_ENCRYPTION_KEY}
@@ -25,7 +26,7 @@ services:
     image: glanceapp/glance:v0.8.4
     restart: unless-stopped
     volumes:
-      - ./glance/config:/app/config
+      - /home/diego/services_data/dashboards/glance/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8080/api/healthz || exit 1
@@ -68,12 +69,13 @@ services:
     restart: unless-stopped
     ports:
       - 3000:3000
+    env_file: secrets.enc.env
     environment:
       - PUID=1000
       - PGID=1000
       - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS}
     volumes:
-      - ./homepage/config:/app/config
+      - /home/diego/services_data/dashboards/homepage/config:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]
