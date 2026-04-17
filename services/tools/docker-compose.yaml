@@ -95,7 +95,7 @@ services:
 
   tandoor:
     container_name: tandoor
-    image: vabene1111/recipes:2.3.6
+    image: vabene1111/recipes:2.6.9
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
