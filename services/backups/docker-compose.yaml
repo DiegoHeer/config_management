@@ -1,12 +1,15 @@
 services:
   zerobyte:
     container_name: zerobyte
-    image: ghcr.io/nicotsx/zerobyte:v0.22.0
+    image: ghcr.io/nicotsx/zerobyte:v0.34.0
     restart: unless-stopped
     cap_add:
       - SYS_ADMIN
     devices:
       - /dev/fuse:/dev/fuse
+    environment:
+      - APP_SECRET=${ZEROBYTE_APP_SECRET}
+      - BASE_URL=${ZEROBYTE_BASE_URL}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/lib/zerobyte:/var/lib/zerobyte
