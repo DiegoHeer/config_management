@@ -6,4 +6,5 @@ services_run_compose: true
 # Categories that have migrated to DocoCD-managed deploys.
 # Listed here so sync.yml and env.yml skip them (DocoCD owns them end-to-end).
 # Append a category here as part of each migration PR.
-services_migrated_categories: []
+services_migrated_categories:
+  - monitoring

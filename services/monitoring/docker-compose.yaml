@@ -5,8 +5,9 @@ services:
     restart: unless-stopped
     extra_hosts:
       - host.docker.internal:host-gateway
+    env_file: secrets.enc.env
     volumes:
-      - ./beszel:/beszel_data
+      - /home/diego/services_data/monitoring/beszel:/beszel_data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.beszel.rule=Host(`beszel.local.dynabase.nl`)"
@@ -25,12 +26,13 @@ services:
     image: henrygd/beszel-agent:0.18.7
     restart: unless-stopped
     network_mode: host
+    env_file: secrets.enc.env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /media/hd1/.beszel:/extra-filesystems/sdb1:ro
       - /media/hd2/.beszel:/extra-filesystems/sdd1:ro
       - /media/hd3/.beszel:/extra-filesystems/sde1:ro
-      - ./beszel/agent_data:/var/lib/beszel-agent
+      - /home/diego/services_data/monitoring/beszel/agent_data:/var/lib/beszel-agent
     environment:
       LISTEN: 45876
       KEY: ${BESZEL_AGENT_KEY}
@@ -52,7 +54,7 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./dozzle:/data
+      - /home/diego/services_data/monitoring/dozzle:/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.local.dynabase.nl`)"
@@ -77,7 +79,7 @@ services:
     security_opt:
       - apparmor:unconfined
     volumes:
-      - ./portracker/data:/data
+      - /home/diego/services_data/monitoring/portracker/data:/data
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "traefik.enable=true"

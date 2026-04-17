@@ -1,0 +1,8 @@
+# DocoCD stack registry. One YAML document per managed stack.
+# Append a `---` block per category as it migrates from Ansible to DocoCD.
+# Auto-discovery stays off; each managed stack is listed explicitly.
+#
+# NOT listed here on purpose:
+# - gitops/: DocoCD cannot manage its own container (self-deploy recursion).
+name: monitoring
+working_dir: services/monitoring
