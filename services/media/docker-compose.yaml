@@ -131,7 +131,7 @@ services:
 
   prowlarr:
     container_name: prowlarr
-    image: linuxserver/prowlarr:2.3.5.5327
+    image: linuxserver/prowlarr:2.3.5
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -151,7 +151,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:4.0.17.2952
+    image: linuxserver/sonarr:4.0.17
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -172,7 +172,7 @@ services:
 
   radarr:
     container_name: radarr
-    image: linuxserver/radarr:6.1.1.10360
+    image: linuxserver/radarr:6.1.1
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
