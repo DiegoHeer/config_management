@@ -1,5 +1,9 @@
 # GitOps Homelab
 
+[![Quality Check](https://github.com/DiegoHeer/gitops-homelab/actions/workflows/quality-check.yml/badge.svg)](https://github.com/DiegoHeer/gitops-homelab/actions/workflows/quality-check.yml)
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://developer.mend.io/github/DiegoHeer/gitops-homelab)
+[![Last commit](https://img.shields.io/github/last-commit/DiegoHeer/gitops-homelab/main)](https://github.com/DiegoHeer/gitops-homelab/commits/main)
+
 Personal homelab deployed GitOps-style on Ubuntu. Three pillars:
 
 - **Ansible playbooks** for one-time host bootstrap (Docker, shared network, SOPS age key, cloudflared tunnel token, the DocoCD stack itself)
