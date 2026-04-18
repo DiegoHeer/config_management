@@ -1,14 +1,21 @@
 ---
-name: Update Home Server
+name: Configure Home Server
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'playbooks/**'
+      - 'roles/**'
+      - 'requirements.yml'
+      - '.github/workflows/configure-home-server.yml'
+      - '.github/actions/setup-ansible/**'
+      - '.github/actions/setup-ansible-deps/**'
   workflow_dispatch:
 
 jobs:
-  update-server:
-    name: Update Home Server
+  configure-server:
+    name: Configure Home Server
     runs-on: ubuntu-latest
 
     steps:
