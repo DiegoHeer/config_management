@@ -15,3 +15,4 @@ services_migrated_categories:
   - storage
   - networking
   - games
+  - photos

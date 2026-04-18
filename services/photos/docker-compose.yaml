@@ -42,10 +42,9 @@ services:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
     restart: unless-stopped
     shm_size: 128mb
+    env_file: secrets.enc.env
     environment:
       POSTGRES_DB: immich
-      POSTGRES_PASSWORD: ${IMMICH_DB_PASSWORD}
-      POSTGRES_USER: ${IMMICH_DB_USER}
       POSTGRES_INITDB_ARGS: '--data-checksums'
     volumes:
       - immich-db:/var/lib/postgresql/data

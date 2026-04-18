@@ -12,6 +12,8 @@ ignore:
   - .ansible/
   - roles/*/vars/main/vault.yml
   - roles/*/vars/main/env_vault.yml
+  # Third-party / vendored config files mirrored as-is
+  - services/photos/immich/hwaccel.transcoding.yml
 
 rules:
   line-length:
