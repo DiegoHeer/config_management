@@ -1,4 +1,9 @@
 ---
+# Bootstrap for the `gitops/` stack (DocoCD). Everything below is the one-time /
+# idempotent prep so the self-managed DocoCD container can take over deploys for
+# every other category. DocoCD cannot manage its own compose file (recreating
+# itself would kill the running deploy), so `gitops/` stays Ansible-managed.
+
 - name: Ensure SOPS age key directory exists
   ansible.builtin.file:
     path: "/home/{{ username }}/.config/sops/age"
@@ -44,4 +49,29 @@
     # container (uid 65532); the enclosing ~/.config/cloudflared dir is 0700
     # so only diego can traverse it regardless.
     mode: "0644"
+  no_log: true
+
+- name: Ensure ~/services/gitops directory exists
+  ansible.builtin.file:
+    path: "/home/{{ username }}/services/gitops"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0755"
+
+- name: Sync gitops/docker-compose.yaml to the host
+  ansible.builtin.copy:
+    src: "{{ role_path }}/../../services/gitops/docker-compose.yaml"
+    dest: "/home/{{ username }}/services/gitops/docker-compose.yaml"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0644"
+
+- name: Template gitops .env from vault_services_env.gitops
+  ansible.builtin.copy:
+    dest: "/home/{{ username }}/services/gitops/.env"
+    content: "{% for k, v in vault_services_env.gitops.items() %}{{ k }}={{ v }}\n{% endfor %}"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0600"
   no_log: true

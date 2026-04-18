@@ -21,7 +21,6 @@ provisioner:
     group_vars:
       all:
         username: test_user
-        services_run_compose: false
   env:
     ANSIBLE_CONFIG: ../../ansible.cfg
 

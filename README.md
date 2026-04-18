@@ -2,39 +2,72 @@
 
 Personal infrastructure-as-code for automatically setting up Ubuntu home servers. Three pillars:
 
-- **Ansible playbooks** for automatic system configuration
-- **Docker Compose services** for containerized home lab applications
+- **Ansible playbooks** for one-time host bootstrap (Docker, shared network, SOPS age key, cloudflared tunnel token, the DocoCD stack itself)
+- **Docker Compose services** deployed **GitOps-style** by [DocoCD](https://github.com/kimdre/doco-cd) — a `git push` to `main` is the deploy
 - **Restic backups** implementing the 3-2-1 backup rule (managed by the Ansible restore role)
 
 ## Project Structure
 
 ```
+.doco-cd.yml    # Registry of DocoCD-managed stacks (one YAML doc per stack)
+.sops.yaml      # age recipient for services/**/*.enc.env
 roles/          # Ansible roles: system, projects, services, restore
 playbooks/      # Playbooks: update_home_server.yml, restore_home_server.yml
-services/       # Docker Compose service groups (11 categories)
+services/       # Docker Compose stacks (13 categories)
 molecule/       # Ansible role testing (one scenario per role)
 .github/        # CI workflows and shared composite actions
 ```
 
-### Services Overview
+### Services overview
 
 | Category | Services |
 |---|---|
 | **Home Assistant** | Home Assistant, Mosquitto (MQTT), OpenThread Border Router, Matter Server, Doorbell Samba |
-| **Media** | Jellyfin, Seerr, Gluetun (VPN), qBittorrent, Prowlarr, Sonarr, Radarr, Profilarr, SABnzbd, Navidrome, Audiobookshelf, Grimmory |
-| **Networking** | Nginx Proxy Manager, Cloudflare Tunnel |
-| **Monitoring** | Beszel, AdGuard Home, Portracker |
-| **Storage** | Filebrowser, Nextcloud, Obsidian LiveSync |
-| **Photos** | Immich (server + ML), Redis, PostgreSQL |
-| **Tools** | IT-Tools, BentoPDF, Grist, Docuseal, Changedetection, Tandoor, Dockhand |
+| **Media** | Jellyfin, Seerr, Gluetun (VPN), qBittorrent, Prowlarr, Sonarr, Radarr, Profilarr, SABnzbd, Navidrome, Audiobookshelf, Grimmory + MariaDB |
+| **Networking** | Traefik, Cloudflare Tunnel, Traefik–Pi-hole DNS sync |
+| **Monitoring** | Beszel (+ agent), Dozzle, Portracker |
+| **Storage** | Filebrowser, Nextcloud + MariaDB, Rustfs, Obsidian LiveSync |
+| **Photos** | Immich (server + ML), Redis, PostgreSQL (VectorChord) |
+| **Tools** | IT-Tools, BentoPDF, Grist, Docuseal, Changedetection, Tandoor + PostgreSQL |
 | **Dashboards** | Homarr, Glance, Dashdot, Homepage |
+| **AI** | Paperclip + PostgreSQL, n8n + PostgreSQL |
 | **Security** | Frigate (NVR) |
-| **Games** | RomM |
+| **Games** | RomM + MariaDB |
 | **Backups** | Zerobyte, Databasus |
+| **Gitops** | DocoCD itself (Ansible-managed; DocoCD can't redeploy its own container) |
+
+---
+
+## How deploys work
+
+1. Edit a `services/<category>/docker-compose.yaml` (or its SOPS-encrypted `secrets.enc.env`).
+2. Commit + push to `main`.
+3. GitHub webhook → DocoCD on the home server.
+4. DocoCD clones the repo, decrypts any `*.enc.env` files with the host's age key, and runs `docker compose up -d` for each stack registered in `.doco-cd.yml`.
+
+Runtime state (SQLite DBs, uploaded files, app config) lives at absolute host paths under `/home/diego/services_data/<category>/<service>/`, so stacks can be torn down and recreated without touching user data. Compose bind mounts reference those absolute paths.
+
+### Adding a new stack
+
+1. Create `services/<new>/docker-compose.yaml`. Use absolute paths under `/home/diego/services_data/<new>/` for runtime state.
+2. Add secrets as `services/<new>/secrets.enc.env` (see SOPS section below).
+3. Append to `.doco-cd.yml`:
+   ```yaml
+   ---
+   name: <new>
+   working_dir: services/<new>
+   ```
+4. Commit + push. DocoCD reconciles.
+
+### Removing a stack
+
+Delete the `---` block from `.doco-cd.yml` and the `services/<name>/` tree. Commit + push. DocoCD stops and removes the containers. Named volumes and absolute-path bind mounts are preserved by default.
 
 ---
 
 ## Ansible
+
+Used for host bootstrap only. After the host is set up, Ansible is not in the service-deploy loop (except for the `gitops/` stack itself).
 
 ### Requirements
 
@@ -45,85 +78,40 @@ molecule/       # Ansible role testing (one scenario per role)
 ### Setup
 
 1. Install packages and Ansible Galaxy roles:
+   ```bash
+   uv sync
+   uv run ansible-galaxy install -r requirements.yml
+   ```
+2. Create a `.vault_key` file in the repo root with your Ansible vault password.
 
-```bash
-uv sync
-uv run ansible-galaxy install -r requirements.yml
-```
+### What the `services` role does now
 
-2. Create a `.vault_key` file in the repo root with your Ansible vault password (see Secret Management below).
+- Installs Docker (`packages.yml`).
+- Creates the external `home_server_network` bridge (`network.yml`).
+- Plants the SOPS age key at `~/.config/sops/age/keys.txt` from `vault_sops_age_key` (`gitops.yml`).
+- Plants the cloudflared tunnel token at `~/.config/cloudflared/tunnel_token` from `vault_cloudflared_tunnel_token`.
+- Creates `/home/diego/services_data/`.
+- Renders the `gitops/` stack's `.env` file from `vault_services_env.gitops` and syncs the compose file.
 
-### Secret Management
+Everything else (12 other categories) is DocoCD's job.
 
-Secrets are managed with [Ansible Vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html). The vault password is read from `.vault_key` (configured in `ansible.cfg`). Four encrypted vault files exist across roles:
+### Playbooks
 
-| Vault file | Contents |
-|---|---|
-| `roles/system/vars/main/vault.yml` | User password (`vault_password`) |
-| `roles/projects/vars/main/vault.yml` | Project-specific secrets |
-| `roles/restore/vars/main/vault.yml` | Backup/restore credentials |
-| `roles/services/vars/main/env_vault.yml` | All Docker service env vars (`vault_services_env`) |
+- **update_home_server.yml** — runs `system` + `projects` + `services` roles against the home server. Deployed via the **Update Home Server** GitHub Actions workflow on every push to `main`, and available via `workflow_dispatch`.
+- **restore_home_server.yml** — runs `system` + `projects` + `restore` + `services` roles. Deployed via the **Restore Home Server** workflow (manual only).
 
-#### Service environment sync
-
-Docker Compose services need `.env` files with secrets. The script `scripts/sync_env_to_vault.py` handles syncing local `.env` files into the encrypted vault:
-
-1. Reads `.env` files from each `services/<category>/` directory
-2. Builds a `vault_services_env` YAML dictionary (service name → key/value pairs)
-3. Encrypts and writes it to `roles/services/vars/main/env_vault.yml`
-
-Run the sync script whenever `.env` files change:
-
-```bash
-uv run python scripts/sync_env_to_vault.py
-```
-
-During deployment, the Ansible `services` role reads `vault_services_env` and templates `.env` files onto the target server (see `roles/services/tasks/env.yml`).
-
-#### Editing vault files
-
-```bash
-# View an encrypted vault file
-uv run ansible-vault view roles/<role>/vars/main/vault.yml
-
-# Edit an encrypted vault file in-place
-uv run ansible-vault edit roles/<role>/vars/main/vault.yml
-```
-
-### Deployment
-
-Deployments are handled through GitHub Actions workflows (triggered manually via `workflow_dispatch`):
-
-- **Update Home Server** — runs `update_home_server.yml` (system + projects + services roles)
-- **Restore Home Server** — runs `restore_home_server.yml` (system + projects + restore + services roles)
-
-Both workflows use a shared composite action (`.github/actions/setup-ansible/`) that handles Python/uv setup, Galaxy roles, vault key, SSH, and Tailscale connectivity.
+Both workflows share a composite action (`.github/actions/setup-ansible/`) that handles Python/uv setup, Galaxy roles, vault key, SSH, and Tailscale connectivity.
 
 ### Testing
 
-Testing is done with [Molecule](https://ansible.readthedocs.io/projects/molecule/). Available scenarios: `system`, `projects`, `restore`, `services`
+Testing is done with [Molecule](https://ansible.readthedocs.io/projects/molecule/). Available scenarios: `system`, `projects`, `restore`, `services`.
 
 ```bash
-# Run the full test sequence
-molecule test -s <role>
-
-# Converge only (apply the role)
-molecule converge -s <role>
-
-# Shell into the test container
-molecule login -s <role>
-
-# Tear down test containers
-molecule destroy -s <role>
+molecule test -s <role>        # full sequence
+molecule converge -s <role>    # apply only
+molecule login -s <role>       # shell into test container
+molecule destroy -s <role>     # tear down
 ```
-
-To create a new test scenario:
-
-```bash
-molecule init scenario <role/playbook name>
-```
-
-After creation, delete `creation.yml` and `destroy.yml`, then edit `molecule.yml` to match the setup of existing scenarios. Update `converge.yml` to reference the new role/playbook.
 
 ### Linting
 
@@ -134,19 +122,52 @@ uv run ansible-lint
 
 ---
 
-## Docker Compose Services
+## Secret management
 
-Each service category lives in `services/<category>/` with its own `docker-compose.yaml`. Environment variables are managed through Ansible vault and deployed as `.env` files during provisioning (see Secret Management above).
+There are two classes of secret with different handling.
 
-### Setup
+### Per-stack service env — SOPS + age (committed to git)
 
-1. For each service category, ensure an `.env` file exists in its directory with the required environment variables (refer to the `docker-compose.yaml` for which variables are needed). During Ansible deployment, `.env` files are generated automatically from vault.
+Each DocoCD-managed stack has a `services/<cat>/secrets.enc.env` (or per-service split like `services/ai/paperclip.enc.env`). It's encrypted with the age recipient in [`.sops.yaml`](.sops.yaml); only someone with the secret age key can decrypt. The host has that key because Ansible plants it from vault on bootstrap.
 
-2. Ensure all volume mount paths exist locally. You can restore them from a backup by running the Ansible `restore` role, which handles Restic-based restoration automatically.
-
-3. Start the services:
+Edit directly with SOPS:
 
 ```bash
-cd services/<category>
-docker compose up -d
+sops services/<category>/secrets.enc.env
 ```
+
+Put **final container env var names** in these files. Compose's `${VAR}` interpolation does not read `env_file` contents, so `environment: - X=${Y}` with `Y` in env_file resolves to empty.
+
+### Host-level bootstrap secrets — Ansible vault
+
+Used only for secrets that must be present **before** DocoCD can run:
+
+| Vault file | Contents |
+|---|---|
+| `roles/system/vars/main/vault.yml` | User password (`vault_password`) |
+| `roles/projects/vars/main/vault.yml` | Project-specific secrets |
+| `roles/restore/vars/main/vault.yml` | Backup/restore credentials |
+| `roles/services/vars/main/env_vault.yml` | `vault_sops_age_key`, `vault_cloudflared_tunnel_token`, `vault_services_env.gitops` (only the `gitops/` stack's env) |
+
+Editing:
+
+```bash
+uv run ansible-vault view roles/<role>/vars/main/vault.yml
+uv run ansible-vault edit roles/<role>/vars/main/vault.yml
+```
+
+The helper script `scripts/sync_env_to_vault.py` (left in place for bootstrap use) reads local `.env` files and merges them into `vault_services_env`. It's historical; new secrets should go straight into SOPS files under `services/<cat>/`.
+
+---
+
+## Docker Compose conventions
+
+- Files at `services/<category>/docker-compose.yaml`; container names snake_case matching the service key.
+- All services on the external `home_server_network` bridge.
+- **Runtime state** uses absolute bind mounts under `/home/diego/services_data/<category>/<service>/`.
+- **Static config checked into git** uses relative bind mounts from the compose dir (e.g. `./traefik/traefik.yml:/traefik.yml:ro`); DocoCD serves these from its clone. Consider the `cd.doco.deployment.recreate.ignore` label where a SIGHUP reload is nicer than a container recreate.
+- Media volumes at `/media/hd1-3/`.
+- VPN-routed services use `network_mode: service:gluetun`.
+- Healthchecks on every service (curl/wget, 30s interval, 10s timeout).
+- Restart policy: `unless-stopped`.
+- Env from `env_file: secrets.enc.env` (or per-service `.enc.env`).
