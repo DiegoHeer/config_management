@@ -110,6 +110,8 @@ services:
       - POSTGRES_PORT=5432
       - POSTGRES_USER=djangodb
       - POSTGRES_DB=djangodb
+      - ALLOWED_HOSTS=tandoor.local.dynabase.nl,tandoor.dynabase.nl,localhost,127.0.0.1
+      - CSRF_TRUSTED_ORIGINS=https://tandoor.local.dynabase.nl,https://tandoor.dynabase.nl
     volumes:
       - /home/diego/services_data/tools/tandoor/staticfiles:/opt/recipes/staticfiles
       - /home/diego/services_data/tools/tandoor/mediafiles:/opt/recipes/mediafiles
