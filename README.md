@@ -10,6 +10,11 @@ Personal homelab deployed GitOps-style on Ubuntu. Three pillars:
 - **Docker Compose services** deployed **GitOps-style** by [DocoCD](https://github.com/kimdre/doco-cd) — a `git push` to `main` is the deploy
 - **Restic backups** implementing the 3-2-1 backup rule (managed by the Ansible restore role)
 
+## Documentation
+
+- **[docs/adr/](docs/adr/)** — Architectural Decision Records. Why DocoCD, why SOPS+age, why no Kubernetes. The rationale record.
+- **[docs/runbooks/](docs/runbooks/)** — Operational runbooks (written reactively).
+
 ## Project Structure
 
 ```
