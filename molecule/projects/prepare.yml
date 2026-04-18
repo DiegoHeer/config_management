@@ -1,21 +1,4 @@
 ---
-- name: Provision persistent test SSH key on control host
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Ensure molecule test key directory exists
-      ansible.builtin.file:
-        path: "{{ lookup('env', 'HOME') }}/.ansible/molecule/projects"
-        state: directory
-        mode: "0700"
-
-    - name: Generate persistent SSH keypair for projects molecule test
-      community.crypto.openssh_keypair:
-        path: "{{ lookup('env', 'HOME') }}/.ansible/molecule/projects/github"
-        type: rsa
-        size: 4096
-        state: present
-
 - name: Prepare for projects role
   hosts: all
   become: true
@@ -33,17 +16,17 @@
         group: "{{ username }}"
         mode: "0700"
 
-    - name: Copy persistent SSH private key into container
+    - name: Install vault-encrypted test SSH private key
       ansible.builtin.copy:
-        src: "{{ lookup('env', 'HOME') }}/.ansible/molecule/projects/github"
+        src: files/github_test_key
         dest: "/home/{{ username }}/.ssh/github"
         owner: "{{ username }}"
         group: "{{ username }}"
         mode: "0600"
 
-    - name: Copy persistent SSH public key into container
+    - name: Install vault-encrypted test SSH public key
       ansible.builtin.copy:
-        src: "{{ lookup('env', 'HOME') }}/.ansible/molecule/projects/github.pub"
+        src: files/github_test_key.pub
         dest: "/home/{{ username }}/.ssh/github.pub"
         owner: "{{ username }}"
         group: "{{ username }}"
