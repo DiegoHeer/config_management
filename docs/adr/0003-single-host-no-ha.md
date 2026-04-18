@@ -6,7 +6,7 @@
 
 ## Context
 
-Multi-node clusters with distributed storage (Rook/Ceph) would require redundant hardware and heavy ops overhead.
+Multi-node clusters with distributed storage would require redundant hardware and heavy ops overhead.
 Household workload fits one server.
 
 ## Decision
