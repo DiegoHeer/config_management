@@ -30,3 +30,6 @@ working_dir: services/games
 ---
 name: photos
 working_dir: services/photos
+---
+name: security
+working_dir: services/security
