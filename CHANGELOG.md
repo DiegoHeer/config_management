@@ -134,6 +134,8 @@ versioning uses CalVer (`YYYY.MM.N`).
 - Config|Add: hide tool-generated cache folders from VSCode Explorer
 - Config|Add: Renovate bot configuration for Docker Compose image updates
 - Config|Add: CI, Renovate, and activity badges to README
+- Config|Add: CalVer tagging with git-cliff CHANGELOG generation
+- Config|Add: monthly auto-tag workflow for CalVer releases
 
 ### Changed
 
@@ -429,3 +431,5 @@ versioning uses CalVer (`YYYY.MM.N`).
 - Config|Remove: delete .doco-cd.yml until Phase 1 migration
 - Config|Remove: dropped historical env/vault sync scripts
 - Ansible|Remove: removed placeholder molecule/default scenario
+
+
