@@ -9,13 +9,14 @@ Personal infrastructure-as-code for automatically setting up Ubuntu home servers
 ## Project Structure
 
 ```
-.doco-cd.yml    # Registry of DocoCD-managed stacks (one YAML doc per stack)
-.sops.yaml      # age recipient for services/**/*.enc.env
-roles/          # Ansible roles: system, projects, services, restore
-playbooks/      # Playbooks: update_home_server.yml, restore_home_server.yml
-services/       # Docker Compose stacks (13 categories)
-molecule/       # Ansible role testing (one scenario per role)
-.github/        # CI workflows and shared composite actions
+.doco-cd.yml        # Registry of DocoCD-managed stacks (one YAML doc per stack)
+.sops.yaml          # age recipient for services/**/*.enc.env
+bootstrap/gitops/   # DocoCD itself — Ansible-managed (can't redeploy itself)
+services/           # Docker Compose stacks (12 DocoCD-managed categories)
+roles/              # Ansible roles: system, projects, services, restore
+playbooks/          # Playbooks: update_home_server.yml, restore_home_server.yml
+molecule/           # Ansible role testing (one scenario per role)
+.github/            # CI workflows and shared composite actions
 ```
 
 ### Services overview
@@ -34,7 +35,9 @@ molecule/       # Ansible role testing (one scenario per role)
 | **Security** | Frigate (NVR) |
 | **Games** | RomM + MariaDB |
 | **Backups** | Zerobyte, Databasus |
-| **Gitops** | DocoCD itself (Ansible-managed; DocoCD can't redeploy its own container) |
+
+
+The DocoCD container itself lives at `bootstrap/gitops/` (not under `services/`) because DocoCD can't redeploy its own container — that stack is Ansible-managed.
 
 ---
 
@@ -67,7 +70,7 @@ Delete the `---` block from `.doco-cd.yml` and the `services/<name>/` tree. Comm
 
 ## Ansible
 
-Used for host bootstrap only. After the host is set up, Ansible is not in the service-deploy loop (except for the `gitops/` stack itself).
+Used for host bootstrap only. After the host is set up, Ansible is not in the service-deploy loop (except for the `bootstrap/gitops/` stack itself).
 
 ### Requirements
 
@@ -91,7 +94,7 @@ Used for host bootstrap only. After the host is set up, Ansible is not in the se
 - Plants the SOPS age key at `~/.config/sops/age/keys.txt` from `vault_sops_age_key` (`gitops.yml`).
 - Plants the cloudflared tunnel token at `~/.config/cloudflared/tunnel_token` from `vault_cloudflared_tunnel_token`.
 - Creates `/home/diego/services_data/`.
-- Renders the `gitops/` stack's `.env` file from `vault_services_env.gitops` and syncs the compose file.
+- Renders the `bootstrap/gitops/` stack's `.env` file from `vault_services_env.gitops` and syncs its compose file to `~/bootstrap/gitops/`.
 
 Everything else (12 other categories) is DocoCD's job.
 

@@ -51,25 +51,25 @@
     mode: "0644"
   no_log: true
 
-- name: Ensure ~/services/gitops directory exists
+- name: Ensure ~/bootstrap/gitops directory exists
   ansible.builtin.file:
-    path: "/home/{{ username }}/services/gitops"
+    path: "/home/{{ username }}/bootstrap/gitops"
     state: directory
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: "0755"
 
-- name: Sync gitops/docker-compose.yaml to the host
+- name: Sync bootstrap/gitops/docker-compose.yaml to the host
   ansible.builtin.copy:
-    src: "{{ role_path }}/../../services/gitops/docker-compose.yaml"
-    dest: "/home/{{ username }}/services/gitops/docker-compose.yaml"
+    src: "{{ role_path }}/../../bootstrap/gitops/docker-compose.yaml"
+    dest: "/home/{{ username }}/bootstrap/gitops/docker-compose.yaml"
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: "0644"
 
 - name: Template gitops .env from vault_services_env.gitops
   ansible.builtin.copy:
-    dest: "/home/{{ username }}/services/gitops/.env"
+    dest: "/home/{{ username }}/bootstrap/gitops/.env"
     content: "{% for k, v in vault_services_env.gitops.items() %}{{ k }}={{ v }}\n{% endfor %}"
     owner: "{{ username }}"
     group: "{{ username }}"
