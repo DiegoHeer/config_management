@@ -1,0 +1,63 @@
+---
+name: Release
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to generate release for (e.g. 2026.04.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Regenerate CHANGELOG and publish release
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Regenerate full CHANGELOG
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --tag ${{ env.TAG }} --output CHANGELOG.md
+
+      - name: Extract release notes for this tag
+        id: release_notes
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --tag ${{ env.TAG }} --latest --strip header
+
+      - name: Commit CHANGELOG update (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          if git diff --cached --quiet; then
+            echo "CHANGELOG unchanged; nothing to commit"
+          else
+            git commit -m "Config|Update: regenerate CHANGELOG for ${TAG}"
+            git push origin main
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NOTES: ${{ steps.release_notes.outputs.content }}
+        run: |
+          gh release create "${TAG}" \
+            --title "${TAG}" \
+            --notes "${NOTES}"
