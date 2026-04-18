@@ -80,6 +80,11 @@
       "groupName": "dococd bootstrap"
     },
     {
+      "description": "Block legacy Ubuntu-date-based tags for linuxserver qbittorrent (e.g. 20.04.1 from 2021). Upstream is on the 5.x line; 20.x tags are old Ubuntu-base artifacts, not newer releases.",
+      "matchPackageNames": ["lscr.io/linuxserver/qbittorrent"],
+      "allowedVersions": "<10"
+    },
+    {
       "description": "Auto-merge patch, digest, and pin-digest updates once CI passes",
       "matchUpdateTypes": ["patch", "digest", "pinDigest"],
       "automerge": true,
