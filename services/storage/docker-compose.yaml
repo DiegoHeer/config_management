@@ -1,7 +1,7 @@
 services:
   filebrowser:
     container_name: filebrowser
-    image: gtstef/filebrowser:1.2.4-stable
+    image: gtstef/filebrowser:1.2.4-stable@sha256:1cc63ad4b8558314320bdd8a5aad086d068ec94b78fc4e3dd9d1c47935738893
     restart: unless-stopped
     environment:
       TZ: "Europe/Amsterdam"
@@ -30,7 +30,7 @@ services:
       start_period: 10s
 
   nextcloud:
-    image: linuxserver/nextcloud:33.0.2
+    image: linuxserver/nextcloud:33.0.2@sha256:cc73f7219452bb96b318af66603056f7465819508ac51d7fa47f59248ef39594
     container_name: nextcloud
     restart: unless-stopped
     env_file: secrets.enc.env
@@ -61,7 +61,7 @@ services:
       start_period: 20s
 
   nextcloud_mariadb:
-    image: mariadb:11.8.6
+    image: mariadb:11.8.6@sha256:78a5047d3ba33975f183f183c2464cc7f1eab13ec8667e57cc9a5821d6da7577
     container_name: nextcloud_mariadb
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
@@ -81,7 +81,7 @@ services:
 
   rustfs:
     container_name: rustfs
-    image: rustfs/rustfs:1.0.0-alpha.94
+    image: rustfs/rustfs:1.0.0-alpha.94@sha256:7d49faa88c045af618a9ca6e1a9dc5b6cb87ea6fb407a682d825478e4001b40c
     restart: unless-stopped
     env_file: secrets.enc.env
     labels:
@@ -121,7 +121,7 @@ services:
   # https://www.reddit.com/r/selfhosted/comments/1eo7knj/guide_obsidian_with_free_selfhosted_instant_sync/
   obsidian-livesync:
     container_name: obsidian-livesync
-    image: couchdb:3.5.1
+    image: couchdb:3.5.1@sha256:297cd556c7ba358a408fd009e7b8e3b91318ccfc4d57c9b0264a2fb051ad9ef7
     restart: unless-stopped
     env_file: secrets.enc.env
     environment:
