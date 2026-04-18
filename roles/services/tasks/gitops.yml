@@ -40,5 +40,8 @@
     content: "{{ vault_cloudflared_tunnel_token }}"
     owner: "{{ username }}"
     group: "{{ username }}"
-    mode: "0600"
+    # 0644 because the bind-mount target is read by the distroless cloudflared
+    # container (uid 65532); the enclosing ~/.config/cloudflared dir is 0700
+    # so only diego can traverse it regardless.
+    mode: "0644"
   no_log: true
