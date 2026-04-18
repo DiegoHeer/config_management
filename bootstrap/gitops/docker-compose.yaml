@@ -12,6 +12,9 @@ services:
       # pass the secret key content directly via SOPS_AGE_KEY, sourced from the Ansible-
       # templated .env file.
       SOPS_AGE_KEY: ${SOPS_AGE_KEY}
+      # DocoCD posts notifications to the sidecar Apprise API; without APPRISE_API_URL
+      # the Send() path silently no-ops (internal/notification/notification.go).
+      APPRISE_API_URL: http://apprise:8000/notify
       APPRISE_NOTIFY_URLS: ${APPRISE_NOTIFY_URLS}
       APPRISE_NOTIFY_LEVEL: ${APPRISE_NOTIFY_LEVEL}
     volumes:
@@ -23,6 +26,25 @@ services:
       - "traefik.http.routers.doco-cd.entrypoints=https"
       - "traefik.http.routers.doco-cd.tls=true"
       - "traefik.http.services.doco-cd.loadbalancer.server.port=80"
+    # start-order only (not service_healthy): if apprise is unreachable,
+    # DocoCD's Send() just returns an error per deploy - preferable to
+    # blocking the webhook listener on a notification sidecar.
+    depends_on:
+      - apprise
+
+  apprise:
+    container_name: apprise
+    image: caronc/apprise:latest
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Amsterdam
+      APPRISE_WORKER_COUNT: 1
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
 volumes:
   doco-cd-data:
