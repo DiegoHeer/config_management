@@ -18,3 +18,4 @@ services_migrated_categories:
   - photos
   - security
   - home_assistant
+  - media

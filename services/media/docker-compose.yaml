@@ -15,7 +15,7 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - /media/hd2/data:/data
-      - ./jellyfin/config:/config
+      - /home/diego/services_data/media/jellyfin/config:/config
       - /dev/dri:/dev/dri
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8096"]
@@ -39,7 +39,7 @@ services:
       - LOG_LEVEL=debug
       - TZ=Europe/Amsterdam
     volumes:
-      - ./seerr/config:/app/config
+      - /home/diego/services_data/media/seerr/config:/app/config
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
       start_period: 20s
@@ -51,6 +51,7 @@ services:
     container_name: gluetun
     image: qmcgaw/gluetun:v3.41.1
     restart: unless-stopped
+    env_file: secrets.enc.env
     labels:
       - "traefik.enable=true"
       # qBittorrent (port 8080)
@@ -88,13 +89,11 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - ./gluetun:/gluetun
+      - /home/diego/services_data/media/gluetun:/gluetun
     environment:
       - TZ=Europe/Amsterdam
       - VPN_SERVICE_PROVIDER=surfshark
       - VPN_TYPE=openvpn
-      - OPENVPN_USER=${TRANSMISSION_OPENVPN_USERNAME}
-      - OPENVPN_PASSWORD=${TRANSMISSION_OPENVPN_PASSWORD}
       - SERVER_COUNTRIES=Netherlands,Belgium
     healthcheck:
       test: ping -c 1 www.google.com || exit 1
@@ -110,7 +109,7 @@ services:
     depends_on:
       - gluetun
     volumes:
-      - ./qbittorrent/config:/config
+      - /home/diego/services_data/media/qbittorrent/config:/config
       - /media/hd2/data:/data
     environment:
       - PUID=1000
@@ -141,7 +140,7 @@ services:
       - PGID=1000
       - TZ=Europe/Amsterdam
     volumes:
-      - ./prowlarr/config:/config
+      - /home/diego/services_data/media/prowlarr/config:/config
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9696/ping"]
       interval: 30s
@@ -161,7 +160,7 @@ services:
       - PGID=0
       - TZ=Europe/Amsterdam
     volumes:
-      - ./sonarr/config:/config
+      - /home/diego/services_data/media/sonarr/config:/config
       - /media/hd2/data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8989/ping"]
@@ -182,7 +181,7 @@ services:
       - PGID=1000
       - TZ=Europe/Amsterdam
     volumes:
-      - ./radarr/config:/config
+      - /home/diego/services_data/media/radarr/config:/config
       - /media/hd2/data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7878/ping"]
@@ -202,7 +201,7 @@ services:
       - "traefik.http.routers.profilarr.tls=true"
       - "traefik.http.services.profilarr.loadbalancer.server.port=6868"
     volumes:
-      - ./profilarr/config:/config
+      - /home/diego/services_data/media/profilarr/config:/config
     environment:
       - TZ=Europe/Amsterdam
     ports:
@@ -226,7 +225,7 @@ services:
       - PGID=1000
       - TZ=Europe/Amsterdam
     volumes:
-      - ./sabnzbd/config:/config
+      - /home/diego/services_data/media/sabnzbd/config:/config
       - /media/hd2/data:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
@@ -247,7 +246,7 @@ services:
       - "traefik.http.services.navidrome.loadbalancer.server.port=4533"
     user: 1000:1000
     volumes:
-      - ./navidrome:/data
+      - /home/diego/services_data/media/navidrome:/data
       - /media/hd2/data/media/music:/music:ro
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:4533"]
@@ -266,8 +265,8 @@ services:
       - "traefik.http.routers.audiobookshelf.tls=true"
       - "traefik.http.services.audiobookshelf.loadbalancer.server.port=80"
     volumes:
-      - ./audiobookshelf/config:/config
-      - ./audiobookshelf/metadata:/metadata
+      - /home/diego/services_data/media/audiobookshelf/config:/config
+      - /home/diego/services_data/media/audiobookshelf/metadata:/metadata
       - /media/hd2/data/media/audiobooks:/audiobooks
       - /media/hd2/data/media/podcasts:/podcasts
     healthcheck:
@@ -281,6 +280,7 @@ services:
     container_name: grimmory
     image: grimmory/grimmory:v2.3.0
     restart: unless-stopped
+    env_file: secrets.enc.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grimmory.rule=Host(`grimmory.local.dynabase.nl`)"
@@ -292,14 +292,12 @@ services:
       - GROUP_ID=1000
       - TZ=Europe/Amsterdam
       - DATABASE_URL=jdbc:mariadb://grimmory_mariadb:3306/grimmory
-      - DATABASE_USERNAME=${GRIMMORY_DB_USER}
-      - DATABASE_PASSWORD=${GRIMMORY_DB_PASSWORD}
     depends_on:
       grimmory_mariadb:
         condition: service_healthy
     volumes:
-      - ./grimmory/data:/app/data
-      - ./grimmory/bookdrop:/bookdrop
+      - /home/diego/services_data/media/grimmory/data:/app/data
+      - /home/diego/services_data/media/grimmory/bookdrop:/bookdrop
       - /media/hd2/data/media/books:/books
     deploy:
       resources:
@@ -315,17 +313,15 @@ services:
   grimmory_mariadb:
     image: lscr.io/linuxserver/mariadb:11.4.9-r0-ls212
     container_name: grimmory_mariadb
+    restart: unless-stopped
+    env_file: secrets.enc.env
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Amsterdam
-      - MYSQL_ROOT_PASSWORD=${GRIMMORY_DB_ROOT_PASSWORD}
       - MYSQL_DATABASE=grimmory
-      - MYSQL_USER=${GRIMMORY_DB_USER}
-      - MYSQL_PASSWORD=${GRIMMORY_DB_PASSWORD}
     volumes:
-      - ./grimmory/mariadb/config:/config
-    restart: unless-stopped
+      - /home/diego/services_data/media/grimmory/mariadb/config:/config
     healthcheck:
       test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
       interval: 5s

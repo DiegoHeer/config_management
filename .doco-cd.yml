@@ -36,3 +36,6 @@ working_dir: services/security
 ---
 name: home_assistant
 working_dir: services/home_assistant
+---
+name: media
+working_dir: services/media
