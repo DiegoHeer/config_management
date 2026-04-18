@@ -1,7 +1,7 @@
 services:
   immich-server:
     container_name: immich_server
-    image: ghcr.io/immich-app/immich-server:v2.7.5
+    image: ghcr.io/immich-app/immich-server:v2.7.5@sha256:c15bff75068effb03f4355997d03dc7e0fc58720c2b54ad6f7f10d1bc57efaa5
     restart: unless-stopped
     extends:
       file: ./immich/hwaccel.transcoding.yml
@@ -23,7 +23,7 @@ services:
 
   immich-machine-learning:
     container_name: immich_machine_learning
-    image: ghcr.io/immich-app/immich-machine-learning:v2.7.5
+    image: ghcr.io/immich-app/immich-machine-learning:v2.7.5@sha256:a2501141440f10516d329fdfba2c68082e19eb9ba6016c061ac80d23beadf7f3
     restart: unless-stopped
     volumes:
       - model-cache:/cache
@@ -32,14 +32,14 @@ services:
 
   redis:
     container_name: immich_redis
-    image: redis:7.4.8-alpine
+    image: redis:7.4.8-alpine@sha256:efc27681bf81e6ed55cb581718b7818c6c04c39b1f9aa40854edd3ea2241b6ed
     restart: unless-stopped
     healthcheck:
       test: redis-cli ping || exit 1
 
   database:
     container_name: immich_postgres
-    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23
     restart: unless-stopped
     shm_size: 128mb
     env_file: secrets.enc.env
