@@ -15,3 +15,19 @@
         owner: "{{ username }}"
         group: "{{ username }}"
         mode: "0700"
+
+    - name: Install vault-encrypted test SSH private key
+      ansible.builtin.copy:
+        src: files/github_test_key
+        dest: "/home/{{ username }}/.ssh/github"
+        owner: "{{ username }}"
+        group: "{{ username }}"
+        mode: "0600"
+
+    - name: Install vault-encrypted test SSH public key
+      ansible.builtin.copy:
+        src: files/github_test_key.pub
+        dest: "/home/{{ username }}/.ssh/github.pub"
+        owner: "{{ username }}"
+        group: "{{ username }}"
+        mode: "0644"
