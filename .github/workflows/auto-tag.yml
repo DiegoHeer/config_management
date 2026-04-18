@@ -1,0 +1,68 @@
+---
+name: Auto-tag monthly release
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # 1st of each month at 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  auto-tag:
+    name: Create monthly CalVer tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute next tag and check for releasable commits
+        id: plan
+        run: |
+          set -euo pipefail
+          year_month=$(date -u +%Y.%m)
+
+          # Highest existing N for this year.month, defaulting to no-match
+          existing=$(git tag -l "${year_month}.*" | sort -V | tail -1)
+          if [ -z "${existing}" ]; then
+            new_tag="${year_month}.0"
+          else
+            next_n=$(( $(echo "${existing}" | awk -F. '{print $3}') + 1 ))
+            new_tag="${year_month}.${next_n}"
+          fi
+
+          prev_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          echo "Previous tag: ${prev_tag:-<none>}"
+          echo "Candidate tag: ${new_tag}"
+
+          range="HEAD"
+          if [ -n "${prev_tag}" ]; then
+            range="${prev_tag}..HEAD"
+          fi
+
+          # Commits since last tag, ignoring CHANGELOG.md (which the release
+          # workflow commits after each tag — it shouldn't trigger a new tag)
+          commits=$(git log "${range}" --oneline -- . ':(exclude)CHANGELOG.md' | wc -l)
+          echo "Releasable commits: ${commits}"
+
+          echo "new_tag=${new_tag}" >> "${GITHUB_OUTPUT}"
+          if [ "${commits}" -eq 0 ]; then
+            echo "should_tag=false" >> "${GITHUB_OUTPUT}"
+          else
+            echo "should_tag=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Create and push tag
+        if: steps.plan.outputs.should_tag == 'true'
+        env:
+          NEW_TAG: ${{ steps.plan.outputs.new_tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "${NEW_TAG}"
+          git push origin "${NEW_TAG}"

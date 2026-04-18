@@ -1,0 +1,49 @@
+# git-cliff — CHANGELOG generator configuration
+# Docs: https://git-cliff.org/docs/configuration
+
+[changelog]
+header = """
+# Changelog
+
+All notable changes to this homelab are documented here.
+Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
+versioning uses CalVer (`YYYY.MM.N`).
+"""
+
+body = """
+{% if version %}\
+    ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## [Unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | upper_first }}
+    {% for commit in commits %}
+        - {{ commit.message | split(pat="\n") | first | upper_first | trim }}\
+    {% endfor %}
+{% endfor %}\n
+"""
+
+footer = ""
+trim = true
+
+[git]
+conventional_commits = false
+filter_unconventional = false
+split_commits = false
+
+commit_parsers = [
+    { message = "^.+\\|Add",      group = "Added" },
+    { message = "^.+\\|Remove",   group = "Removed" },
+    { message = "^.+\\|Fix",      group = "Fixed" },
+    { message = "^.+\\|Update",   group = "Changed" },
+    { message = "^.+\\|Refactor", group = "Changed" },
+    { message = "^.+\\|Migrate",  group = "Changed" },
+    { message = "^Merge ",        skip  = true },
+    { message = ".*",             skip  = true },
+]
+
+filter_commits = true
+tag_pattern = "^[0-9]{4}\\.[0-9]{2}\\.[0-9]+$"
+topo_order = false
+sort_commits = "oldest"
