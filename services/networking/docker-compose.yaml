@@ -3,17 +3,16 @@ services:
     container_name: traefik
     image: traefik:v3.6.13
     restart: unless-stopped
+    env_file: secrets.enc.env
     ports:
       - 80:80
       - 8080:8080
       - 443:443
-    environment:
-      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik/traefik.yml:/traefik.yml:ro
-      - ./traefik/acme.json:/acme.json
+      - /home/diego/services_data/networking/traefik/acme.json:/acme.json
       - ./traefik/config.yml:/config.yml:ro
     labels:
       - "traefik.enable=true"
@@ -29,6 +28,9 @@ services:
       - "traefik.http.routers.traefik-secure.tls.domains[0].main=local.dynabase.nl"
       - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.local.dynabase.nl"
       - "traefik.http.routers.traefik-secure.service=api@internal"
+      # Traefik auto-reloads traefik.yml/config.yml via its file provider — don't
+      # recreate the container on edits to those static config files in the repo.
+      - "cd.doco.deployment.recreate.ignore={bindMounts: [/traefik.yml, /config.yml]}"
     healthcheck:
       test: ["CMD", "traefik", "healthcheck", "--ping"]
       interval: 30s
@@ -39,18 +41,17 @@ services:
     image: ghcr.io/rpressiani/traefik-pihole-dns-sync:v0.1.0
     container_name: traefik-pihole-dns-sync
     restart: unless-stopped
+    env_file: secrets.enc.env
     environment:
       - TRAEFIK_API_URL=http://traefik:8080/api/http/routers
-      - PIHOLE_URL=${PIHOLE_URL}
-      - PIHOLE_PASSWORD=${PIHOLE_PASSWORD}
-      - TRAEFIK_HOST_IP=${TRAEFIK_HOST_IP}
       - SYNC_INTERVAL=@every 1m
 
   cloudflare_tunnel:
     container_name: cloudflare_tunnel
     image: cloudflare/cloudflared:2026.3.0
     restart: unless-stopped
-    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
+    env_file: secrets.enc.env
+    command: tunnel --no-autoupdate run
     environment:
       TUNNEL_METRICS: "0.0.0.0:60123"
     healthcheck:

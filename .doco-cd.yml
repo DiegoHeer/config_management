@@ -21,3 +21,6 @@ working_dir: services/ai
 ---
 name: storage
 working_dir: services/storage
+---
+name: networking
+working_dir: services/networking

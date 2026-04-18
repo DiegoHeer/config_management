@@ -13,3 +13,4 @@ services_migrated_categories:
   - backups
   - ai
   - storage
+  - networking
