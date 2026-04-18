@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   gather_facts: true
-  become: true  # TODO: remove this later from all the tests
+  become: true
   tasks:
     - name: Test restore role
       ansible.builtin.include_role:
