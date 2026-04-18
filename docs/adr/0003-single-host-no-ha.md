@@ -6,8 +6,7 @@
 
 ## Context
 
-Peers (khuedoan, onedr0p, ahinko) run multi-node clusters with distributed storage (Rook/Ceph).
-That implies redundant hardware and heavy ops overhead.
+Multi-node clusters with distributed storage (Rook/Ceph) would require redundant hardware and heavy ops overhead.
 Household workload fits one server.
 
 ## Decision

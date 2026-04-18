@@ -7,7 +7,7 @@
 ## Context
 
 Single home server, ~54 services, solo operator.
-K8s (K3s/Talos/plain) popular in homelab peers but adds operational burden (controllers, CNI, operators, backup of etcd).
+K8s (K3s/Talos/plain) would add operational burden (controllers, CNI, operators, backup of etcd) without a clear return at this scale.
 
 ## Decision
 

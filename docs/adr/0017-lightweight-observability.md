@@ -6,8 +6,7 @@
 
 ## Context
 
-Peers (khuedoan, onedr0p, ahinko) ship full Prometheus + Grafana + Loki + Alloy.
-That's ~4 services to learn, store, back up, alert on.
+A full Prometheus + Grafana + Loki + Alloy stack adds ~4 services to learn, store, back up, alert on.
 For a single-host ~54-service homelab, the observability-to-usefulness ratio is low.
 
 ## Decision
