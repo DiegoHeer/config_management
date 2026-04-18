@@ -3,6 +3,7 @@
 .env
 services/**/.env
 .superpowers/
+.worktrees/
 
 .terraform/
 terraform.tfstate
