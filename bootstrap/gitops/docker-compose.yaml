@@ -12,6 +12,8 @@ services:
       # pass the secret key content directly via SOPS_AGE_KEY, sourced from the Ansible-
       # templated .env file.
       SOPS_AGE_KEY: ${SOPS_AGE_KEY}
+      APPRISE_NOTIFY_URLS: ${APPRISE_NOTIFY_URLS}
+      APPRISE_NOTIFY_LEVEL: ${APPRISE_NOTIFY_LEVEL}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - doco-cd-data:/data
