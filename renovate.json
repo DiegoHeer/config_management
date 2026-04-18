@@ -1,0 +1,95 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    "docker:pinDigests"
+  ],
+  "enabledManagers": ["docker-compose"],
+  "docker-compose": {
+    "fileMatch": [
+      "services/.+\\.yaml$",
+      "bootstrap/.+\\.yaml$"
+    ]
+  },
+  "labels": ["renovate"],
+  "packageRules": [
+    {
+      "description": "Group updates per compose stack: ai",
+      "matchFileNames": ["services/ai/**"],
+      "groupName": "ai stack"
+    },
+    {
+      "description": "Group updates per compose stack: backups",
+      "matchFileNames": ["services/backups/**"],
+      "groupName": "backups stack"
+    },
+    {
+      "description": "Group updates per compose stack: dashboards",
+      "matchFileNames": ["services/dashboards/**"],
+      "groupName": "dashboards stack"
+    },
+    {
+      "description": "Group updates per compose stack: games",
+      "matchFileNames": ["services/games/**"],
+      "groupName": "games stack"
+    },
+    {
+      "description": "Group updates per compose stack: home_assistant",
+      "matchFileNames": ["services/home_assistant/**"],
+      "groupName": "home_assistant stack"
+    },
+    {
+      "description": "Group updates per compose stack: media",
+      "matchFileNames": ["services/media/**"],
+      "groupName": "media stack"
+    },
+    {
+      "description": "Group updates per compose stack: monitoring",
+      "matchFileNames": ["services/monitoring/**"],
+      "groupName": "monitoring stack"
+    },
+    {
+      "description": "Group updates per compose stack: networking",
+      "matchFileNames": ["services/networking/**"],
+      "groupName": "networking stack"
+    },
+    {
+      "description": "Group updates per compose stack: photos",
+      "matchFileNames": ["services/photos/**"],
+      "groupName": "photos stack"
+    },
+    {
+      "description": "Group updates per compose stack: security",
+      "matchFileNames": ["services/security/**"],
+      "groupName": "security stack"
+    },
+    {
+      "description": "Group updates per compose stack: storage",
+      "matchFileNames": ["services/storage/**"],
+      "groupName": "storage stack"
+    },
+    {
+      "description": "Group updates per compose stack: tools",
+      "matchFileNames": ["services/tools/**"],
+      "groupName": "tools stack"
+    },
+    {
+      "description": "Group updates per compose stack: bootstrap/gitops (DocoCD)",
+      "matchFileNames": ["bootstrap/**"],
+      "groupName": "dococd bootstrap"
+    },
+    {
+      "description": "Auto-merge patch, digest, and pin-digest updates once CI passes",
+      "matchUpdateTypes": ["patch", "digest", "pinDigest"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "description": "Manual review required for minor and major updates",
+      "matchUpdateTypes": ["minor", "major"],
+      "automerge": false
+    }
+  ]
+}
