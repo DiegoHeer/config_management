@@ -1,6 +1,6 @@
-# Configuration Management
+# GitOps Homelab
 
-Personal infrastructure-as-code for automatically setting up Ubuntu home servers. Three pillars:
+Personal homelab deployed GitOps-style on Ubuntu. Three pillars:
 
 - **Ansible playbooks** for one-time host bootstrap (Docker, shared network, SOPS age key, cloudflared tunnel token, the DocoCD stack itself)
 - **Docker Compose services** deployed **GitOps-style** by [DocoCD](https://github.com/kimdre/doco-cd) — a `git push` to `main` is the deploy
