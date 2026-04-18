@@ -159,8 +159,6 @@ uv run ansible-vault view roles/<role>/vars/main/vault.yml
 uv run ansible-vault edit roles/<role>/vars/main/vault.yml
 ```
 
-The helper script `scripts/sync_env_to_vault.py` (left in place for bootstrap use) reads local `.env` files and merges them into `vault_docker_host_env`. It's historical; new secrets should go straight into SOPS files under `services/<cat>/`.
-
 ---
 
 ## Docker Compose conventions

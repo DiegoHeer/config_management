@@ -1,8 +1,7 @@
 ---
+- name: Install Restic
+  ansible.builtin.include_role:
+    name: andrewrothstein.restic
+
 - name: Restore relevant data
-  ansible.builtin.include_tasks: "{{ task }}"
-  loop:
-    - setup.yml
-    - restore.yml
-  loop_control:
-    loop_var: task
+  ansible.builtin.include_tasks: restore.yml
