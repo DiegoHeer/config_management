@@ -13,7 +13,7 @@ Personal homelab deployed GitOps-style on Ubuntu. Three pillars:
 .sops.yaml          # age recipient for services/**/*.enc.env
 bootstrap/gitops/   # DocoCD itself — Ansible-managed (can't redeploy itself)
 services/           # Docker Compose stacks (12 DocoCD-managed categories)
-roles/              # Ansible roles: system, projects, services, restore
+roles/              # Ansible roles: system, projects, docker_host, restore
 playbooks/          # Playbooks: update_home_server.yml, restore_home_server.yml
 molecule/           # Ansible role testing (one scenario per role)
 .github/            # CI workflows and shared composite actions
