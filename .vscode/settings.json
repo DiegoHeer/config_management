@@ -9,6 +9,12 @@
         120
     ],
 
+    "files.exclude": {
+        "**/.ruff_cache": true,
+        "**/.superpowers": true,
+        "**/.ansible": true
+    },
+
     // Ansible
     "files.associations": {
       "**/gitops-homelab/**/*.yml": "ansible",
