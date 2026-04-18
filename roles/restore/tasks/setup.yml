@@ -1,4 +1,0 @@
----
-- name: Install Restic
-  ansible.builtin.include_role:
-    name: andrewrothstein.restic
