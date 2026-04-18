@@ -17,3 +17,4 @@ services_migrated_categories:
   - games
   - photos
   - security
+  - home_assistant

@@ -33,3 +33,6 @@ working_dir: services/photos
 ---
 name: security
 working_dir: services/security
+---
+name: home_assistant
+working_dir: services/home_assistant

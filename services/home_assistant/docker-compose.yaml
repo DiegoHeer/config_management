@@ -4,7 +4,7 @@ services:
     image: ghcr.io/home-assistant/home-assistant:2026.4.2
     restart: unless-stopped
     volumes:
-      - ./homeassistant/config:/config
+      - /home/diego/services_data/home_assistant/homeassistant/config:/config
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
       - /dev:/dev
@@ -24,9 +24,9 @@ services:
     image: eclipse-mosquitto:2.1.2-alpine
     restart: unless-stopped
     volumes:
-      - ./mosquitto/log:/mosquitto/log
-      - ./mosquitto/data:/mosquitto/data
-      - ./mosquitto/config:/mosquitto/config
+      - /home/diego/services_data/home_assistant/mosquitto/log:/mosquitto/log
+      - /home/diego/services_data/home_assistant/mosquitto/data:/mosquitto/data
+      - /home/diego/services_data/home_assistant/mosquitto/config:/mosquitto/config
     ports:
       - 1883:1883
     healthcheck:
@@ -60,7 +60,7 @@ services:
       - /dev/ttyUSB1:/dev/ttyUSB1
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - ./otbr/otbr_data:/data/thread
+      - /home/diego/services_data/home_assistant/otbr/otbr_data:/data/thread
       - /etc/localtime:/etc/localtime:ro
     healthcheck:
       test: ["CMD-SHELL", "test -S /run/openthread-wpan0.sock && nc -z localhost 8081"]
@@ -75,7 +75,7 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - ./matter:/data/
+      - /home/diego/services_data/home_assistant/matter:/data/
     healthcheck:
       test: ["CMD-SHELL", "timeout 5 bash -c ':> /dev/tcp/127.0.0.1/5580' || exit 1"]
       interval: 30s
@@ -89,10 +89,10 @@ services:
     container_name: doorbell_samba
     network_mode: host
     restart: unless-stopped
+    env_file: secrets.enc.env
     cap_add:
       - CAP_NET_ADMIN
     environment:
-      ACCOUNT_diego: ${SAMBA_ACCOUNT_PASSWORD}
       UID_diego: 1000
       SAMBA_VOLUME_CONFIG_doorbell: "[doorbell]; path=/doorbell; available = yes; browsable = yes; writable = yes; read only = no; force user = diego; public = yes; guest ok = yes"  # yamllint disable-line rule:line-length
     volumes:
