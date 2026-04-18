@@ -23,3 +23,22 @@
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: "0755"
+
+- name: Ensure cloudflared config directory exists
+  ansible.builtin.file:
+    path: "/home/{{ username }}/.config/cloudflared"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0700"
+
+# cloudflared v2026.3 silently rejects TUNNEL_TOKEN via env var; plant the
+# token as a host file and feed it to the container via --token-file.
+- name: Plant Cloudflare tunnel token for networking stack
+  ansible.builtin.copy:
+    dest: "/home/{{ username }}/.config/cloudflared/tunnel_token"
+    content: "{{ vault_cloudflared_tunnel_token }}"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0600"
+  no_log: true
