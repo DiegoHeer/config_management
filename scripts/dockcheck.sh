@@ -56,8 +56,11 @@ fetch() {
 # Discover all container_name entries across every managed stack.
 # Output: sorted lines of "stack|container". Returns non-zero on fetch failure
 # or when the stack registry can't be parsed.
+#
+# Strategy: fetch .doco-cd.yml sequentially to learn the stack list, then
+# parallel-fetch every compose file in one curl invocation.
 discover_containers() {
-    local doco_cd_yml stacks stack compose_path compose_yml matches raw
+    local doco_cd_yml stacks stack compose_path matches raw tmpdir
     doco_cd_yml=$(fetch .doco-cd.yml) || return 2
     stacks=$(echo "$doco_cd_yml" \
         | awk '/^name:[[:space:]]+/ {print $2}' \
@@ -68,7 +71,11 @@ discover_containers() {
     fi
     stacks+=$'\n'"gitops"
 
-    raw=""
+    tmpdir=$(mktemp -d)
+    # shellcheck disable=SC2064  # expand tmpdir now, not on trap fire
+    trap "rm -rf '$tmpdir'" RETURN
+
+    local curl_args=(--fail --silent --show-error --location --parallel)
     while IFS= read -r stack; do
         [ -n "$stack" ] || continue
         if [ "$stack" = "gitops" ]; then
@@ -76,13 +83,23 @@ discover_containers() {
         else
             compose_path="services/$stack/docker-compose.yaml"
         fi
-        compose_yml=$(fetch "$compose_path") || return 2
-        matches=$(echo "$compose_yml" \
-            | awk -v stack="$stack" \
+        curl_args+=(-o "$tmpdir/$stack" "$REPO_RAW_URL/$compose_path")
+    done <<< "$stacks"
+
+    if ! curl "${curl_args[@]}"; then
+        echo "Error: one or more compose files failed to fetch from $REPO_RAW_URL" >&2
+        return 2
+    fi
+
+    raw=""
+    while IFS= read -r stack; do
+        [ -n "$stack" ] || continue
+        matches=$(awk -v stack="$stack" \
                 '/^[[:space:]]+container_name:[[:space:]]+/ {print stack "|" $2}' \
+                "$tmpdir/$stack" \
             | sed -e 's/|"\(.*\)"$/|\1/' -e "s/|'\(.*\)'$/|\1/")
         if [ -z "$matches" ]; then
-            echo "Warning: no container_name entries for stack '$stack' in $compose_path" >&2
+            echo "Warning: no container_name entries for stack '$stack'" >&2
             continue
         fi
         raw+="$matches"$'\n'
