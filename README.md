@@ -87,27 +87,27 @@ Used for host bootstrap only. After the host is set up, Ansible is not in the se
    ```
 2. Create a `.vault_key` file in the repo root with your Ansible vault password.
 
-### What the `services` role does now
+### What the `docker_host` role does
 
 - Installs Docker (`packages.yml`).
 - Creates the external `home_server_network` bridge (`network.yml`).
 - Plants the SOPS age key at `~/.config/sops/age/keys.txt` from `vault_sops_age_key` (`gitops.yml`).
 - Plants the cloudflared tunnel token at `~/.config/cloudflared/tunnel_token` from `vault_cloudflared_tunnel_token`.
 - Creates `/home/diego/services_data/`.
-- Renders the `bootstrap/gitops/` stack's `.env` file from `vault_services_env.gitops` and syncs its compose file to `~/bootstrap/gitops/`.
+- Renders the `bootstrap/gitops/` stack's `.env` file from `vault_docker_host_env.gitops` and syncs its compose file to `~/bootstrap/gitops/`.
 
 Everything else (12 other categories) is DocoCD's job.
 
 ### Playbooks
 
-- **update_home_server.yml** — runs `system` + `projects` + `services` roles against the home server. Deployed via the **Update Home Server** GitHub Actions workflow on every push to `main`, and available via `workflow_dispatch`.
-- **restore_home_server.yml** — runs `system` + `projects` + `restore` + `services` roles. Deployed via the **Restore Home Server** workflow (manual only).
+- **update_home_server.yml** — runs `system` + `projects` + `docker_host` roles against the home server. Deployed via the **Update Home Server** GitHub Actions workflow on every push to `main`, and available via `workflow_dispatch`.
+- **restore_home_server.yml** — runs `system` + `projects` + `restore` + `docker_host` roles. Deployed via the **Restore Home Server** workflow (manual only).
 
 Both workflows share a composite action (`.github/actions/setup-ansible/`) that handles Python/uv setup, Galaxy roles, vault key, SSH, and Tailscale connectivity.
 
 ### Testing
 
-Testing is done with [Molecule](https://ansible.readthedocs.io/projects/molecule/). Available scenarios: `system`, `projects`, `restore`, `services`.
+Testing is done with [Molecule](https://ansible.readthedocs.io/projects/molecule/). Available scenarios: `system`, `projects`, `restore`, `docker_host`.
 
 ```bash
 molecule test -s <role>        # full sequence
@@ -150,7 +150,7 @@ Used only for secrets that must be present **before** DocoCD can run:
 | `roles/system/vars/main/vault.yml` | User password (`vault_password`) |
 | `roles/projects/vars/main/vault.yml` | Project-specific secrets |
 | `roles/restore/vars/main/vault.yml` | Backup/restore credentials |
-| `roles/services/vars/main/env_vault.yml` | `vault_sops_age_key`, `vault_cloudflared_tunnel_token`, `vault_services_env.gitops` (only the `gitops/` stack's env) |
+| `roles/docker_host/vars/main/env_vault.yml` | `vault_sops_age_key`, `vault_cloudflared_tunnel_token`, `vault_docker_host_env.gitops` (only the `gitops/` stack's env) |
 
 Editing:
 
@@ -159,7 +159,7 @@ uv run ansible-vault view roles/<role>/vars/main/vault.yml
 uv run ansible-vault edit roles/<role>/vars/main/vault.yml
 ```
 
-The helper script `scripts/sync_env_to_vault.py` (left in place for bootstrap use) reads local `.env` files and merges them into `vault_services_env`. It's historical; new secrets should go straight into SOPS files under `services/<cat>/`.
+The helper script `scripts/sync_env_to_vault.py` (left in place for bootstrap use) reads local `.env` files and merges them into `vault_docker_host_env`. It's historical; new secrets should go straight into SOPS files under `services/<cat>/`.
 
 ---
 

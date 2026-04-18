@@ -1,5 +1,5 @@
 ---
-- name: Prepare for services role
+- name: Prepare for docker_host role
   hosts: all
   become: true
   tasks:

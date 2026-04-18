@@ -5,4 +5,4 @@
 
   roles:
     - role: system
-    - role: services
+    - role: docker_host

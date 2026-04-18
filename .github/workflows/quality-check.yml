@@ -37,7 +37,7 @@ jobs:
         scenario:
           - system
           - projects
-          - services
+          - docker_host
           - restore
     steps:
       - name: Checkout

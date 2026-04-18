@@ -67,10 +67,10 @@
     group: "{{ username }}"
     mode: "0644"
 
-- name: Template gitops .env from vault_services_env.gitops
+- name: Template gitops .env from vault_docker_host_env.gitops
   ansible.builtin.copy:
     dest: "/home/{{ username }}/bootstrap/gitops/.env"
-    content: "{% for k, v in vault_services_env.gitops.items() %}{{ k }}={{ v }}\n{% endfor %}"
+    content: "{% for k, v in vault_docker_host_env.gitops.items() %}{{ k }}={{ v }}\n{% endfor %}"
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: "0600"

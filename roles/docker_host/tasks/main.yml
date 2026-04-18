@@ -1,5 +1,5 @@
 ---
-- name: Home Server docker services setup
+- name: Home Server docker host setup
   ansible.builtin.include_tasks: "{{ task }}"
   loop:
     - packages.yml

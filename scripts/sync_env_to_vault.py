@@ -11,7 +11,7 @@ from ansible.parsing.vault import VaultLib, VaultSecret
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SERVICES_DIR = REPO_ROOT / "services"
 VAULT_KEY_FILE = REPO_ROOT / ".vault_key"
-VAULT_OUTPUT = REPO_ROOT / "roles" / "services" / "vars" / "main" / "env_vault.yml"
+VAULT_OUTPUT = REPO_ROOT / "roles" / "docker_host" / "vars" / "main" / "env_vault.yml"
 
 
 def parse_env_file(path: Path) -> dict[str, str]:
@@ -37,7 +37,7 @@ def yaml_quote(value: str) -> str:
 
 def build_yaml(services_env: dict[str, dict[str, str]]) -> str:
     """Build YAML string from the services env dictionary."""
-    lines = ["---", "vault_services_env:"]
+    lines = ["---", "vault_docker_host_env:"]
     for service in sorted(services_env):
         lines.append(f"  {service}:")
         for key, value in services_env[service].items():
@@ -51,8 +51,8 @@ def load_existing_vault(vault: VaultLib) -> dict[str, dict[str, str]]:
         return {}
     decrypted = vault.decrypt(VAULT_OUTPUT.read_bytes())
     data = yaml.safe_load(decrypted)
-    if data and "vault_services_env" in data:
-        return data["vault_services_env"]
+    if data and "vault_docker_host_env" in data:
+        return data["vault_docker_host_env"]
     return {}
 
 

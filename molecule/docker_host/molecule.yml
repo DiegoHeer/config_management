@@ -6,7 +6,7 @@ driver:
   name: docker
 
 platforms:
-  - name: test_ansible_role_services
+  - name: test_ansible_role_docker_host
     image: geerlingguy/docker-ubuntu2404-ansible:latest
     privileged: true
     pre_build_image: true

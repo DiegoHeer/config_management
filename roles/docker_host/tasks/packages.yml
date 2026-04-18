@@ -1,7 +1,7 @@
 ---
 - name: Check if Docker is already installed
   ansible.builtin.command: docker --version
-  register: services_docker_check
+  register: docker_host_docker_check
   changed_when: false
   failed_when: false
 
@@ -11,4 +11,4 @@
   vars:
     docker_sdk: true
     docker_compose: true
-  when: services_docker_check.rc != 0
+  when: docker_host_docker_check.rc != 0

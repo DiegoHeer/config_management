@@ -7,4 +7,4 @@
     - role: system
     - role: projects
     - role: restore
-    - role: services
+    - role: docker_host

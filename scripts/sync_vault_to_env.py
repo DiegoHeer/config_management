@@ -11,7 +11,7 @@ from ansible.parsing.vault import VaultLib, VaultSecret
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SERVICES_DIR = REPO_ROOT / "services"
 VAULT_KEY_FILE = REPO_ROOT / ".vault_key"
-VAULT_OUTPUT = REPO_ROOT / "roles" / "services" / "vars" / "main" / "env_vault.yml"
+VAULT_OUTPUT = REPO_ROOT / "roles" / "docker_host" / "vars" / "main" / "env_vault.yml"
 
 
 def load_existing_vault(vault: VaultLib) -> dict[str, dict[str, str]]:
@@ -20,8 +20,8 @@ def load_existing_vault(vault: VaultLib) -> dict[str, dict[str, str]]:
         return {}
     decrypted = vault.decrypt(VAULT_OUTPUT.read_bytes())
     data = yaml.safe_load(decrypted)
-    if data and "vault_services_env" in data:
-        return data["vault_services_env"]
+    if data and "vault_docker_host_env" in data:
+        return data["vault_docker_host_env"]
     return {}
 
 
