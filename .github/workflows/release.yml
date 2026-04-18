@@ -10,6 +10,12 @@ on:
       tag:
         description: 'Tag to generate release for (e.g. 2026.04.0)'
         required: true
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Tag to generate release for'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -19,7 +25,7 @@ jobs:
     name: Regenerate CHANGELOG and publish release
     runs-on: ubuntu-latest
     env:
-      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+      TAG: ${{ inputs.tag || github.ref_name }}
     steps:
       - name: Checkout main
         uses: actions/checkout@v5
