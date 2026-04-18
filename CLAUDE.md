@@ -46,7 +46,7 @@ Config|Update: updated multiple services to latest versions
 
 ## Editing conventions
 
-- YAML: 120-char line limit (yamllint); `.yaml` extension, not `.yml`.
+- YAML: 160-char line limit (yamllint); `.yaml` extension, not `.yml`.
 - Ansible variable naming: `role_function_detail`; vault vars prefixed `vault_`.
 - Docker Compose: container names snake_case matching the service key; all services on external `home_server_network`; healthcheck + `restart: unless-stopped` on every service.
 - Runtime state → absolute bind mounts under `/home/diego/services_data/<category>/<service>/`. Static config → relative bind mounts from the compose file's dir.
