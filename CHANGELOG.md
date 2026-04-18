@@ -3,6 +3,16 @@
 All notable changes to this homelab are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning uses CalVer (`YYYY.MM.N`).
+## [2026.04.1] - 2026-04-18
+
+### Changed
+
+- Config|Update: regenerate CHANGELOG for 2026.04.0
+
+### Fixed
+
+- Config|Fix: invoke Release workflow via workflow_call from auto-tag
+
 ## [2026.04.0] - 2026-04-18
 
 ### Added
