@@ -7,6 +7,7 @@ on:
     paths:
       - 'playbooks/**'
       - 'roles/**'
+      - 'bootstrap/**'
       - 'requirements.yml'
       - '.github/workflows/configure-home-server.yml'
       - '.github/actions/setup-ansible/**'
