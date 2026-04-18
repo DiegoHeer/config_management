@@ -3,16 +3,27 @@ set -euo pipefail
 
 # Standalone container health checker for DocoCD-managed stacks.
 #
-# Works unchanged on the server (local docker socket) and from a laptop
-# (`DOCKER_HOST=ssh://server ./dockcheck.sh`). Declarations are fetched at
-# runtime from the public repo rather than read from disk so the script has
-# zero dependency on having the repo checked out anywhere — drop it on any
-# host with `docker` and `curl` and it works.
+# Runs unchanged from anywhere on the home network: on the home server itself
+# it uses the local docker socket; on any other host (laptop/desktop) it
+# auto-tunnels via `ssh://$SERVER_SSH_ALIAS` — which the user is expected to
+# have set up in ~/.ssh/config. Override by setting DOCKER_HOST explicitly.
+#
+# Declarations are fetched at runtime from the public repo rather than read
+# from disk so the script has zero dependency on having the repo checked out —
+# drop it on any host with `docker` and `curl` and it works.
 
 # Base raw-content URL for the public repo. Override to point at a fork or
 # branch when needed.
 REPO_RAW_URL="${REPO_RAW_URL:-https://raw.githubusercontent.com/DiegoHeer/gitops-homelab/main}"
 REPO_RAW_URL="${REPO_RAW_URL%/}"
+
+# If run anywhere other than the home server, tunnel docker over ssh via the
+# configured alias. Override any of the three by setting the env var.
+SERVER_HOSTNAME="${SERVER_HOSTNAME:-home}"
+SERVER_SSH_ALIAS="${SERVER_SSH_ALIAS:-server}"
+if [ -z "${DOCKER_HOST:-}" ] && [ "$(hostname)" != "$SERVER_HOSTNAME" ]; then
+    export DOCKER_HOST="ssh://$SERVER_SSH_ALIAS"
+fi
 
 # ANSI color codes
 GREEN='\033[32m'
@@ -146,6 +157,12 @@ print_separator() {
 }
 
 main() {
+    if ! docker version --format '{{.Server.Version}}' >/dev/null 2>&1; then
+        echo "Error: docker daemon not reachable (DOCKER_HOST=${DOCKER_HOST:-<local>})." >&2
+        echo "Check connectivity and that docker is running on the target host." >&2
+        exit 2
+    fi
+
     local containers
     if ! containers="$(discover_containers)"; then
         exit 2
