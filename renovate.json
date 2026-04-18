@@ -7,9 +7,9 @@
   ],
   "enabledManagers": ["docker-compose"],
   "docker-compose": {
-    "fileMatch": [
-      "services/.+\\.yaml$",
-      "bootstrap/.+\\.yaml$"
+    "managerFilePatterns": [
+      "/services/.+\\.yaml$/",
+      "/bootstrap/.+\\.yaml$/"
     ]
   },
   "labels": ["renovate"],
