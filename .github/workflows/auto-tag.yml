@@ -10,9 +10,12 @@ permissions:
   contents: write
 
 jobs:
-  auto-tag:
+  tag:
     name: Create monthly CalVer tag
     runs-on: ubuntu-latest
+    outputs:
+      new_tag: ${{ steps.plan.outputs.new_tag }}
+      should_tag: ${{ steps.plan.outputs.should_tag }}
     steps:
       - name: Checkout main
         uses: actions/checkout@v5
@@ -66,3 +69,11 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag "${NEW_TAG}"
           git push origin "${NEW_TAG}"
+
+  release:
+    name: Invoke Release workflow
+    needs: tag
+    if: needs.tag.outputs.should_tag == 'true'
+    uses: ./.github/workflows/release.yml
+    with:
+      tag: ${{ needs.tag.outputs.new_tag }}
