@@ -40,7 +40,7 @@ services:
   paperclip_postgres:
     container_name: paperclip_postgres
     restart: unless-stopped
-    image: postgres:16.13-alpine@sha256:93d55776e04376e19adb2733e3ccebb4392ee7dd86d8ff238503b30fe719c84f
+    image: postgres:18.3-alpine@sha256:52098013b4b64a746626437d38afc03cabff6cdeb4d3d92e2342aa95f0ce56ea
     env_file: paperclip.enc.env
     volumes:
       - /home/diego/services_data/ai/paperclip/postgresql:/var/lib/postgresql/data
@@ -101,7 +101,7 @@ services:
   n8n_postgres:
     container_name: n8n_postgres
     restart: unless-stopped
-    image: postgres:16.13-alpine@sha256:93d55776e04376e19adb2733e3ccebb4392ee7dd86d8ff238503b30fe719c84f
+    image: postgres:18.3-alpine@sha256:52098013b4b64a746626437d38afc03cabff6cdeb4d3d92e2342aa95f0ce56ea
     env_file: n8n.enc.env
     volumes:
       - /home/diego/services_data/ai/n8n/postgresql:/var/lib/postgresql/data
