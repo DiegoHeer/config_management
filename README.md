@@ -12,6 +12,7 @@ Personal homelab deployed GitOps-style on Ubuntu. Three pillars:
 
 ## Documentation
 
+- **[docs/getting-started.md](docs/getting-started.md)** — Adopting this repo for your own home server: what to fork, what to replace, what to generate.
 - **[docs/adr/](docs/adr/)** — Architectural Decision Records. Why DocoCD, why SOPS+age, why no Kubernetes. The rationale record.
 - **[docs/runbooks/](docs/runbooks/)** — Operational runbooks (written reactively).
 
