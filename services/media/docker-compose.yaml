@@ -1,7 +1,7 @@
 services:
   jellyfin:
     container_name: jellyfin
-    image: linuxserver/jellyfin:10.11.8
+    image: linuxserver/jellyfin:10.11.8@sha256:c796353f655c4be9911bf4594a25bb8da6341c5918a535a16b0bf1029123fc1c
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -26,7 +26,7 @@ services:
 
   seerr:
     container_name: seerr
-    image: ghcr.io/seerr-team/seerr:v3.2.0
+    image: ghcr.io/seerr-team/seerr:v3.2.0@sha256:c4cbd5121236ac2f70a843a0b920b68a27976be57917555f1c45b08a1e6b2aad
     init: true
     restart: unless-stopped
     labels:
@@ -49,7 +49,7 @@ services:
 
   gluetun:
     container_name: gluetun
-    image: qmcgaw/gluetun:v3.41.1
+    image: qmcgaw/gluetun:v3.41.1@sha256:1a5bf4b4820a879cdf8d93d7ef0d2d963af56670c9ebff8981860b6804ebc8ab
     restart: unless-stopped
     env_file: secrets.enc.env
     labels:
@@ -103,7 +103,7 @@ services:
 
   qbittorrent:
     container_name: qbittorrent
-    image: lscr.io/linuxserver/qbittorrent:5.1.4
+    image: lscr.io/linuxserver/qbittorrent:5.1.4@sha256:1fc78c81850d658f17701bfa9d8de58ccc12ff27d36a9a176c6299e55aaf4b4e
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -130,7 +130,7 @@ services:
 
   prowlarr:
     container_name: prowlarr
-    image: linuxserver/prowlarr:2.3.5
+    image: linuxserver/prowlarr:2.3.5@sha256:6df73ab9e99d0dbaad27c39d8a47c600333eebea80fcb56253a0bb8b630c8115
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -150,7 +150,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:4.0.17
+    image: linuxserver/sonarr:4.0.17@sha256:e6c9a091735fede0c2a205c69e7d4c2f0188eaf2bec7e42d8a26c017e5f2a910
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -171,7 +171,7 @@ services:
 
   radarr:
     container_name: radarr
-    image: linuxserver/radarr:6.1.1
+    image: linuxserver/radarr:6.1.1@sha256:6f1dda18354ea7f28cead8f6d099fc8222498c3ae165f567d504ed04d70980d7
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -192,7 +192,7 @@ services:
 
   profilarr:
     container_name: profilarr
-    image: santiagosayshey/profilarr:v1.1.4
+    image: santiagosayshey/profilarr:v1.1.4@sha256:8a514f8429cd33885166facc9eb6504fa9ded056c737609e5e8ef32ae0afb350
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -215,7 +215,7 @@ services:
 
   sabnzbd:
     container_name: sabnzbd
-    image: lscr.io/linuxserver/sabnzbd:4.5.5
+    image: lscr.io/linuxserver/sabnzbd:4.5.5@sha256:7ac6fe8a521c7099e1768af90529dfee5976b87c7dccffdcc9ced00149e1aedb
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -236,7 +236,7 @@ services:
 
   navidrome:
     container_name: navidrome
-    image: deluan/navidrome:0.61.2
+    image: deluan/navidrome:0.61.2@sha256:9fa40b3d8dec43ceb2213d1fa551da3dcfef6ac6d19c2e534efb92527c2bafd2
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -256,7 +256,7 @@ services:
 
   audiobookshelf:
     container_name: audiobookshelf
-    image: ghcr.io/advplyr/audiobookshelf:2.33.1
+    image: ghcr.io/advplyr/audiobookshelf:2.33.1@sha256:a4a5841bba093d81e5f4ad1eaedb4da3fda6dbb2528c552349da50ad1f7ae708
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -278,7 +278,7 @@ services:
 
   grimmory:
     container_name: grimmory
-    image: grimmory/grimmory:v2.3.0
+    image: grimmory/grimmory:v2.3.0@sha256:9014247f591074529894f81115ca40f899db697e89f72c2fe91ec530e3f19597
     restart: unless-stopped
     env_file: secrets.enc.env
     labels:
@@ -311,7 +311,7 @@ services:
       start_period: 60s
 
   grimmory_mariadb:
-    image: lscr.io/linuxserver/mariadb:11.4.9-r0-ls212
+    image: lscr.io/linuxserver/mariadb:11.4.9-r0-ls212@sha256:8ea7a10e36dfe229cd4f91a12fb2c8ac40bd0c4b2276e472de8f7835aa360fcd
     container_name: grimmory_mariadb
     restart: unless-stopped
     env_file: secrets.enc.env
