@@ -24,3 +24,6 @@ working_dir: services/storage
 ---
 name: networking
 working_dir: services/networking
+---
+name: games
+working_dir: services/games

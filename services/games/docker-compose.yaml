@@ -3,25 +3,20 @@ services:
     container_name: romm
     image: rommapp/romm:4.8.1
     restart: unless-stopped
+    env_file: secrets.enc.env
     environment:
       - DB_HOST=romm_mariadb
       - DB_NAME=romm
       - DB_USER=romm-user
-      - DB_PASSWD=${MARIADB_PASSWORD}
-      - ROMM_AUTH_SECRET_KEY=${ROMM_AUTH_SECRET_KEY}
-      - STEAMGRIDDB_API_KEY=${STEAMGRIDDB_API_KEY}
-      - RETROACHIEVEMENTS_API_KEY=${RETROACHIEVEMENTS_API_KEY}
-      - SCREENSCRAPER_USER=${SCREENSCRAPER_USER}
-      - SCREENSCRAPER_PASSWORD=${SCREENSCRAPER_PASSWORD}
       - LAUNCHBOX_API_ENABLED=true
       - HASHEOUS_API_ENABLED=true
       - HLTB_API_ENABLED=true
     volumes:
-      - ./romm/resources:/romm/resources
-      - ./romm/redis:/redis-data
+      - /home/diego/services_data/games/romm/resources:/romm/resources
+      - /home/diego/services_data/games/romm/redis:/redis-data
       - /media/hd2/data/media/games:/romm/library
-      - ./romm/assets:/romm/assets
-      - ./romm/config:/romm/config
+      - /home/diego/services_data/games/romm/assets:/romm/assets
+      - /home/diego/services_data/games/romm/config:/romm/config
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.romm.rule=Host(`romm.local.dynabase.nl`)"
@@ -43,13 +38,12 @@ services:
     container_name: romm_mariadb
     image: mariadb:11.8.6
     restart: unless-stopped
+    env_file: secrets.enc.env
     environment:
       - MARIADB_DATABASE=romm
       - MARIADB_USER=romm-user
-      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
-      - MARIADB_ROOT_PASSWORD=${MARIADB_PASSWORD}
     volumes:
-      - ./romm/mysql:/var/lib/mysql
+      - /home/diego/services_data/games/romm/mysql:/var/lib/mysql
     healthcheck:
       test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
       start_period: 30s
