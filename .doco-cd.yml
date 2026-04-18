@@ -2,40 +2,56 @@
 # Append a `---` block per category as it migrates from Ansible to DocoCD.
 # Auto-discovery stays off; each managed stack is listed explicitly.
 #
+# Every stack pins `webhook_filter` to `^refs/heads/main$` so only pushes to
+# main trigger a reconcile. Without this, pushes to feature/Renovate branches
+# would deploy their content to the live stack.
+#
 # NOT listed here on purpose:
 # - gitops/: DocoCD cannot manage its own container (self-deploy recursion).
 name: monitoring
 working_dir: services/monitoring
+webhook_filter: "^refs/heads/main$"
 ---
 name: dashboards
 working_dir: services/dashboards
+webhook_filter: "^refs/heads/main$"
 ---
 name: tools
 working_dir: services/tools
+webhook_filter: "^refs/heads/main$"
 ---
 name: backups
 working_dir: services/backups
+webhook_filter: "^refs/heads/main$"
 ---
 name: ai
 working_dir: services/ai
+webhook_filter: "^refs/heads/main$"
 ---
 name: storage
 working_dir: services/storage
+webhook_filter: "^refs/heads/main$"
 ---
 name: networking
 working_dir: services/networking
+webhook_filter: "^refs/heads/main$"
 ---
 name: games
 working_dir: services/games
+webhook_filter: "^refs/heads/main$"
 ---
 name: photos
 working_dir: services/photos
+webhook_filter: "^refs/heads/main$"
 ---
 name: security
 working_dir: services/security
+webhook_filter: "^refs/heads/main$"
 ---
 name: home_assistant
 working_dir: services/home_assistant
+webhook_filter: "^refs/heads/main$"
 ---
 name: media
 working_dir: services/media
+webhook_filter: "^refs/heads/main$"
