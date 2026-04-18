@@ -57,6 +57,8 @@ The DocoCD container itself lives at `bootstrap/gitops/` (not under `services/`)
 3. GitHub webhook → DocoCD on the home server.
 4. DocoCD clones the repo, decrypts any `*.enc.env` files with the host's age key, and runs `docker compose up -d` for each stack registered in `.doco-cd.yml`.
 
+Only pushes to `main` trigger a reconcile — every stack in `.doco-cd.yml` pins `webhook_filter: "^refs/heads/main$"`. Pushes to feature or Renovate branches are ignored.
+
 Runtime state (SQLite DBs, uploaded files, app config) lives at absolute host paths under `/home/diego/services_data/<category>/<service>/`, so stacks can be torn down and recreated without touching user data. Compose bind mounts reference those absolute paths.
 
 ### Adding a new stack
@@ -68,6 +70,7 @@ Runtime state (SQLite DBs, uploaded files, app config) lives at absolute host pa
    ---
    name: <new>
    working_dir: services/<new>
+   webhook_filter: "^refs/heads/main$"
    ```
 4. Commit + push. DocoCD reconciles.
 
