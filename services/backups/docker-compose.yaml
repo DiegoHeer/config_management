@@ -13,7 +13,6 @@ services:
       - /var/lib/zerobyte:/var/lib/zerobyte
       - /home/diego/.config/rclone:/root/.config/rclone
       - /media/hd1/nextcloud/diego/files:/nextcloud
-      - /home/diego/services:/services:ro
       - /home/diego/services_data:/services_data:ro
       - /media/hd1/photo_library:/photo_library
       - /media/hd3:/hd3
