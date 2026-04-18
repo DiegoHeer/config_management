@@ -11,7 +11,7 @@ Wanted fail-fast feedback at commit time.
 
 ## Decision
 
-Adopt `pre-commit` with yamllint, ansible-lint, ruff, shellcheck, actionlint, gitleaks, end-of-file-fixer, trim-trailing-whitespace, detect-private-key.
+Adopt `pre-commit` with yamllint, ansible-lint, ruff, shellcheck, actionlint, gitleaks, end-of-file-fixer, trailing-whitespace, detect-private-key.
 
 ## Consequences
 

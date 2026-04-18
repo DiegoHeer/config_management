@@ -26,5 +26,5 @@ Ansible `restore` role talks directly to restic (bypassing Zerobyte) to pull `la
 ## Evidence
 
 - `services/backups/docker-compose.yaml` — Zerobyte stack
-- `roles/restore/tasks/main.yaml` — direct `restic restore latest`
+- `roles/restore/tasks/restore.yml` — direct `restic restore latest`
 - `1880d61` (2026-04-18) — backups/ migrated to DocoCD

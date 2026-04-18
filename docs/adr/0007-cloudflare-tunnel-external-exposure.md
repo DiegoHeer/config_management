@@ -20,7 +20,7 @@ Zero exposed ports at the router; Cloudflare handles ingress and TLS.
 - `+` no public IP attack surface
 - `+` Cloudflare-native DDoS / WAF
 - `−` dependency on Cloudflare (free tier today, could change)
-- `−` tunnel token is a bootstrap-tier secret; rotation needs Ansible push
+- `−` tunnel token is a bootstrap-tier secret (see ADR 0006); rotation needs Ansible push
 
 ## Evidence
 

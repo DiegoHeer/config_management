@@ -20,7 +20,7 @@ Run in CI as a matrix job on pushes to `main` (skipped on PRs for speed).
 
 - `+` roles are provably idempotent on every run
 - `+` CI matrix surfaces regressions before Ansible touches the real host
-- `−` Molecule's Docker driver doesn't match production (Fedora/bare-metal)
+- `−` Molecule's Docker driver doesn't match production (Ubuntu/bare-metal)
 - `−` runtime: 2-5 min per scenario
 
 ## Evidence

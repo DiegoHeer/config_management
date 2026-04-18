@@ -23,4 +23,4 @@ Restic includes this single tree in backups.
 ## Evidence
 
 - `CLAUDE.md` — editing convention
-- `roles/docker_host/tasks/main.yml` — data dir creation
+- `roles/docker_host/tasks/gitops.yml` — data dir creation

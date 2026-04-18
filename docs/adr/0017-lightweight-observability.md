@@ -17,7 +17,7 @@ Revisit if a real alerting need appears.
 
 ## Consequences
 
-- `+` small memory footprint vs. gigabytes for the full stack
+- `+` ~100 MB RAM total vs. gigabytes for the full stack
 - `+` zero learning curve
 - `−` no historical metrics beyond Beszel's window; no log retention across container restarts
 - `−` no alert routing (email/ntfy on metric breach)
