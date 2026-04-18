@@ -216,39 +216,6 @@ wheels = [
 ]
 
 [[package]]
-name = "config-management"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "ansible" },
-    { name = "passlib" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "ansible-lint" },
-    { name = "molecule" },
-    { name = "molecule-plugins", extra = ["docker"] },
-    { name = "pre-commit" },
-    { name = "yamllint" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "ansible", specifier = ">=13.0.0,<14.0.0" },
-    { name = "passlib", specifier = ">=1.7.4,<2.0.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "ansible-lint", specifier = ">=25.1.1" },
-    { name = "molecule", specifier = ">=25.2.0" },
-    { name = "molecule-plugins", extras = ["docker"], specifier = ">=23.7.0" },
-    { name = "pre-commit", specifier = ">=4.0.0" },
-    { name = "yamllint", specifier = ">=1.35.1" },
-]
-
-[[package]]
 name = "cryptography"
 version = "46.0.5"
 source = { registry = "https://pypi.org/simple" }
@@ -352,6 +319,39 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/77/18/a1fd2231c679dcb9726204645721b12498aeac28e1ad0601038f94b42556/filelock-3.25.0.tar.gz", hash = "sha256:8f00faf3abf9dc730a1ffe9c354ae5c04e079ab7d3a683b7c32da5dd05f26af3", size = 40158, upload-time = "2026-03-01T15:08:45.916Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f9/0b/de6f54d4a8bedfe8645c41497f3c18d749f0bd3218170c667bf4b81d0cdd/filelock-3.25.0-py3-none-any.whl", hash = "sha256:5ccf8069f7948f494968fc0713c10e5c182a9c9d9eef3a636307a20c2490f047", size = 26427, upload-time = "2026-03-01T15:08:44.593Z" },
+]
+
+[[package]]
+name = "gitops-homelab"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "ansible" },
+    { name = "passlib" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "ansible-lint" },
+    { name = "molecule" },
+    { name = "molecule-plugins", extra = ["docker"] },
+    { name = "pre-commit" },
+    { name = "yamllint" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "ansible", specifier = ">=13.0.0,<14.0.0" },
+    { name = "passlib", specifier = ">=1.7.4,<2.0.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "ansible-lint", specifier = ">=25.1.1" },
+    { name = "molecule", specifier = ">=25.2.0" },
+    { name = "molecule-plugins", extras = ["docker"], specifier = ">=23.7.0" },
+    { name = "pre-commit", specifier = ">=4.0.0" },
+    { name = "yamllint", specifier = ">=1.35.1" },
 ]
 
 [[package]]

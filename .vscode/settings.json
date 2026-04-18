@@ -11,9 +11,9 @@
 
     // Ansible
     "files.associations": {
-      "**/config_management/**/*.yml": "ansible",
-      "**/config_management/services/*.yml": "yaml",
-      "**/config_management/.github/**/*.yml": "yaml",
+      "**/gitops-homelab/**/*.yml": "ansible",
+      "**/gitops-homelab/services/*.yml": "yaml",
+      "**/gitops-homelab/.github/**/*.yml": "yaml",
 
     },
     "ansible.python.interpreterPath": "${workspaceFolder}/.venv/bin/python",

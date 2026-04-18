@@ -1,7 +1,7 @@
 [project]
-name = "config-management"
+name = "gitops-homelab"
 version = "0.1.0"
-description = "This repo contains ansible playbooks to automatically configure personal servers, laptops, and desktops."
+description = "Personal homelab deployed GitOps-style on Ubuntu: Ansible host bootstrap, Docker Compose stacks reconciled by DocoCD, Restic backups."
 authors = [
     { name = "Diego Heer", email = "diegojonathanheer@gmail.com" }
 ]
