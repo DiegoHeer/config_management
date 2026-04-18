@@ -10,8 +10,8 @@ services:
       - /media/hd1:/hd1
       - /media/hd2:/hd2
       - /media/hd3:/hd3
-      - /home/${USERNAME}:/user_home
-      - ./filebrowser/data:/home/filebrowser/data
+      - /home/diego:/user_home
+      - /home/diego/services_data/storage/filebrowser/data:/home/filebrowser/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.filebrowser.rule=Host(`filebrowser.local.dynabase.nl`)"
@@ -33,17 +33,16 @@ services:
     image: linuxserver/nextcloud:33.0.2
     container_name: nextcloud
     restart: unless-stopped
+    env_file: secrets.enc.env
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Amsterdam
       - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=${NEXTCLOUD_DB_USER}
-      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
       - MYSQL_HOST=nextcloud_mariadb
     volumes:
-      - ./nextcloud/config:/config
-      - ./nextcloud/themes:/themes
+      - /home/diego/services_data/storage/nextcloud/config:/config
+      - /home/diego/services_data/storage/nextcloud/themes:/themes
       - /media/hd1/nextcloud:/data
     labels:
       - "traefik.enable=true"
@@ -66,14 +65,13 @@ services:
     container_name: nextcloud_mariadb
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: unless-stopped
+    env_file: secrets.enc.env
     volumes:
       - nextcloud-db:/var/lib/mysql
     environment:
       - TZ=Europe/Amsterdam
       - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
       - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=${NEXTCLOUD_DB_USER}
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       start_period: 10s
@@ -85,6 +83,7 @@ services:
     container_name: rustfs
     image: rustfs/rustfs:1.0.0-alpha.94
     restart: unless-stopped
+    env_file: secrets.enc.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rustfs-api.rule=Host(`rustfs.local.dynabase.nl`)"
@@ -104,8 +103,6 @@ services:
       - RUSTFS_CONSOLE_ENABLE=true
       - RUSTFS_CORS_ALLOWED_ORIGINS=*
       - RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS=*
-      - RUSTFS_ACCESS_KEY=${RUSTFS_ACCESS_KEY}
-      - RUSTFS_SECRET_KEY=${RUSTFS_SECRET_KEY}
     volumes:
       - /media/hd3/rustfs/data:/data
       - /media/hd3/rustfs/logs:/app/logs
@@ -126,16 +123,15 @@ services:
     container_name: obsidian-livesync
     image: couchdb:3.5.1
     restart: unless-stopped
+    env_file: secrets.enc.env
     environment:
       - PUID=1000
       - PGID=1000
       - UMASK=0022
       - TZ=Europe/Amsterdam
-      - COUCHDB_USER=${OBSIDIAN_COUCHDB_USER}
-      - COUCHDB_PASSWORD=${OBSIDIAN_COUCHDB_PASSWORD}
     volumes:
-      - ./obsidian-livesync/data:/opt/couchdb/data
-      - ./obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
+      - /home/diego/services_data/storage/obsidian-livesync/data:/opt/couchdb/data
+      - /home/diego/services_data/storage/obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.obsidian-livesync.rule=Host(`obsidian.local.dynabase.nl`)"
@@ -143,7 +139,7 @@ services:
       - "traefik.http.routers.obsidian-livesync.tls=true"
       - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://${OBSIDIAN_COUCHDB_USER}:${OBSIDIAN_COUCHDB_PASSWORD}@localhost:5984/_up"]
+      test: ["CMD-SHELL", "curl -f http://$$COUCHDB_USER:$$COUCHDB_PASSWORD@localhost:5984/_up"]
       interval: 30s
       timeout: 10s
       retries: 3

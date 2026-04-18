@@ -12,3 +12,4 @@ services_migrated_categories:
   - tools
   - backups
   - ai
+  - storage
