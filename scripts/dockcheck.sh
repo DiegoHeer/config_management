@@ -91,21 +91,39 @@ discover_containers() {
     echo "$raw" | sort -u | awk 'NF'
 }
 
-# Classify a single container's status.
+# Batched status cache: one docker inspect call populates statuses for every
+# container. Keyed by container name. Cuts ~55 ssh round-trips down to 1 when
+# running over DOCKER_HOST=ssh://.
+declare -A STATUS_CACHE
+
+populate_status_cache() {
+    local names=("$@") name rest
+    # Default every name to "missing" — any that docker inspect returns data
+    # for overwrites this below. Missing containers produce an error on stderr
+    # which we swallow; they keep their default "missing".
+    for name in "${names[@]}"; do STATUS_CACHE["$name"]="missing"; done
+
+    while IFS='|' read -r name rest; do
+        [ -n "$name" ] || continue
+        STATUS_CACHE["${name#/}"]="$rest"
+    done < <(docker inspect \
+        --format '{{.Name}}|{{.State.Status}}|{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}|{{.RestartCount}}|{{.State.StartedAt}}' \
+        "${names[@]}" 2>/dev/null)
+}
+
+# Classify a single container's status from the pre-populated cache.
 # Output: one of healthy, unhealthy, starting, crash-loop, inactive, missing.
 get_status() {
     local container="$1"
-    local inspect_out
+    local cached="${STATUS_CACHE[$container]:-missing}"
 
-    if ! inspect_out=$(docker inspect \
-        --format '{{.State.Status}}|{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}|{{.RestartCount}}|{{.State.StartedAt}}' \
-        "$container" 2>/dev/null); then
+    if [ "$cached" = "missing" ]; then
         echo "missing"
         return
     fi
 
     local state health restart_count started_at
-    IFS='|' read -r state health restart_count started_at <<< "$inspect_out"
+    IFS='|' read -r state health restart_count started_at <<< "$cached"
 
     if [[ "$state" == "running" ]]; then
         # Crash-loop takes precedence over health state — a container that
@@ -173,6 +191,12 @@ main() {
         echo "and that the referenced compose files declare container_name entries." >&2
         exit 2
     fi
+
+    local -a all_names=()
+    while IFS='|' read -r _ container; do
+        [ -n "$container" ] && all_names+=("$container")
+    done <<< "$containers"
+    populate_status_cache "${all_names[@]}"
 
     print_header
 
