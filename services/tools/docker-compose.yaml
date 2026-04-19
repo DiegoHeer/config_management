@@ -132,7 +132,7 @@ services:
   tandoor_postgres:
     container_name: tandoor_postgres
     restart: unless-stopped
-    image: postgres:18.3-alpine@sha256:52098013b4b64a746626437d38afc03cabff6cdeb4d3d92e2342aa95f0ce56ea
+    image: postgres:16.13-alpine@sha256:93d55776e04376e19adb2733e3ccebb4392ee7dd86d8ff238503b30fe719c84f
     env_file: secrets.enc.env
     volumes:
       - /home/diego/services_data/tools/tandoor/postgresql:/var/lib/postgresql/data
