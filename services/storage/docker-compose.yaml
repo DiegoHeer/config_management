@@ -118,33 +118,6 @@ services:
       retries: 3
       start_period: 40s
 
-  # https://www.reddit.com/r/selfhosted/comments/1eo7knj/guide_obsidian_with_free_selfhosted_instant_sync/
-  obsidian-livesync:
-    container_name: obsidian-livesync
-    image: couchdb:3.5.1@sha256:297cd556c7ba358a408fd009e7b8e3b91318ccfc4d57c9b0264a2fb051ad9ef7
-    restart: unless-stopped
-    env_file: secrets.enc.env
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - UMASK=0022
-      - TZ=Europe/Amsterdam
-    volumes:
-      - /home/diego/services_data/storage/obsidian-livesync/data:/opt/couchdb/data
-      - /home/diego/services_data/storage/obsidian-livesync/etc/local.d:/opt/couchdb/etc/local.d
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.obsidian-livesync.rule=Host(`obsidian.local.dynabase.nl`)"
-      - "traefik.http.routers.obsidian-livesync.entrypoints=https"
-      - "traefik.http.routers.obsidian-livesync.tls=true"
-      - "traefik.http.services.obsidian-livesync.loadbalancer.server.port=5984"
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://$$COUCHDB_USER:$$COUCHDB_PASSWORD@localhost:5984/_up"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 15s
-
 
 volumes:
   nextcloud-db:

@@ -37,7 +37,7 @@ molecule/           # Ansible role testing (one scenario per role)
 | **Media** | Jellyfin, Seerr, Gluetun (VPN), qBittorrent, Prowlarr, Sonarr, Radarr, Profilarr, SABnzbd, Navidrome, Audiobookshelf, Grimmory + MariaDB |
 | **Networking** | Traefik, Cloudflare Tunnel, Traefik–Pi-hole DNS sync |
 | **Monitoring** | Beszel (+ agent), Dozzle, Portracker |
-| **Storage** | Filebrowser, Nextcloud + MariaDB, Rustfs, Obsidian LiveSync |
+| **Storage** | Filebrowser, Nextcloud + MariaDB, Rustfs |
 | **Photos** | Immich (server + ML), Redis, PostgreSQL (VectorChord) |
 | **Tools** | IT-Tools, BentoPDF, Grist, Docuseal, Changedetection, Tandoor + PostgreSQL |
 | **Dashboards** | Homarr, Glance, Dashdot, Homepage |
