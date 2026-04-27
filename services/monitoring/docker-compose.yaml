@@ -47,7 +47,7 @@ services:
 
   dozzle:
     container_name: dozzle
-    image: amir20/dozzle:v10.4.1@sha256:03ac4280eec733d004de0a46a3944e8ef0d3fbd9c317027b19492d4ed360aa89
+    image: amir20/dozzle:v10.5.0@sha256:bb7df69b177814466e01397f5d44baabb56dc2fe9c6f7f18b61ce137428452d2
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -92,7 +92,7 @@ services:
       start_period: 20s
 
   uptime-kuma:
-    image: louislam/uptime-kuma:2.2.1
+    image: louislam/uptime-kuma:2.2.1@sha256:7337368a77873f159435de9ef09567f68c31285ed5f951dec36256c4b267ee44
     container_name: uptime-kuma
     restart: unless-stopped
     volumes:
