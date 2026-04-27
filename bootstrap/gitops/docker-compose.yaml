@@ -34,7 +34,7 @@ services:
 
   apprise:
     container_name: apprise
-    image: caronc/apprise:latest@sha256:f901f6b51a56876ff0c7360364ae98eed63536c0f7909386698b7b9171a62d7b
+    image: caronc/apprise:latest@sha256:647fd1901f383461b37a53a288c832f75e57a69f4d6191edde837444fb2b86a7
     restart: unless-stopped
     environment:
       TZ: Europe/Amsterdam
