@@ -3,6 +3,32 @@
 All notable changes to this homelab are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning uses CalVer (`YYYY.MM.N`).
+## [2026.05.0] - 2026-04-30
+
+### Added
+
+- Config|Add: docs/ directory scaffolding with ADR and runbook templates
+- Config|Add: backfill 17 ADRs documenting load-bearing homelab decisions
+- Config|Add: adopter's getting-started guide covering fork-to-deploy steps (#45)
+- Services|Add: included uptime kuma for monitoring uptime of certain services
+
+### Changed
+
+- Config|Update: regenerate CHANGELOG for 2026.04.1
+- Config|Update: bump yamllint line-length to 160
+- Config|Update: link docs/ from top-level README
+- Config|Update: drop peer-repo references from ADRs
+- Config|Update: drop Rook/Ceph from ADR 0003 and document ADR requirement in CLAUDE.md
+- Config|Update: trigger doco-cd redeploy after tandoor pg16 rollback
+
+### Fixed
+
+- Config|Fix: correct ADR evidence citations and cross-reference
+- Config|Fix: block legacy Ubuntu-date tags for linuxserver qbittorrent
+- Config|Fix: restrict DocoCD deploys to main-branch pushes only (#44)
+- Services|Fix: roll back tandoor_postgres to 16.13 after failed pg18 migration (#47)
+- Services|Fix: include missing traefik label to uptime-kuma docker compose service
+
 ## [2026.04.1] - 2026-04-18
 
 ### Changed
