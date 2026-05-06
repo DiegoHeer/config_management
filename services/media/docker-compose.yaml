@@ -1,7 +1,7 @@
 services:
   jellyfin:
     container_name: jellyfin
-    image: linuxserver/jellyfin:10.11.8@sha256:ae1ac3d89b8598f31f5e1dc5aff898e13eab617303db58f84956e26f7b78c198
+    image: linuxserver/jellyfin:10.11.8@sha256:0c7af94c048cd17f7438cd22c4d9c78d4c9c381d565352846aac847dd3cd74f4
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -103,7 +103,7 @@ services:
 
   qbittorrent:
     container_name: qbittorrent
-    image: lscr.io/linuxserver/qbittorrent:5.1.4@sha256:3679a75dd2304b695525d83a4ff14c458708b5da4a7ce53044240932139590e1
+    image: lscr.io/linuxserver/qbittorrent:5.1.4@sha256:c9990949e968e99333f47f49da7d16e81ba6e1469c8c46807a65b984c9e8b6ff
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -130,7 +130,7 @@ services:
 
   prowlarr:
     container_name: prowlarr
-    image: linuxserver/prowlarr:2.3.5@sha256:c5de2a8758a05594319263e7691c1dce56899442ed1720d6eca216c0958f4caf
+    image: linuxserver/prowlarr:2.3.5@sha256:4b52038b7b6452a20c145239fa07d8218d1541d736a96c43aa0a5f60141cab28
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -150,7 +150,7 @@ services:
 
   sonarr:
     container_name: sonarr
-    image: linuxserver/sonarr:4.0.17@sha256:3580aec3802c915f0f819a88d5099abce61734b925732b8393d176b5dc561020
+    image: linuxserver/sonarr:4.0.17@sha256:bed3afb5d46fde809290997760f2e19d41e57d1eb34f507c485d5a8979c7cd8d
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -171,7 +171,7 @@ services:
 
   radarr:
     container_name: radarr
-    image: linuxserver/radarr:6.1.1@sha256:b01097ad2d948c9f5eca39eb60bb529e2e55b0738c4bf7db09383bef0abab59d
+    image: linuxserver/radarr:6.1.1@sha256:659e5f20500948b1491f31dd85c6f99a43508ce3e46595793e1e15aa955bf6d7
     restart: unless-stopped
     network_mode: service:gluetun
     depends_on:
@@ -256,7 +256,7 @@ services:
 
   audiobookshelf:
     container_name: audiobookshelf
-    image: ghcr.io/advplyr/audiobookshelf:2.33.2@sha256:a44ed89b3e845faa1f7d353f2cc89b2fcd8011737dd14075fa963cf9468da3a5
+    image: ghcr.io/advplyr/audiobookshelf:2.34.0@sha256:4143292c530f6ac6700afd13360c04f477e4f1a81c1c97c4224b1c7e4330c5c4
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
