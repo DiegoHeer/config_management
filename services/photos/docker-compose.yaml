@@ -32,7 +32,7 @@ services:
 
   redis:
     container_name: immich_redis
-    image: redis:8.6.3-alpine@sha256:eb37f58646a901dc7727cf448cae36daaefaba79de33b5058dab79aa4c04aefb
+    image: redis:8.6.3-alpine@sha256:69f2c586c8a7e9cce4ae1ee9bbaf60bc4bb5f4bb3880e4ed022b1fd758a7cab9
     restart: unless-stopped
     healthcheck:
       test: redis-cli ping || exit 1
