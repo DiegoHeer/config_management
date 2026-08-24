@@ -1,7 +1,7 @@
 services:
   beszel:
     container_name: beszel
-    image: henrygd/beszel:0.18.7
+    image: henrygd/beszel:0.18.8
     restart: unless-stopped
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -22,7 +22,7 @@ services:
 
   beszel-agent:
     container_name: beszel-agent
-    image: henrygd/beszel-agent:0.18.7
+    image: henrygd/beszel-agent:0.18.8
     restart: unless-stopped
     network_mode: host
     env_file: secrets.enc.env
@@ -46,7 +46,7 @@ services:
 
   dozzle:
     container_name: dozzle
-    image: amir20/dozzle:v10.7.2
+    image: amir20/dozzle:v10.7.4
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -91,7 +91,7 @@ services:
       start_period: 20s
 
   uptime-kuma:
-    image: louislam/uptime-kuma:2.5.0
+    image: louislam/uptime-kuma:2.5.3
     container_name: uptime-kuma
     restart: unless-stopped
     volumes:
