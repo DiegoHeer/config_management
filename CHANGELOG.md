@@ -3,6 +3,82 @@
 All notable changes to this homelab are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning uses CalVer (`YYYY.MM.N`).
+## [2026.09.0] - 2026-08-31
+
+### Added
+
+- Services|Add: mounted photo backups as read-only immich external library
+- Services|Add: NetAlertX network presence detection for Home Assistant
+- Config|Add: ignored .claude/worktrees/ scratch directory
+- Config|Add: added DocoCD debug tooling design spec
+- Config|Add: added DocoCD debug tooling implementation plan
+- Config|Add: added doco.sh skeleton with verb dispatch and usage
+- Config|Add: added stack and container name resolution to doco.sh
+- Config|Add: added restart, stop and start verbs to doco.sh
+- Config|Add: added mounts verb flagging missing and empty bind sources
+- Config|Add: added Makefile front door for doco.sh
+- Config|Add: added ADR 0021 and README docs for doco.sh debug tooling
+- Infrastructure|Add: added shellcheck job to the quality check workflow
+- Services|Add: netns orphan detection to gluetun-routed service healthchecks
+- Infrastructure|Add: ADR 0023 and recovery runbook for gluetun netns orphaning
+- Infrastructure|Add: ordered docker start after the data disk mounts
+- Ansible|Add: docker daemon log rotation via daemon.json
+- Config|Add: ADR 0027 for docker log rotation
+- Services|Add: netalertx MQTT and subnet scan configuration
+- Config|Add: ADR 0024 for netalertx anonymous MQTT access
+- Infrastructure|Add: added name filtering and usage output to dockcheck.sh
+- Config|Add: added status verb to the Makefile front door
+- Ansible|Add: compress rotated docker logs
+- Ansible|Add: guard the docker restart on required mounts
+- Config|Add: ADR 0028 superseding 0027 on how the plugin roster is pinned
+- Services|Add: gave zerobyte access to hd2
+- Config|Add: ADR 0030 retiring the hd3 data disk
+- Services|Add: included convertx for local file conversion
+
+### Changed
+
+- Config|Update: regenerate CHANGELOG for 2026.08.0
+- Services|Update: exposed docuseal externally via Cloudflare tunnel (#192)
+- Services|Migrate: moved immich media mount to upstream /data path
+- Services|Refactor: moved immich postgres data to a services_data bind mount
+- Config|Update: documented namespace, reconciliation and ssh speed caveats
+- Services|Refactor: moved nextcloud mariadb data to a services_data bind mount
+- Services|Update: gated media VPN dependents on gluetun health with fast-converging healthcheck
+- Infrastructure|Update: recorded verified host-reboot and VPN-reconnect behaviour in ADR 0024
+- Services|Refactor: moved netalertx APP_CONF_OVERRIDE from secrets to compose
+- Config|Update: recorded override precedence and full ADR 0023 correction in ADR 0025
+- Services|Refactor: trimmed netalertx compose comments to the non-obvious why
+- Config|Update: documented make status and dockcheck.sh in README
+- Config|Update: ADR 0028 consequences for the docker daemon restart
+- Services|Update: tightened netalertx arp-scan to */5
+- Services|Refactor: moved rustfs object data off hd3 to services_data
+- Services|Refactor: moved frigate recording from hd3 to hd2
+- Config|Update: dropped hd3 from the getting-started prerequisites
+- Config|Update: documented convertx in the services overview
+
+### Fixed
+
+- Config|Fix: restart namespace providers before dependents in doco.sh
+- Config|Fix: DRY=0 no longer performs a dry run in the Makefile
+- Infrastructure|Fix: run the pinned shellcheck hook in CI instead of the runner's
+- Services|Fix: enabled mariadb auto-upgrade for nextcloud database
+- Services|Fix: pointed sabnzbd healthcheck at its own port 8085 instead of qbittorrent's 8080
+- Services|Fix: bounded gluetun ping probe and documented deploy blast radius in ADR 0024
+- Services|Fix: guarded hd3 bind mounts against an unmounted disk
+- Infrastructure|Fix: made the mount-ordering conditionals boolean
+- Infrastructure|Fix: probe the docker daemon instead of inferring it from empty inspect output
+- Config|Fix: corrected make exit-code and crash-loop wording in README
+- Services|Fix: loaded the MQTT plugin so netalertx actually publishes
+- Services|Fix: set netalertx LOADED_PLUGINS via its own env var
+
+### Removed
+
+- Config|Remove: dropped design spec and implementation plan from doco.sh change
+- Services|Remove: dropped healthcheck comments already covered by ADR 0023
+- Services|Remove: dropped superseded services/dockcheck.sh predecessor
+- Services|Remove: dropped the hd3 bind mounts from beszel, filebrowser and zerobyte
+- Ansible|Remove: emptied docker_host_ordered_mounts after retiring hd3
+
 ## [2026.08.0] - 2026-07-29
 
 ### Added
