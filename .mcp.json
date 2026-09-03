@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "nextcloud": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["nextcloud-mcp-server", "run", "--transport", "stdio"],
+      "env": {
+        "NEXTCLOUD_HOST": "${NEXTCLOUD_HOST}",
+        "NEXTCLOUD_USERNAME": "${NEXTCLOUD_USERNAME}",
+        "NEXTCLOUD_PASSWORD": "${NEXTCLOUD_PASSWORD}"
+      }
+    }
+  }
+}
