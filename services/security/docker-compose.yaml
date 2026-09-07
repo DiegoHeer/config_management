@@ -34,7 +34,7 @@ services:
 
   authelia:
     container_name: authelia
-    image: authelia/authelia:4.39.20
+    image: authelia/authelia:4.39.22
     restart: unless-stopped
     user: "1000:1000"
     command:
