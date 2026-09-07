@@ -57,6 +57,15 @@ identity_providers:
     # The issuer signing key (jwks) is a list-of-objects section, which Authelia
     # cannot populate from env/secrets — so it is supplied by a second, non-git
     # config file (oidc-jwks.yml) mounted from services_data. See ADR 0018.
+    authorization_policies:
+      # RustFS grants every authenticated user consoleAdmin, so the admins-only
+      # gate must live here at the IdP (ADR 0031).
+      rustfs_admins:
+        default_policy: 'deny'
+        rules:
+          - policy: 'one_factor'
+            subject:
+              - 'group:admins'
     clients:
       - client_id: 'grist'
         client_name: 'Grist'
@@ -68,6 +77,20 @@ identity_providers:
         pkce_challenge_method: 'S256'
         redirect_uris:
           - 'https://grist.dynabase.nl/oauth2/callback'
+        scopes:
+          - 'openid'
+          - 'profile'
+          - 'email'
+      - client_id: 'rustfs'
+        client_name: 'RustFS'
+        client_secret: '$pbkdf2-sha512$310000$9yqleqD0yOmKP5amqr4VZw$vsnRMJ7.UDhH/bpAJuGOvPnk2zlW7Bv4jIa1OzyHo5342N4SX7Fek5Nwp4FTwyj0UBl0YM2W5HZRt5ELdBYyMw'
+        public: false
+        consent_mode: 'implicit'
+        authorization_policy: 'rustfs_admins'
+        require_pkce: true
+        pkce_challenge_method: 'S256'
+        redirect_uris:
+          - 'https://rustfs-console.dynabase.nl/rustfs/admin/v3/oidc/callback/default'
         scopes:
           - 'openid'
           - 'profile'
