@@ -89,6 +89,9 @@ identity_providers:
         authorization_policy: 'rustfs_admins'
         require_pkce: true
         pkce_challenge_method: 'S256'
+        # RustFS sends the client secret in the token-request body, not a Basic
+        # header; Authelia defaults to client_secret_basic and rejects it otherwise.
+        token_endpoint_auth_method: 'client_secret_post'
         redirect_uris:
           - 'https://rustfs-console.dynabase.nl/rustfs/admin/v3/oidc/callback/default'
         scopes:
